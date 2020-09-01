@@ -60,3 +60,14 @@ if grep -q GRX /tmp/sysinfo/board_name; then
         uci set prplmesh.radio1.sta_iface="wlan3"
         uci commit prplmesh
 fi
+
+#if prplmesh backhaul wire interface is not set
+#use wan interface as the default value
+WAN_IFACE=`uci get network.wan.ifname`
+PRPLMESH_BACKHAUL_IFACE=`uci get prplmesh.config.backhaul_wire_iface`
+if [ ! -z "$WAN_IFACE" ]; then
+        if [ -z "$PRPLMESH_BACKHAUL_IFACE" ]; then
+                uci set prplmesh.config.backhaul_wire_iface="$WAN_IFACE"
+                uci commit prplmesh
+        fi
+fi
