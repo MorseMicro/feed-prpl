@@ -82,8 +82,7 @@ define Package/prplmesh/install
 	$(INSTALL_DIR) $(1)/opt/prplmesh
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) ./files/etc/init.d/* $(1)/etc/init.d/
-	$(INSTALL_BIN) ./files/99-prplmesh-update-config.sh $(1)/etc/uci-defaults/
-	$(CP) ./files/etc/config/* $(1)/etc/config/
+	$(INSTALL_BIN) ./files/etc/uci-defaults/* $(1)/etc/uci-defaults/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/bin $(1)/opt/prplmesh/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/scripts $(1)/opt/prplmesh/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/lib/*.so* $(1)/usr/lib/
