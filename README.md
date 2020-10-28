@@ -4,7 +4,7 @@ Feed of OpenWrt/LEDE packages from prpl Foundation members
 ## How to add the prpl Feed to you OpenWrt/LEDE build
 At the root of your OpenWrt/LEDE tree, add the following to your `feeds.conf` file:
 ```sh
-src-git prpl https://github.com/prplfoundation/prpl-feed.git
+src-git prpl https://gitlab.com/prpl-foundation/prplwrt/prpl-feed.git
 ```
 Now to add the packages on your prpl feed to your OpenWrt/LEDE instance:
 ```sh
@@ -12,7 +12,7 @@ Now to add the packages on your prpl feed to your OpenWrt/LEDE instance:
 ./scripts/feeds install -p prpl #make all of the prpl feed packages available to the build
 ```
 
-For more control over the package versions being installed, you can fork the feed using Github (and replace the `src-git` url) or maintaining a copy of the feed on your local system by using this line instead:
+For more control over the package versions being installed, you can fork the feed using Gitlab (and replace the `src-git` url) or maintaining a copy of the feed on your local system by using this line instead:
 ```sh
 src-link prpl /full/path/to/feed/root
 ```
