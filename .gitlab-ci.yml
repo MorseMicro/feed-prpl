@@ -1,0 +1,23 @@
+include:
+  - remote: https://gitlab.com/prpl-foundation/prplwrt/prplwrt/-/raw/prplwrt/.gitlab/sdk.yml
+
+generate:
+  extends: .generate SDK package build jobs
+  variables:
+    CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
+    CI_SDK_BUILD_PACKAGES: |
+      bbf
+      dslmngr
+      libtrace
+      luci-mod-simple
+      luci-theme-prpl
+      mcast-pa
+      obuspa
+      owsd
+      prplmesh
+      ucwmp
+      udrone
+      uspd
+
+build:
+  extends: .execute SDK package build jobs
