@@ -20,6 +20,9 @@ define Package/prplmesh/Default
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
 	MAINTAINER:=prplfoundation
 	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +libzmq-nc +ebtables
+	ifdef CONFIG_PACKAGE_libamxb
+		DEPENDS += +libamxb +libamxc libamxd libamxo libamxp
+	endif
 endef
 
 define Package/prplmesh-dwpal
