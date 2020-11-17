@@ -16,7 +16,7 @@ define Package/prplmesh/Default
 	TITLE:=prplmesh
 	URL:=https://github.com/prplfoundation/prplMesh/README.md
 	MAINTAINER:=prplfoundation
-	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +bridge +libzmq-nc +ebtables
+	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +libzmq-nc +ebtables
 endef
 
 define Package/prplmesh-dwpal
@@ -24,7 +24,7 @@ $(call Package/prplmesh/Default)
 	TITLE+= - DWPAL
 	VARIANT:=dwpal
 	PROVIDES:=prplmesh
-	DEPENDS+= @TARGET_intel_mips +dwpal_6x-uci +iwlwav-hostap-uci +@WIRELESS_STA +libsafec3
+	DEPENDS+= @TARGET_intel_mips +dwpal_6x-uci +iwlwav-hostap-uci +@WIRELESS_STA +libsafec3 +bridge-ugw
 endef
 
 define Package/prplmesh-nl80211
