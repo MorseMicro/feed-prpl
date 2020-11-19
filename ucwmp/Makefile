@@ -7,6 +7,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplwrt/ucwmp.git
+PKG_MIRROR_HASH:=74cf30fa87afcb67cbbcccbe442b48e8c4aa036acaa2fadac6023486013c52b6
 PKG_SOURCE_VERSION:=0ceacc3c606fa0a92fb5ca534dac1784345e6904
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.gz
 
