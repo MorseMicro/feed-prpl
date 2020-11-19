@@ -14,10 +14,17 @@ generate:
       mcast-pa
       obuspa
       owsd
-      prplmesh
       ucwmp
       udrone
       uspd
 
 build:
   extends: .execute SDK package build jobs
+
+build prplmesh with SDK:
+  tags:
+    - firmware-builder
+  extends: .build feed with SDK
+  variables:
+    CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
+    CI_SDK_BUILD_PACKAGES: prplmesh
