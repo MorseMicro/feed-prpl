@@ -7,11 +7,9 @@ generate:
     CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
     CI_SDK_BUILD_PACKAGES: |
       bbf
-      dslmngr
       libtrace
       luci-mod-simple
       luci-theme-prpl
-      mcast-pa
       obuspa
       owsd
       ucwmp
