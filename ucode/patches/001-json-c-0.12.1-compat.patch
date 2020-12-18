@@ -1,0 +1,129 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -66,6 +66,17 @@ ELSE()
+     ADD_DEFINITIONS(-DHAVE_ARRAY_SHRINK)
+   ENDIF()
+ ENDIF()
++CHECK_SYMBOL_EXISTS(json_object_get_userdata "json.h" HAVE_RECENT_JSONC)
++IF(HAVE_RECENT_JSONC)
++  ADD_DEFINITIONS(-DHAVE_RECENT_JSONC)
++ELSE()
++  CHECK_SYMBOL_EXISTS(json_object_get_userdata "json-c/json.h" HAVE_RECENT_JSONC2)
++  IF(HAVE_RECENT_JSONC2)
++    ADD_DEFINITIONS(-DHAVE_RECENT_JSONC)
++  ELSE()
++    ADD_DEFINITIONS(-Wno-deprecated-declarations)
++  ENDIF()
++ENDIF()
+ UNSET(CMAKE_REQUIRED_LIBRARIES)
+ 
+ SET(LIBRARIES "")
+--- a/ast.h
++++ b/ast.h
+@@ -31,6 +31,76 @@
+ 	#include <json-c/json.h>
+ #endif
+ 
++#ifndef HAVE_RECENT_JSONC
++# ifdef JSONC
++	#include <arraylist.h>
++	#include <printbuf.h>
++	#include <json_object_private.h>
++# else
++	#include <json-c/arraylist.h>
++	#include <json-c/printbuf.h>
++	#include <json-c/json_object_private.h>
++# endif
++
++# define JSON_C_TO_STRING_NOSLASHESCAPE 0
++
++static inline void *json_object_get_userdata(json_object *jso) {
++	struct json_object *js = jso;
++
++	return js ? js->_userdata : NULL;
++}
++
++static inline void json_object_set_userdata(json_object *jso, void *userdata, json_object_delete_fn *user_delete) {
++	struct json_object *js = jso;
++
++	js->_userdata = userdata;
++	js->_user_delete = user_delete;
++}
++
++static inline json_object *json_object_new_uint64(uint64_t val) {
++	return json_object_new_int64((int64_t)val);
++}
++
++static inline uint64_t json_object_get_uint64(json_object *jso) {
++	return (uint64_t)json_object_get_int64(jso);
++}
++
++static inline size_t json_tokener_get_parse_end(struct json_tokener *tok)
++{
++	return (size_t)tok->char_offset;
++}
++
++static inline int json_object_array_del_idx(json_object *jso, size_t idx, size_t count)
++{
++	struct json_object *js = jso;
++	struct array_list *arr = js->o.c_array;
++	size_t i, stop;
++
++	/* Avoid overflow in calculation with large indices. */
++	if (idx > ((size_t)-1) - count)
++		return -1;
++
++	stop = idx + count;
++
++	if (idx >= arr->length || stop > arr->length)
++		return -1;
++
++	for (i = idx; i < stop; ++i)
++	{
++		// Because put_idx can skip entries, we need to check if
++		// there's actually anything in each slot we're erasing.
++		if (arr->array[i])
++			arr->free_fn(arr->array[i]);
++	}
++
++	memmove(arr->array + idx, arr->array + stop, (arr->length - stop) * sizeof(void *));
++	arr->length -= count;
++
++	return 0;
++}
++
++#endif
++
+ #define ALIGN(x) (((x) + sizeof(size_t) - 1) & -sizeof(size_t))
+ 
+ #ifndef ARRAY_SIZE
+--- a/eval.c
++++ b/eval.c
+@@ -383,8 +383,12 @@ uc_setval(struct json_object *scope, str
+ 		return json_object_get(val);
+ 	}
+ 
++#ifdef HAVE_RECENT_JSONC
+ 	if (json_object_object_add(scope, key ? json_object_get_string(key) : "null", val))
+ 		return NULL;
++#else
++	json_object_object_add(scope, key ? json_object_get_string(key) : "null", val);
++#endif
+ 
+ 	return json_object_get(val);
+ }
+--- a/lib.c
++++ b/lib.c
+@@ -324,7 +324,12 @@ uc_register_function(struct uc_state *st
+ 
+ 	json_object_set_serializer(val, uc_c_fn_to_string, op, uc_c_fn_free);
+ 
++#ifndef HAVE_RECENT_JSONC
++	json_object_object_add(scope, name, op->val);
++	return true;
++#else
+ 	return json_object_object_add(scope, name, op->val);
++#endif
+ }
+ 
+ static struct json_object *
