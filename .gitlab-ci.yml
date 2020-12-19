@@ -7,11 +7,13 @@ generate:
     CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
     CI_SDK_BUILD_PACKAGES: |
       bbf
+      firewall4
       libtrace
       luci-mod-simple
       luci-theme-prpl
       obuspa
       owsd
+      ucode
       ucwmp
       udrone
       uspd
