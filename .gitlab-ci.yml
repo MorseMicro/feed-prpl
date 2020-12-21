@@ -4,7 +4,10 @@ include:
 generate:
   extends: .generate SDK package build jobs
   variables:
-    CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
+    CI_SDK_TARGETS: |
+      intel_mips-xrx500
+      ath79-generic
+      mvebu-cortexa9-19.07.5
     CI_SDK_BUILD_PACKAGES: |
       bbf
       firewall4
@@ -21,10 +24,28 @@ generate:
 build:
   extends: .execute SDK package build jobs
 
-build prplmesh with SDK:
+.build prplmesh with SDK:
   tags:
     - firmware-builder
   extends: .build feed with SDK
   variables:
+    CI_SDK_BUILD_PACKAGES: prplmesh
+
+build prplmesh with intel_mips-xrx500 SDK:
+  extends: .build prplmesh with SDK
+  variables:
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-intel_mips-xrx500:latest
     CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
+
+build prplmesh with ath79-generic SDK:
+  extends: .build prplmesh with SDK
+  variables:
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-ath79-generic:latest
+
+build prplmesh with mvebu-cortexa9 OpenWrt SDK:
+  extends: .build feed with OpenWrt SDK
+  tags:
+    - firmware-builder
+  variables:
+    CI_SDK_IMAGE: openwrtorg/sdk:mvebu-cortexa9-19.07.5
     CI_SDK_BUILD_PACKAGES: prplmesh
