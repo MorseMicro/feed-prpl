@@ -1,21 +1,23 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prplmesh
-PKG_RELEASE:=1.4.0
-PKG_SOURCE_URL:=https://github.com/prplfoundation/prplMesh.git
-PKG_MIRROR_HASH:=c60b9d467608754a6f96383a84ecadc394d3b59eb6ffb392ff52e900234856e1
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=eb2327daaff7c4e5071dcfb9ddd75c88f2b747a7
-PKG_VERSION:=$(PKG_RELEASE)-$(PKG_SOURCE_VERSION)
+PKG_VERSION:=1.5.0
+PKG_RELEASE:=1
+PKG_REV:=a90d8659593b4599c18e11358d72b6a0aab653d9
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_REV).tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/archive/$(PKG_REV)
+PKG_HASH:=74e81d2131f0024fc2ebd1905b7386ab821fb37f5b90459a9475b186bba1835a
+PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
 define Package/prplmesh/Default
 	SECTION:=net
-  	CATEGORY:=Network
+	CATEGORY:=Network
 	TITLE:=prplmesh
-	URL:=https://github.com/prplfoundation/prplMesh/README.md
+	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
 	MAINTAINER:=prplfoundation
 	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +libzmq-nc +ebtables
 endef
