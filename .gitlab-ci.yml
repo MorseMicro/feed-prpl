@@ -41,6 +41,7 @@ build prplmesh with ath79-generic SDK:
   extends: .build prplmesh with SDK
   variables:
     CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-ath79-generic:latest
+    CI_SDK_BUILD_CONFIG_EXTRA: +PACKAGE_prplmesh-nl80211
 
 build prplmesh with mvebu-cortexa9 OpenWrt SDK:
   extends: .build feed with OpenWrt SDK
@@ -49,3 +50,4 @@ build prplmesh with mvebu-cortexa9 OpenWrt SDK:
   variables:
     CI_SDK_IMAGE: openwrtorg/sdk:mvebu-cortexa9-19.07.5
     CI_SDK_BUILD_PACKAGES: prplmesh
+    CI_SDK_BUILD_CONFIG_EXTRA: +PACKAGE_prplmesh-nl80211
