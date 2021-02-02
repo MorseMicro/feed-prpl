@@ -62,11 +62,26 @@ wlan_ready_poll()
         done
 }
 
+show_wireless_radio_disabled() 
+{
+        local radio="$1"
+        config_get disabled $radio disabled
+        if [ "$disabled" -eq 0 ]; then
+                echo "$radio is enabled"
+        else
+                echo "$radio is disabled!"
+        fi
+}
+
 ####################
 # main
 ####################
 
 status_function() {
+        # load the wireless config and show the disabled value of each radio
+        config_load wireless
+        config_foreach show_wireless_radio_disabled wifi-device
+
         echo "enable: $(uci get prplmesh.config.enable)"
         echo "management_mode: $(uci get prplmesh.config.management_mode)"
         echo "operating_mode: $(uci get prplmesh.config.operating_mode)"
