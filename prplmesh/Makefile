@@ -19,7 +19,7 @@ define Package/prplmesh/Default
 	TITLE:=prplmesh
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
 	MAINTAINER:=prplfoundation
-	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +libzmq-nc +ebtables
+	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +ebtables
 	ifdef CONFIG_PACKAGE_libamxb
 		DEPENDS += +libamxb +libamxc libamxd libamxo libamxp
 	endif
@@ -50,7 +50,6 @@ CMAKE_OPTIONS+= \
 	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
 	-DBUILD_TESTS=ON \
 	$(if $(CONFIG_PACKAGE_libamxb), -DENABLE_NBAPI=ON) \
-	-DMSGLIB=zmq \
 	-H. -B./build
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
