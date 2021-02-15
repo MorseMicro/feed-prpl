@@ -3,6 +3,7 @@
 . /lib/functions/system.sh
 
 START=99
+NAME=prplmesh
 
 #####################################
 # Helper functions for wlan ready
@@ -24,7 +25,7 @@ wlan_ready()
 {
         for iface; do
                 if ! hostapd_ready "$iface"; then
-                        echo "$0: wlan $iface not ready" > /dev/console
+                        logger -t "${NAME}" -p daemon.warn "$0: wlan $iface not ready"
                         return 1
                 fi
         done
@@ -57,7 +58,7 @@ status_function() {
         echo "enable: $(uci get prplmesh.config.enable)"
         echo "management_mode: $(uci get prplmesh.config.management_mode)"
         echo "operating_mode: $(uci get prplmesh.config.operating_mode)"
-        wlan_ready && echo "WLAN Ready" > /dev/console || echo "WLAN not ready"
+        wlan_ready && echo "WLAN Ready" || echo "WLAN not ready"
         /opt/prplmesh/scripts/prplmesh_utils.sh status
 }
 
@@ -70,20 +71,20 @@ start_function() {
                 # latest prplWrt - see https://github.com/prplfoundation/prplMesh/issues/889
                 ppacmd exit
                 if [ "$(uci get prplmesh.config.operating_mode)" = "Gateway" ]; then
-                        echo "start prplmesh controller & agent" > /dev/console
+                        logger -t "${NAME}" -p daemon.info "Start prplMesh controller & agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start
                 else
-                        echo "start prplmesh agent" > /dev/console
+                        logger -t "${NAME}" -p daemon.info "Start prplMesh agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start -m A
                 fi
         else
-                echo "prplmesh Disabled (prplmesh.config.enable=0), skipping..." > /dev/console
+                logger -t "${NAME}" -p daemon.warn "prplMesh is disabled (prplmesh.config.enable=0), skipping..."
                 exit 0
         fi
 }
 
 stop_function() {
-        echo "Stop prplmesh" > /dev/console
+        logger -t "${NAME}" -p daemon.info "Stop prplMesh"
         /opt/prplmesh/scripts/prplmesh_utils.sh stop
         # since prplmesh changes the wifi runtime configuration,
         # restart wifi when stopping prplmesh
@@ -91,13 +92,13 @@ stop_function() {
 }
 
 enable_function() {
-        echo "Enable prplmesh (reboot required)" > /dev/console
+        logger -t "${NAME}" -p daemon.info "Enable prplMesh (reboot required)"
         uci set prplmesh.config.enable=1
         uci commit prplmesh
 }
 
 disable_function() {
-        echo "Disable prplmesh (reboot required)" > /dev/console
+        logger -t "${NAME}" -p daemon.info "Disable prplMesh (reboot required)"
         uci set prplmesh.config.enable=0
         uci commit prplmesh
 }
