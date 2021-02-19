@@ -8,9 +8,9 @@ PKG_NAME:=libbbfdm
 PKG_VERSION:=1.0-2020-16-05
 PKG_FIXUP:=autoreconf
 PKG_SOURCE_URL:=https://dev.iopsys.eu/iopsys/bbf.git
-PKG_MIRROR_HASH:=4437e8c4a011626d9103a5d8b2ed6976b51e8224182e16ca21b857192796f6de
+PKG_MIRROR_HASH:=55f048de468a8c20777d1bf862f51401e3b0d9c9f8e6b09d5b73eb8258fe4770
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION=4354aa2117bf0ccb92d2d456c5505b2a20b6facd
+PKG_SOURCE_VERSION=1a8c349787d73e166c79fc1580b848fffdee7e81
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
@@ -19,7 +19,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_MAINTAINER:=IOPSYS Dev <dev@iopsys.eu>
 
-PKG_LICENSE:=GPLv2
+PKG_LICENSE:=LGPL-2.1
 PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
@@ -28,7 +28,7 @@ define Package/libbbfdm
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Library for broadband-forum data model
-  DEPENDS:=+libuci +libubox +libubus +libblobmsg-json +libjson-c +libtrace
+  DEPENDS:=+libuci +libubox +libubus +libblobmsg-json +libjson-c +libtrace +libcurl
 endef
 
 define Package/libbbfdm/config
@@ -75,7 +75,6 @@ define Package/libbbfdm/install
 	$(CP) $(PKG_BUILD_DIR)/bin/.libs/libbbfdm.so* $(1)/lib/
 	$(CP) $(PKG_BUILD_DIR)/bin/.libs/libbbf_api.so* $(1)/lib/
 	$(INSTALL_DIR) $(1)/etc/bbfdm
-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/config/dmmap $(1)/etc/bbfdm
 	$(INSTALL_DIR) $(1)/usr/share/bbfdm
 	$(CP) $(PKG_BUILD_DIR)/scripts/functions $(1)/usr/share/bbfdm
 endef
@@ -85,7 +84,6 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libbbfdm $(1)/usr/include/libbbf_api
 	$(CP) $(PKG_BUILD_DIR)/*.h $(1)/usr/include/libbbfdm/
 	$(CP) $(PKG_BUILD_DIR)/libbbf_api/*.h $(1)/usr/include/libbbf_api/
-	$(CP) $(PKG_BUILD_DIR)/dmtree/tr181/*.h $(1)/usr/include/libbbfdm/
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/bin/.libs/libbbfdm.{a,so*} $(1)/usr/lib/
 	$(CP) $(PKG_BUILD_DIR)/bin/.libs/libbbf_api.{a,so*} $(1)/usr/lib/
