@@ -4,19 +4,17 @@ START=99
 USE_PROCD=1
 
 PROG=/usr/sbin/obuspa
-l3device=""
+db_file=/etc/obuspa.db
 
 CTRL_PATH="Device.LocalAgent.Controller.1."
 MTP_PATH="Device.LocalAgent.MTP.1."
+
+# todo: add config for protocols other than STOMP
 CONN_PATH="Device.STOMP.Connection.1."
 
-log() {
-	echo "${@}"|logger -t obuspa -p debug
-}
-
-db_set() {
-	log "DBSET param|${1}| value|${2}|"
-	${PROG} -c dbset ${1} ${2}
+db_set()
+{
+	${PROG} -f $db_file -c dbset ${1} ${2}
 }
 
 validate_controller_section()
@@ -51,6 +49,8 @@ configure_controller() {
 		return 1;
 	}
 	db_set "${CTRL_PATH}EndpointID" ${endpointid}
+	db_set "${CTRL_PATH}Enable" "1"
+	db_set "${CTRL_PATH}AssignedRole" "Device.LocalAgent.ControllerTrust.Role.1"
 }
 
 configure_mtp() {
@@ -62,51 +62,56 @@ configure_mtp() {
 	}
 	db_set "${MTP_PATH}Enable" ${enable}
 	db_set "${MTP_PATH}Protocol" ${protocol}
-	db_set "${MTP_PATH}STOMP.Destination" ${destination}
+	db_set "${MTP_PATH}${protocol}.Reference" "Device.${protocol}.Connection.1"
+	db_set "${MTP_PATH}${protocol}.Destination" ${destination}
+
+	db_set "${CTRL_PATH}MTP.1.Enable" "1"
+	db_set "${CTRL_PATH}MTP.1.Protocol" ${protocol}
+	db_set "${CTRL_PATH}MTP.1.${protocol}.Destination" ${destination}
+	db_set "${CTRL_PATH}MTP.1.${protocol}.Reference" "Device.${protocol}.Connection.1"
 }
 
 configure_connection() {
-	local host username password encryption interface
+	local host username password encryption interface dev
 
 	validate_connection_section "${1}" || {
 		log "Validation of section failed"
 		return 1;
 	}
 
-	# Get wan L3 interface
 	json_load "$(ubus call network.interface.${interface} status)"
-	json_get_var l3device l3_device
-	echo "l3device ${l3device}">/dev/console
-	export USP_BOARD_IFNAME=${l3device}
+	json_get_var USP_IFNAME l3_device
 
-	# Set this variable for root user
-	echo "export USP_BOARD_IFNAME=${l3device}">/root/.profile
-
+	db_set "${CONN_PATH}Enable" "1"
 	db_set "${CONN_PATH}Host" ${host}
 	db_set "${CONN_PATH}Username" ${username}
 	db_set "${CONN_PATH}Password" ${password}
 	db_set "${CONN_PATH}X_ARRIS-COM_EnableEncryption" ${encryption}
+	db_set "${CONN_PATH}EnableHeartbeats" "1"
+	db_set "${CONN_PATH}OutgoingHeartbeat" "30000"
+	db_set "${CONN_PATH}IncomingHeartbeat" "300000"
 }
 
 db_init() {
-	[ -f /tmp/usp.db ] && rm -f /tmp/usp.db
-
 	config_load obuspa
 	config_foreach configure_connection connection
 	config_foreach configure_controller controller
 	config_foreach configure_mtp mtp
 }
 start_service() {
+
 	db_init
+
+	[ -z "$USP_IFNAME" ] && return
+
 	procd_open_instance
 	procd_set_param env USP_BOARD_IFNAME=${l3device}
-	# Forward stdout of the command to logd
-	# procd_set_param stdout 1
-	# Same for stderr
-	# procd_set_param stderr 1
 	procd_set_param command ${PROG}
-	procd_append_param command -p -v 4
+	procd_append_param command -p -v 4 -i $USP_IFNAME
+	procd_append_param command -f $db_file
 	procd_set_param respawn
+	procd_set_param stdout 1
+	procd_set_param stderr 1
 	procd_close_instance
 }
 
@@ -117,4 +122,5 @@ reload_service() {
 
 service_triggers() {
 	procd_add_config_trigger "config.change" "obuspa"  /etc/init.d/obuspa restart
+	procd_add_interface_trigger "interface.*" "wan"  /etc/init.d/obuspa restart
 }

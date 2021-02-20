@@ -1,12 +1,12 @@
-config controller 'controller'
+config controller controller
 	option endpointid 'self::usp-controller.com'
 
-config mtp 'mtp'
+config mtp mtp
 	option enable 'true'
 	option protocol 'STOMP'
-	option destination 'uspq'
+	option destination '/controller-path'
 
-config connection 'connection'
+config connection connection
 	option host 'usp-controller.com'
 	option username 'username'
 	option password 'password'
