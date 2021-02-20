@@ -1,5 +1,5 @@
 #!/bin/sh /etc/rc.common
-START=92
+START=99
 USE_PROCD=1
 
 start_service()
@@ -18,10 +18,10 @@ start_service()
 
 	config_load cwmp
 
-	config_get enabled "acs" enabled "true"
+	config_get enabled "cwmp" enabled 1
 	config_get debug "cwmp" debug 0
 
-	[ "$enabled" = "true" ] || return
+	[ "$enabled" = 1 ] || return
 
 	config_get url "acs" url
 	config_get username "acs" username
@@ -123,12 +123,6 @@ reload_service()
 	uci_option_to_json_int cwmp debug
 
 	ubus -S call cwmp set_config "$(json_dump)"
-}
-
-boot() {
-	start
-	ubus -t 10 wait_for cwmp
-	ubus -S call cwmp event_add '{ "event": "1 BOOT" }'
 }
 
 service_triggers()

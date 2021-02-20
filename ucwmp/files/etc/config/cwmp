@@ -1,5 +1,4 @@
 config acs acs
-	option enabled 1
 	option url 'http://172.27.0.209:8080/openacs/acs'
 	option username 'admin'
 	option password 'openacs'
@@ -9,10 +8,12 @@ config acs acs
 config cpe cpe
 	option default_wan_interface wan
 	option port '8080'
+	option path 'connreq'
 	option userid '_user'
 	option passwd '_password'
 	option instance_mode 'InstanceNumber'
 	option amd_version '2'
 
 config cwmp cwmp
+	option enabled 1
 	option debug 1
