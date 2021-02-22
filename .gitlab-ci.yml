@@ -11,6 +11,7 @@ generate:
       ipq40xx-generic
     CI_SDK_BUILD_PACKAGES: |
       bbf
+      bbfd
       firewall4
       libtrace
       luci-mod-simple
@@ -20,7 +21,6 @@ generate:
       ucode
       ucwmp
       udrone
-      uspd
 
 build:
   extends: .execute SDK package build jobs
