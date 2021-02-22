@@ -56,9 +56,10 @@ define Package/libtrace-tools/description
 endef
 
 CONFIGURE_ARGS += \
-        --with-bzip2 \
-        --with-zlib \
+	--with-bzip2 \
+	--with-zlib \
 	--with-lzo \
+	--without-lzma
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
