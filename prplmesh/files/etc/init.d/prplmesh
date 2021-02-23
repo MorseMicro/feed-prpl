@@ -148,8 +148,6 @@ status() {
 }
 
 __uci_set_repeater_mode__() {
-        uci set network.lan.ifname='eth1 eth0_1 eth0_2 eth0_3 eth0_4'
-        uci commit network
         uci set prplmesh.config.management_mode='Multi-AP-Agent'
         uci set prplmesh.config.operating_mode='WDS-Repeater'
         uci set prplmesh.config.wired_backhaul=1
@@ -167,7 +165,6 @@ repeater_mode() {
 }
 
 __uci_set_gateway_mode__() {
-        uci set network.lan.ifname='eth0_1 eth0_2 eth0_3 eth0_4'
         uci commit network
         uci set prplmesh.config.management_mode='Multi-AP-Controller-and-Agent'
         uci set prplmesh.config.operating_mode='Gateway'
@@ -180,7 +177,6 @@ __uci_set_gateway_mode__() {
 gateway_mode() {
         stop
         __uci_set_gateway_mode__
-        /etc/init.d/network reload
         start
         echo "prplmesh gateway mode set"
 }
@@ -192,8 +188,6 @@ __uci_set_certification_mode__() {
         uci set network.cert.ifname='@lan'
         uci set network.cert.ipaddr='192.168.250.170'
         uci set network.cert.netmask='255.255.255.0'
-        # In certification, we use eth1 as the data interface for both agent and repeater
-        uci set network.lan.ifname='eth1 eth0_1 eth0_2 eth0_3 eth0_4'
         uci commit network
 }
 
