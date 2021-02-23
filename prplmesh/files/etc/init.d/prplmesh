@@ -182,13 +182,8 @@ gateway_mode() {
 }
 
 __uci_set_certification_mode__() {
-        # Add br-lan alias for UCC control network IP address
-        uci set network.cert='interface'
-        uci set network.cert.proto='static'
-        uci set network.cert.ifname='@lan'
-        uci set network.cert.ipaddr='192.168.250.170'
-        uci set network.cert.netmask='255.255.255.0'
-        uci commit network
+        uci set prplmesh.config.certification_mode=1
+        uci commit prplmesh
 }
 
 certification_mode() {
