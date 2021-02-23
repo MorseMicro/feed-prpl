@@ -10,35 +10,31 @@ PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/archive/$
 PKG_HASH:=74e81d2131f0024fc2ebd1905b7386ab821fb37f5b90459a9475b186bba1835a
 PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 
+PKG_CONFIG_DEPENDS:= \
+	CONFIG_WIRELESS_STA \
+	CONFIG_TARGET_intel_mips
+
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/prplmesh/Default
+define Package/prplmesh
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=prplmesh
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
 	MAINTAINER:=prplfoundation
 	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +ebtables
+#	intel_mips specific dependencies:
+	DEPENDS+= +TARGET_intel_mips:dwpal_6x-uci +TARGET_intel_mips:iwlwav-hostap-uci +TARGET_intel_mips:libsafec3 +TARGET_intel_mips:bridge-ugw
+#	non-intel_mips dependencies:
+	DEPENDS+= +!TARGET_intel_mips:hostapd-openssl +!TARGET_intel_mips:hostapd-utils +!TARGET_intel_mips:wpa-supplicant-openssl
 	ifdef CONFIG_PACKAGE_libamxb
 		DEPENDS += +libamxb +libamxc libamxd libamxo libamxp
 	endif
 endef
 
-define Package/prplmesh-dwpal
-$(call Package/prplmesh/Default)
-	TITLE+= - DWPAL
-	VARIANT:=dwpal
-	PROVIDES:=prplmesh
-	DEPENDS+= @TARGET_intel_mips +dwpal_6x-uci +iwlwav-hostap-uci +@WIRELESS_STA +libsafec3 +bridge-ugw
-endef
-
-define Package/prplmesh-nl80211
-$(call Package/prplmesh/Default)
-	TITLE+= - NL80211
-	VARIANT:=nl80211
-	PROVIDES:=prplmesh
-	DEPENDS+= +hostapd-openssl +hostapd-utils +wpa-supplicant-openssl
+define Package/prplmesh/config
+	source "$(SOURCE)/Config.in"
 endef
 
 CMAKE_SOURCE_DIR:=
@@ -56,14 +52,11 @@ ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_SOURCE_VERSION)
 endif
 
-ifeq ($(BUILD_VARIANT),dwpal)
+ifeq ($(CONFIG_TARGET_intel_mips),y)
 	CMAKE_OPTIONS+= -DBWL_TYPE=DWPAL \
 		-DTARGET_PLATFORM_TYPE=ugw \
-        -DCMAKE_FIND_ROOT_PATH="${STAGING_DIR}/opt/intel;${CMAKE_FIND_ROOT_PATH}"
-
-endif
-
-ifeq ($(BUILD_VARIANT),nl80211)
+		-DCMAKE_FIND_ROOT_PATH="${STAGING_DIR}/opt/intel;${CMAKE_FIND_ROOT_PATH}"
+else
 	CMAKE_OPTIONS+= -DBWL_TYPE=NL80211 \
 		-DTARGET_PLATFORM_TYPE=turris-omnia
 endif
@@ -94,13 +87,4 @@ define Package/prplmesh/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/config $(1)/opt/prplmesh/
 endef
 
-define Package/prplmesh-dwpal/install
-$(call Package/prplmesh/install,$(1))
-endef
-
-define Package/prplmesh-nl80211/install
-$(call Package/prplmesh/install,$(1))
-endef
-
-$(eval $(call BuildPackage,prplmesh-dwpal))
-$(eval $(call BuildPackage,prplmesh-nl80211))
+$(eval $(call BuildPackage,prplmesh))
