@@ -92,11 +92,6 @@ status_function() {
 start_function() {
         if uci get prplmesh.config.enable > /dev/null; then
                 wlan_ready_poll || logger -t "${NAME}" -p daemon.warn "Timeout waiting for WLAN ready!"
-                # There is a bug in acceleration which sometimes causing bridged WAN not to work
-                # and failing EasyMesh wireless bAPs tests (4.2.3).
-                # Disable acceleration when starting prplmesh. Can be re-enabled after upgrade to
-                # latest prplWrt - see https://github.com/prplfoundation/prplMesh/issues/889
-                ppacmd exit
                 if [ "$(uci get prplmesh.config.operating_mode)" = "Gateway" ]; then
                         logger -t "${NAME}" -p daemon.info "Start prplMesh controller & agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start
