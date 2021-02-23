@@ -9,6 +9,7 @@ PKG_LICENSE_FILES:=LICENSE
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplwrt/obuspa.git
+PKG_MIRROR_HASH:=758c7399da0f3168967693001acfd7b094e7d5441db063c10abb0a4f5d8675e0
 PKG_SOURCE_VERSION:=9152c611f3c51c46293198fd30ac1c13a73bb12b
 
 PKG_MAINTAINER:=Daniel Danzberger <daniel@dd-wrt.com>
