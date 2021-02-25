@@ -12,7 +12,8 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_WIRELESS_STA \
-	CONFIG_TARGET_intel_mips
+	CONFIG_TARGET_intel_mips \
+	CONFIG_PACKAGE_libamxb
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -28,9 +29,8 @@ define Package/prplmesh
 	DEPENDS+= +TARGET_intel_mips:dwpal_6x-uci +TARGET_intel_mips:iwlwav-hostap-uci +TARGET_intel_mips:libsafec3 +TARGET_intel_mips:bridge-ugw
 #	non-intel_mips dependencies:
 	DEPENDS+= +!TARGET_intel_mips:hostapd-openssl +!TARGET_intel_mips:hostapd-utils +!TARGET_intel_mips:wpa-supplicant-openssl
-	ifdef CONFIG_PACKAGE_libamxb
-		DEPENDS += +libamxb +libamxc libamxd libamxo libamxp
-	endif
+#	The ambiorix library is optional, select it if libamxb is selected:
+	DEPENDS+= +PACKAGE_libamxb:libamxb +PACKAGE_libamxb:libamxc +PACKAGE_libamxb:libamxd +PACKAGE_libamxb:libamxo +PACKAGE_libamxb:libamxp
 endef
 
 define Package/prplmesh/config
