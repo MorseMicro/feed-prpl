@@ -1,6 +1,6 @@
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -66,6 +66,17 @@ ELSE()
+@@ -50,6 +50,17 @@ ELSE()
      ADD_DEFINITIONS(-DHAVE_ARRAY_SHRINK)
    ENDIF()
  ENDIF()
@@ -18,22 +18,34 @@
  UNSET(CMAKE_REQUIRED_LIBRARIES)
  
  SET(LIBRARIES "")
---- a/ast.h
-+++ b/ast.h
-@@ -31,6 +31,76 @@
- 	#include <json-c/json.h>
- #endif
+--- a/lib.h
++++ b/lib.h
+@@ -186,7 +186,12 @@ uc_add_proto_val(uc_prototype *proto, co
+ 	if (!proto)
+ 		return false;
  
++#ifdef HAVE_RECENT_JSONC
+ 	return json_object_object_add(proto->header.jso, key, value);
++#else
++	json_object_object_add(proto->header.jso, key, value);
++	return true;
++#endif
+ }
+ 
+ static inline void
+--- a/util.h
++++ b/util.h
+@@ -26,6 +26,97 @@
+ #include <json-c/json.h>
+ 
+ 
++/* legacy json-c compat */
++
 +#ifndef HAVE_RECENT_JSONC
-+# ifdef JSONC
-+	#include <arraylist.h>
-+	#include <printbuf.h>
-+	#include <json_object_private.h>
-+# else
-+	#include <json-c/arraylist.h>
-+	#include <json-c/printbuf.h>
-+	#include <json-c/json_object_private.h>
-+# endif
++
++# include <json-c/arraylist.h>
++# include <json-c/printbuf.h>
++# include <json-c/json_object_private.h>
 +
 +# define JSON_C_TO_STRING_NOSLASHESCAPE 0
 +
@@ -58,9 +70,32 @@
 +	return (uint64_t)json_object_get_int64(jso);
 +}
 +
++static inline int json_object_int_inc(json_object *jso, int64_t val)
++{
++	struct json_object *js = jso;
++
++	if (!js || js->o_type != json_type_int)
++		return 0;
++
++	if (val < 0 && js->o.c_int64 < INT64_MIN - val)
++	{
++		js->o.c_int64 = INT64_MIN;
++	}
++	else
++	{
++		js->o.c_int64 += val;
++	}
++
++	return 1;
++}
++
 +static inline size_t json_tokener_get_parse_end(struct json_tokener *tok)
 +{
 +	return (size_t)tok->char_offset;
++}
++
++static inline json_object *json_object_new_array_ext(size_t val) {
++        return json_object_new_array();
 +}
 +
 +static inline int json_object_array_del_idx(json_object *jso, size_t idx, size_t count)
@@ -94,12 +129,49 @@
 +
 +#endif
 +
- #define ALIGN(x) (((x) + sizeof(size_t) - 1) & -sizeof(size_t))
++
+ /* alignment & array size */
  
- #ifndef ARRAY_SIZE
---- a/eval.c
-+++ b/eval.c
-@@ -383,8 +383,12 @@ uc_setval(struct json_object *scope, str
+ #ifndef ALIGN
+--- a/lexer.c
++++ b/lexer.c
+@@ -761,7 +761,12 @@ parse_regexp(uc_lexer *lex)
+ 					json_object_get_string_len(rv->val),
+ 					json_object_get_string(rv->val));
+ 
++#ifdef HAVE_RECENT_JSONC
+ 				json_object_set_string_len(rv->val, s, len);
++#else
++				uc_value_put(rv->val);
++				rv->val = xjs_new_string_len(s, len);
++#endif
+ 				free(s);
+ 
+ 				rv->type = TK_REGEXP;
+--- a/vm.c
++++ b/vm.c
+@@ -751,7 +751,18 @@ uc_vm_capture_stacktrace(uc_vm *vm, size
+ 			json_object_object_add(entry, "function", xjs_new_string(name));
+ 		}
+ 
++#ifdef HAVE_RECENT_JSONC
+ 		if (!json_object_equal(last, entry)) {
++#else
++		const char *fn1 = json_object_get_string(json_object_object_get(last, "filename"));
++		const char *fn2 = json_object_get_string(json_object_object_get(entry, "filename"));
++
++		if (!fn1 || !fn2 || strcmp(fn1, fn2) ||
++		    (json_object_get_int64(json_object_object_get(last, "line")) !=
++		     json_object_get_int64(json_object_object_get(entry, "line"))) ||
++		    (json_object_get_int64(json_object_object_get(last, "byte")) !=
++		     json_object_get_int64(json_object_object_get(entry, "byte")))) {
++#endif
+ 			json_object_array_add(stacktrace, entry);
+ 			last = entry;
+ 		}
+--- a/value.c
++++ b/value.c
+@@ -261,8 +261,12 @@ uc_setval(json_object *scope, json_objec
  		return json_object_get(val);
  	}
  
@@ -112,18 +184,3 @@
  
  	return json_object_get(val);
  }
---- a/lib.c
-+++ b/lib.c
-@@ -324,7 +324,12 @@ uc_register_function(struct uc_state *st
- 
- 	json_object_set_serializer(val, uc_c_fn_to_string, op, uc_c_fn_free);
- 
-+#ifndef HAVE_RECENT_JSONC
-+	json_object_object_add(scope, name, op->val);
-+	return true;
-+#else
- 	return json_object_object_add(scope, name, op->val);
-+#endif
- }
- 
- static struct json_object *

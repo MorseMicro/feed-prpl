@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2020 Jo-Philipp Wich <jo@mein.io>
+# Copyright (C) 2020-2021 Jo-Philipp Wich <jo@mein.io>
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -12,9 +12,9 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=https://github.com/jow-/ucode.git
-PKG_SOURCE_DATE:=2020-12-07
-PKG_SOURCE_VERSION:=77580a893283f2bde7ab46496bd3a3d7b2fc6784
-PKG_MIRROR_HASH:=bab32fab97ac37684e1f8a6df0fe95bea16f9706bbe6a6dfae429a6a96df5b73
+PKG_SOURCE_DATE:=2021-02-25
+PKG_SOURCE_VERSION:=e416740e189f4fec06da2db5ebcd30092eb50270
+PKG_MIRROR_HASH:=2c9ef566d8c4c7fb05bba6a88cf4eb2edfa34d40c11a24f29ba96f09909ed85d
 PKG_MAINTAINER:=Jo-Philipp Wich <jo@mein.io>
 PKG_LICENSE:=ISC
 
