@@ -9,9 +9,9 @@ table ip fw4 {
 	chain dstnat {
 		type nat hook prerouting priority dstnat; policy accept;
 
-{% for (local zone in fw4.zones()): %}
+{% for (let zone in fw4.zones()): %}
 {%  if (zone.dflags.dnat): %}
-{%   for (local rule in zone.match_rules): %}
+{%   for (let rule in zone.match_rules): %}
 		{%+ include("zone-match.uc", { fw4: fw4, zone: zone, rule: rule, direction: "dstnat" }) %}
 {%   endfor %}
 {%  endif %}
@@ -21,22 +21,22 @@ table ip fw4 {
 	chain srcnat {
 		type nat hook postrouting priority srcnat; policy accept;
 
-{% for (local redirect in fw4.redirects("srcnat")): %}
+{% for (let redirect in fw4.redirects("srcnat")): %}
 		{%+ include("redirect.uc") %}
 {% endfor %}
-{% for (local zone in fw4.zones()): %}
+{% for (let zone in fw4.zones()): %}
 {%  if (zone.dflags.snat): %}
-{%   for (local rule in zone.match_rules): %}
+{%   for (let rule in zone.match_rules): %}
 		{%+ include("zone-match.uc", { fw4: fw4, zone: zone, rule: rule, direction: "srcnat" }) %}
 {%   endfor %}
 {%  endif %}
 {% endfor %}
 	}
 
-{% for (local zone in fw4.zones()): %}
+{% for (let zone in fw4.zones()): %}
 {%  if (zone.dflags.dnat): %}
 	chain dstnat_{{ zone.name }} {
-{% for (local redirect in fw4.redirects("dstnat_"+zone.name)): %}
+{% for (let redirect in fw4.redirects("dstnat_"+zone.name)): %}
 		{%+ include("redirect.uc") %}
 {% endfor %}
 	}
@@ -44,7 +44,7 @@ table ip fw4 {
 {%  endif %}
 {%  if (zone.dflags.snat): %}
 	chain srcnat_{{ zone.name }} {
-{% for (local redirect in fw4.redirects("srcnat_"+zone.name)): %}
+{% for (let redirect in fw4.redirects("srcnat_"+zone.name)): %}
 		{%+ include("redirect.uc") %}
 {% endfor %}
 {%   if (zone.masq): %}
@@ -126,12 +126,12 @@ table inet fw4 {
 		tcp flags & (fin | syn | rst | ack) == syn jump syn_flood comment "!fw4: Rate limit TCP syn packets"
 {% endif %}
 
-{% for (local rule in fw4.rules("input")): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules("input")): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 
-{% for (local zone in fw4.zones()): for (local rule in zone.match_rules): %}
-		{%+ include("zone-match.uc", { fw4: fw4, zone: zone, rule: rule, direction: "input" }) %}
+{% for (let zone in fw4.zones()): for (let rule in zone.match_rules): %}
+		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "input" }) %}
 {% endfor; endfor %}
 
 {% if (fw4.input_policy() == "reject"): %}
@@ -148,12 +148,12 @@ table inet fw4 {
 		ct state invalid drop comment "!fw4: Drop flows with invalid conntrack state"
 {% endif %}
 
-{% for (local rule in fw4.rules("forward")): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules("forward")): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 
-{% for (local zone in fw4.zones()): for (local rule in zone.match_rules): %}
-		{%+ include("zone-match.uc", { fw4: fw4, zone: zone, rule: rule, direction: "forward" }) %}
+{% for (let zone in fw4.zones()): for (let rule in zone.match_rules): %}
+		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "forward" }) %}
 {% endfor; endfor %}
 
 {% if (fw4.forward_policy() == "reject"): %}
@@ -172,12 +172,12 @@ table inet fw4 {
 		ct state invalid drop comment "!fw4: Drop flows with invalid conntrack state"
 {% endif %}
 
-{% for (local rule in fw4.rules("output")): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules("output")): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 
-{% for (local zone in fw4.zones()): for (local rule in zone.match_rules): %}
-		{%+ include("zone-match.uc", { fw4: fw4, zone: zone, rule: rule, direction: "output" }) %}
+{% for (let zone in fw4.zones()): for (let rule in zone.match_rules): %}
+		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "output" }) %}
 {% endfor; endfor %}
 
 {% if (fw4.output_policy() == "reject"): %}
@@ -199,8 +199,8 @@ table inet fw4 {
 	}
 
 {% if (fw4.default_option("synflood_protect")):
-	local r = fw4.default_option("synflood_rate");
-	local b = fw4.default_option("synflood_burst");
+	let r = fw4.default_option("synflood_rate");
+	let b = fw4.default_option("synflood_burst");
 %}
 	chain syn_flood {
 		tcp flags & (fin | syn | rst | ack) == syn
@@ -211,10 +211,10 @@ table inet fw4 {
 
 {% endif %}
 
-{% for (local zone in fw4.zones()): %}
+{% for (let zone in fw4.zones()): %}
 	chain input_{{ zone.name }} {
-{%  for (local rule in fw4.rules("input_"+zone.name)): %}
-		{%+ include("rule.uc") %}
+{%  for (let rule in fw4.rules("input_"+zone.name)): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {%  endfor %}
 {%  if (zone.dflags.dnat): %}
 		ct status dnat accept comment "!fw4: Accept port redirections"
@@ -223,15 +223,15 @@ table inet fw4 {
 	}
 
 	chain output_{{ zone.name }} {
-{%  for (local rule in fw4.rules("output_"+zone.name)): %}
-		{%+ include("rule.uc") %}
+{%  for (let rule in fw4.rules("output_"+zone.name)): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {%  endfor %}
 		jump {{ zone.output }}_to_{{ zone.name }}
 	}
 
 	chain forward_{{ zone.name }} {
-{%  for (local rule in fw4.rules("forward_"+zone.name)): %}
-		{%+ include("rule.uc") %}
+{%  for (let rule in fw4.rules("forward_"+zone.name)): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {%  endfor %}
 {%  if (zone.dflags.dnat): %}
 		ct status dnat accept comment "!fw4: Accept port forwards"
@@ -239,19 +239,19 @@ table inet fw4 {
 		jump {{ zone.forward }}_to_{{ zone.name }}
 	}
 
-{%  for (local verdict in ["accept", "reject", "drop"]): %}
+{%  for (let verdict in ["accept", "reject", "drop"]): %}
 {%   if (zone.sflags[verdict]): %}
 	chain {{ verdict }}_from_{{ zone.name }} {
-{%    for (local rule in zone.match_rules): %}
-		{%+ include("zone-verdict.uc", { fw4: fw4, zone: zone, rule: rule, egress: false, verdict: verdict }) %}
+{%    for (let rule in zone.match_rules): %}
+		{%+ include("zone-verdict.uc", { fw4, zone, rule, egress: false, verdict }) %}
 {%    endfor %}
 	}
 
 {%   endif %}
 {%   if (zone.dflags[verdict]): %}
 	chain {{ verdict }}_to_{{ zone.name }} {
-{%   for (local rule in zone.match_rules): %}
-		{%+ include("zone-verdict.uc", { fw4: fw4, zone: zone, rule: rule, egress: true, verdict: verdict }) %}
+{%   for (let rule in zone.match_rules): %}
+		{%+ include("zone-verdict.uc", { fw4, zone, rule, egress: true, verdict }) %}
 {%   endfor %}
 	}
 
@@ -267,12 +267,12 @@ table inet fw4 {
 	chain raw_prerouting {
 		type filter hook prerouting priority raw; policy accept;
 
-{% for (local target in ["helper", "notrack"]): %}
-{%  for (local zone in fw4.zones()): %}
+{% for (let target in ["helper", "notrack"]): %}
+{%  for (let zone in fw4.zones()): %}
 {%   if (zone.dflags[target]): %}
-{%    for (local rule in zone.match_rules): %}
-{%     local devs = fw4.filter_loopback_devs(rule.devices_pos, false); %}
-{%     local nets = fw4.filter_loopback_addrs(rule.subnets_pos, false); %}
+{%    for (let rule in zone.match_rules): %}
+{%     let devs = fw4.filter_loopback_devs(rule.devices_pos, false); %}
+{%     let nets = fw4.filter_loopback_addrs(rule.subnets_pos, false); %}
 {%     if (rule.devices_neg || rule.subnets_neg || length(devs) || length(nets)): %}
 		{%+ if (rule.family): -%}
 			meta nfproto {{ fw4.nfproto(rule.family) }} {%+ endif -%}
@@ -297,12 +297,12 @@ table inet fw4 {
 	chain raw_output {
 		type filter hook output priority raw; policy accept;
 
-{% for (local target in ["helper", "notrack"]): %}
-{%  for (local zone in fw4.zones()): %}
+{% for (let target in ["helper", "notrack"]): %}
+{%  for (let zone in fw4.zones()): %}
 {%   if (zone.dflags[target]): %}
-{%    for (local rule in zone.match_rules): %}
-{%     local devs = fw4.filter_loopback_devs(rule.devices_pos, true); %}
-{%     local nets = fw4.filter_loopback_addrs(rule.subnets_pos, true); %}
+{%    for (let rule in zone.match_rules): %}
+{%     let devs = fw4.filter_loopback_devs(rule.devices_pos, true); %}
+{%     let nets = fw4.filter_loopback_addrs(rule.subnets_pos, true); %}
 {%     if (length(devs) || length(nets)): %}
 		{%+ if (rule.family): -%}
 			meta nfproto {{ fw4.nfproto(rule.family) }} {%+ endif -%}
@@ -320,9 +320,9 @@ table inet fw4 {
 {% endfor %}
 	}
 
-{% for (local helper in fw4.helpers()): %}
+{% for (let helper in fw4.helpers()): %}
 {%  if (helper.available): %}
-{%   for (local proto in helper.proto): %}
+{%   for (let proto in helper.proto): %}
 	ct helper {{ helper.name }} {
 		type {{ fw4.quote(helper.type, true) }} protocol {{ proto.name }};
 	}
@@ -331,12 +331,12 @@ table inet fw4 {
 {%  endif %}
 {% endfor %}
 
-{% for (local target in ["helper", "notrack"]): %}
-{%  for (local zone in fw4.zones()): %}
+{% for (let target in ["helper", "notrack"]): %}
+{%  for (let zone in fw4.zones()): %}
 {%   if (zone.dflags[target]): %}
 	chain {{ target }}_{{ zone.name }} {
-{% for (local rule in fw4.rules(target+"_"+zone.name)): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules(target+"_"+zone.name)): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 	}
 
@@ -352,27 +352,27 @@ table inet fw4 {
 	chain mangle_prerouting {
 		type filter hook prerouting priority mangle; policy accept;
 
-{% for (local rule in fw4.rules("mangle_prerouting")): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules("mangle_prerouting")): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 	}
 
 	chain mangle_output {
 		type filter hook output priority mangle; policy accept;
 
-{% for (local rule in fw4.rules("mangle_output")): %}
-		{%+ include("rule.uc") %}
+{% for (let rule in fw4.rules("mangle_output")): %}
+		{%+ include("rule.uc", { fw4, rule }) %}
 {% endfor %}
 	}
 
 	chain mangle_forward {
 		type filter hook forward priority mangle; policy accept;
 
-{% for (local zone in fw4.zones()): %}
+{% for (let zone in fw4.zones()): %}
 {%  if (zone.mtu_fix): %}
-{%   for (local rule in zone.match_rules): %}
-		{%+ include("zone-mssfix.uc", { fw4: fw4, zone: zone, rule: rule, egress: false }) %}
-		{%+ include("zone-mssfix.uc", { fw4: fw4, zone: zone, rule: rule, egress: true }) %}
+{%   for (let rule in zone.match_rules): %}
+		{%+ include("zone-mssfix.uc", { fw4, zone, rule, egress: false }) %}
+		{%+ include("zone-mssfix.uc", { fw4, zone, rule, egress: true }) %}
 {%   endfor %}
 {%  endif %}
 {% endfor %}

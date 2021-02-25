@@ -95,12 +95,7 @@ function reload_sets() {
 function render_ruleset() {
 	fw4.load();
 
-	include("templates/ruleset.uc", {
-		fw4: fw4,
-		exists: exists,
-		length: length,
-		include: include
-	});
+	include("templates/ruleset.uc", { fw4, type, exists, length, include });
 }
 
 function lookup_network(net) {
