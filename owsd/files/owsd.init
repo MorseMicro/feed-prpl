@@ -32,7 +32,7 @@ load_dhcp_domains() {
 
 validate_owsd_ubusproxy() {
 	uci_validate_section "owsd" "ubusproxy" "ubusproxy" \
-		'enable:bool:1' \
+		'enable:bool:0' \
 		'peer:list(string)' \
 		'object:list(string)' \
 		'prefix:string' \
@@ -44,6 +44,7 @@ validate_owsd_ubusproxy() {
 
 validate_owsd_global() {
 	uci_validate_section "owsd" "owsd" "global" \
+		'enable:bool:0' \
 		'sock:string' \
 		'redirect:string' \
 		'www:string' \
@@ -205,17 +206,27 @@ start_service() {
 	# preload dhcp domains list, in case any interface config requires it
 	load_dhcp_domains
 
-	config_load owsd # note: do not overload a config while parsing it
-	procd_open_instance
-	procd_set_param command $PROG
+	local \
+		enable \
+		peer_ca \
+		peer_cert \
+		peer_key \
+		redirect \
+		sock \
+		www \
+		www_maxage
 
-	local sock www redirect www_maxage
-	local enable peer_cert peer_key peer_ca
+	config_load owsd # note: do not overload a config while parsing it
 
 	validate_owsd_global || {
 		echo "Global validation failed"
 		return 1
 	}
+	[ "$enable" = 1 ] || return
+
+	procd_open_instance
+	procd_set_param command $PROG
+
 	json_init
 	json_add_object "global"
 	[ -n "${sock}"       ] && json_add_string "socket" "$sock"
