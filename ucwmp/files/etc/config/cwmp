@@ -15,5 +15,5 @@ config cpe cpe
 	option amd_version '2'
 
 config cwmp cwmp
-	option enabled 1
+	option enabled 0
 	option debug 1
