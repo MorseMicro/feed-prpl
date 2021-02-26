@@ -6,7 +6,7 @@ generate:
   variables:
     CI_SDK_TARGETS: |
       intel_mips-xrx500
-      ath79-generic-19.07.6
+      ath79-generic-19.07.7
       mvebu-cortexa9
       ipq40xx-generic
     CI_SDK_BUILD_PACKAGES: |
@@ -61,6 +61,6 @@ build prplmesh with ath79-generic OpenWrt SDK:
   tags:
     - firmware-builder
   variables:
-    CI_SDK_IMAGE: openwrtorg/sdk:ath79-generic-19.07.6
+    CI_SDK_IMAGE: openwrtorg/sdk:ath79-generic-19.07.7
     CI_SDK_BUILD_PACKAGES: prplmesh
     CI_SDK_BUILD_CONFIG_EXTRA: +PACKAGE_prplmesh-nl80211
