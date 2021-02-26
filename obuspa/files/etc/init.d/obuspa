@@ -17,6 +17,13 @@ db_set()
 	${PROG} -f $db_file -c dbset ${1} ${2}
 }
 
+validate_core_section()
+{
+	uci_validate_section obuspa obuspa core \
+		'enable:bool:0' \
+
+}
+
 validate_controller_section()
 {
 	uci_validate_section obuspa controller "${1}" \
@@ -99,6 +106,14 @@ db_init() {
 	config_foreach configure_mtp mtp
 }
 start_service() {
+	local enable
+
+	config_load obuspa
+	validate_core_section || {
+		log "Validation of core section failed"
+		return 1;
+	}
+	[ "$enable" = 1 ] || return
 
 	db_init
 
