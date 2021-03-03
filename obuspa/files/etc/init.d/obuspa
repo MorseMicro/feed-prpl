@@ -19,9 +19,9 @@ db_set()
 
 validate_core_section()
 {
-	uci_validate_section obuspa obuspa core \
-		'enable:bool:0' \
-
+	uci_validate_section obuspa core "${1}" \
+		'enable:bool:false' \
+		'debug:bool:false'
 }
 
 validate_controller_section()
@@ -105,24 +105,21 @@ db_init() {
 	config_foreach configure_controller controller
 	config_foreach configure_mtp mtp
 }
-start_service() {
-	local enable
 
-	config_load obuspa
-	validate_core_section || {
+start_instance() {
+	local enable debug
+
+	validate_core_section "${1}" || {
 		log "Validation of core section failed"
 		return 1;
 	}
+
 	[ "$enable" = 1 ] || return
 
-	db_init
-
-	[ -z "$USP_IFNAME" ] && return
-
 	procd_open_instance
-	procd_set_param env USP_BOARD_IFNAME=${l3device}
 	procd_set_param command ${PROG}
-	procd_append_param command -p -v 4 -i $USP_IFNAME
+	[ "$debug" = 1 ] && procd_append_param command -v 4
+	procd_append_param command -p -i $USP_IFNAME
 	procd_append_param command -f $db_file
 	procd_set_param respawn
 	procd_set_param stdout 1
@@ -130,9 +127,13 @@ start_service() {
 	procd_close_instance
 }
 
-reload_service() {
-	stop
-	start
+start_service() {
+
+	db_init
+
+	[ -z "$USP_IFNAME" ] && return
+
+	config_foreach start_instance core
 }
 
 service_triggers() {

@@ -1,5 +1,6 @@
 config obuspa core
 	option enable 0
+	option debug 0
 
 config controller controller
 	option endpointid 'self::usp-controller.com'
