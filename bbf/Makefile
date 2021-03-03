@@ -10,7 +10,7 @@ PKG_FIXUP:=autoreconf
 PKG_SOURCE_URL:=https://dev.iopsys.eu/iopsys/bbf.git
 PKG_MIRROR_HASH:=55f048de468a8c20777d1bf862f51401e3b0d9c9f8e6b09d5b73eb8258fe4770
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION=1a8c349787d73e166c79fc1580b848fffdee7e81
+PKG_SOURCE_VERSION=3f78b737d821aeda4094e48bf5e450104944d99d
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
@@ -58,16 +58,6 @@ endif
 ifeq ($(CONFIG_BBF_TR143),y)
 CONFIGURE_ARGS += \
 	--enable-tr143
-endif
-
-ifeq ($(CONFIG_BBF_TR157),y)
-CONFIGURE_ARGS += \
-	--enable-tr157
-endif
-
-ifeq ($(CONFIG_BBF_TR064),y)
-CONFIGURE_ARGS += \
-	--enable-tr064
 endif
 
 define Package/libbbfdm/install
