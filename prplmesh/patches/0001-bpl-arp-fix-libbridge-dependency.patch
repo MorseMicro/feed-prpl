@@ -1,0 +1,61 @@
+From df11a219ea065ba86118a147463458049c630026 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Tue, 17 Nov 2020 11:26:07 +0100
+Subject: [PATCH] bpl/arp: fix libbridge dependency
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Switch to new bridge-ugw package which provides libbridge-ugw patched
+with UGW features.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ framework/platform/bpl/CMakeLists.txt      | 9 ++++-----
+ framework/platform/bpl/arp/uci/bpl_arp.cpp | 2 +-
+ 2 files changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/framework/platform/bpl/CMakeLists.txt b/framework/platform/bpl/CMakeLists.txt
+index 497f09c1..8277778c 100644
+--- a/framework/platform/bpl/CMakeLists.txt
++++ b/framework/platform/bpl/CMakeLists.txt
+@@ -47,11 +47,10 @@ if (TARGET_PLATFORM STREQUAL "openwrt")
+         include_directories(${PLATFORM_INCLUDE_DIR}/libnl3)
+         include_directories(${PLATFORM_INCLUDE_DIR})
+ 
+-        # libbridge
+-        file(GLOB LIBBRIDGE_SEARCH_PATHS "${PLATFORM_BUILD_DIR}/linux-intel_mips*/bridge-utils*/libbridge")
+-        find_path(LIBBRIDGE_INCLUDE_DIR NAMES "libbridge.h" PATHS "${LIBBRIDGE_SEARCH_PATHS}" NO_CMAKE_FIND_ROOT_PATH)
++        # libbridge-ugw
++        find_path(LIBBRIDGE_INCLUDE_DIR NAMES "libbridge-ugw.h")
+         include_directories(${LIBBRIDGE_INCLUDE_DIR})
+-        link_directories(${LIBBRIDGE_INCLUDE_DIR})
++        find_library(bridge-ugw NAMES libbridge-ugw.a)
+ 
+         # UCI BPL
+         file(GLOB_RECURSE bpl_platform_sources ${MODULE_PATH}/*/uci/*.c*)
+@@ -61,7 +60,7 @@ if (TARGET_PLATFORM STREQUAL "openwrt")
+         find_package(safec REQUIRED)
+ 
+         link_directories(${PLATFORM_STAGING_DIR}/usr/lib)
+-        list(APPEND BPL_LIBS ubus nl-3 nl-route-3 bridge dl uci ubox safec)
++        list(APPEND BPL_LIBS ubus nl-3 nl-route-3 ${bridge-ugw} dl uci ubox safec)
+ 
+         # Signal libsafec that we support the C99 standard
+         add_definitions(-DHAVE_C99)
+diff --git a/framework/platform/bpl/arp/uci/bpl_arp.cpp b/framework/platform/bpl/arp/uci/bpl_arp.cpp
+index 9dd2f887..a288121f 100644
+--- a/framework/platform/bpl/arp/uci/bpl_arp.cpp
++++ b/framework/platform/bpl/arp/uci/bpl_arp.cpp
+@@ -20,7 +20,7 @@
+ 
+ extern "C" {
+ #define FEATURE_BRCTL_SHOWMACS_IFNAME
+-#include <libbridge.h>
++#include <libbridge-ugw.h>
+ }
+ 
+ #include <mapf/common/logger.h>
+-- 
+2.29.2
+
