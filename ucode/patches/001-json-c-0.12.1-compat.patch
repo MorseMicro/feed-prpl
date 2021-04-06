@@ -135,7 +135,7 @@
  #ifndef ALIGN
 --- a/lexer.c
 +++ b/lexer.c
-@@ -761,7 +761,12 @@ parse_regexp(uc_lexer *lex)
+@@ -688,7 +688,12 @@ parse_regexp(uc_lexer *lex, bool no_rege
  					json_object_get_string_len(rv->val),
  					json_object_get_string(rv->val));
  
@@ -150,7 +150,7 @@
  				rv->type = TK_REGEXP;
 --- a/vm.c
 +++ b/vm.c
-@@ -751,7 +751,18 @@ uc_vm_capture_stacktrace(uc_vm *vm, size
+@@ -763,7 +763,18 @@ uc_vm_capture_stacktrace(uc_vm *vm, size
  			json_object_object_add(entry, "function", xjs_new_string(name));
  		}
  
@@ -171,7 +171,7 @@
  		}
 --- a/value.c
 +++ b/value.c
-@@ -261,8 +261,12 @@ uc_setval(json_object *scope, json_objec
+@@ -268,8 +268,12 @@ uc_setval(json_object *scope, json_objec
  		return json_object_get(val);
  	}
  
