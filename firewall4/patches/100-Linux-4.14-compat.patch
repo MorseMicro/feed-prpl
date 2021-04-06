@@ -1,0 +1,157 @@
+--- a/root/usr/share/firewall4/templates/redirect.uc
++++ b/root/usr/share/firewall4/templates/redirect.uc
+@@ -1,5 +1,3 @@
+-{%+ if (redirect.family && !redirect.has_addrs): -%}
+-	meta nfproto {{ fw4.nfproto(redirect.family) }} {%+ endif -%}
+ {%+ if (!redirect.proto.any && !redirect.has_ports): -%}
+ 	meta l4proto {{
+ 		(redirect.proto.name == 'icmp' && redirect.family == 6) ? 'ipv6-icmp' : redirect.proto.name
+--- a/root/usr/share/firewall4/templates/ruleset.uc
++++ b/root/usr/share/firewall4/templates/ruleset.uc
+@@ -1,3 +1,69 @@
++table ip fw4
++flush table ip fw4
++
++table ip fw4 {
++	#
++	# NAT rules
++	#
++
++	chain dstnat {
++		type nat hook prerouting priority dstnat; policy accept;
++
++{% for (let zone in fw4.zones()): %}
++{%  if (zone.dflags.dnat): %}
++{%   for (let rule in zone.match_rules): %}
++		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "dstnat" }) %}
++{%   endfor %}
++{%  endif %}
++{% endfor %}
++	}
++
++	chain srcnat {
++		type nat hook postrouting priority srcnat; policy accept;
++
++{% for (let redirect in fw4.redirects("srcnat")): %}
++		{%+ include("redirect.uc") %}
++{% endfor %}
++{% for (let zone in fw4.zones()): %}
++{%  if (zone.dflags.snat): %}
++{%   for (let rule in zone.match_rules): %}
++		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "srcnat" }) %}
++{%   endfor %}
++{%  endif %}
++{% endfor %}
++	}
++
++{% for (let zone in fw4.zones()): %}
++{%  if (zone.dflags.dnat): %}
++	chain dstnat_{{ zone.name }} {
++{% for (let redirect in fw4.redirects("dstnat_"+zone.name)): %}
++		{%+ include("redirect.uc") %}
++{% endfor %}
++	}
++
++{%  endif %}
++{%  if (zone.dflags.snat): %}
++	chain srcnat_{{ zone.name }} {
++{% for (let redirect in fw4.redirects("srcnat_"+zone.name)): %}
++		{%+ include("redirect.uc") %}
++{% endfor %}
++{%   if (zone.masq): %}
++		{%+ if (zone.masq4_src_pos): -%}
++			ip saddr {{ fw4.set(zone.masq4_src_pos) }} {%+ endif -%}
++		{%+ if (zone.masq4_src_neg): -%}
++			ip saddr != {{ fw4.set(zone.masq4_src_neg) }} {%+ endif -%}
++		{%+ if (zone.masq4_dest_pos): -%}
++			ip daddr {{ fw4.set(zone.masq4_dest_pos) }} {%+ endif -%}
++		{%+ if (zone.masq4_dest_neg): -%}
++			ip daddr != {{ fw4.set(zone.masq4_dest_neg) }} {%+ endif -%}
++		masquerade comment "!fw4: Masquerade IPv4 {{ zone.name }} traffic"
++{%   endif %}
++	}
++
++{%  endif %}
++{% endfor %}
++}
++
+ table inet fw4
+ flush table inet fw4
+
+@@ -179,76 +245,6 @@ table inet fw4 {
+ {% endfor %}
+
+ 	#
+-	# NAT rules
+-	#
+-
+-	chain dstnat {
+-		type nat hook prerouting priority dstnat; policy accept;
+-{% for (let zone in fw4.zones()): %}
+-{%  if (zone.dflags.dnat): %}
+-{%   for (let rule in zone.match_rules): %}
+-		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "dstnat" }) %}
+-{%   endfor %}
+-{%  endif %}
+-{% endfor %}
+-	}
+-
+-	chain srcnat {
+-		type nat hook postrouting priority srcnat; policy accept;
+-{% for (let redirect in fw4.redirects("srcnat")): %}
+-		{%+ include("redirect.uc", { fw4, redirect }) %}
+-{% endfor %}
+-{% for (let zone in fw4.zones()): %}
+-{%  if (zone.dflags.snat): %}
+-{%   for (let rule in zone.match_rules): %}
+-		{%+ include("zone-match.uc", { fw4, zone, rule, direction: "srcnat" }) %}
+-{%   endfor %}
+-{%  endif %}
+-{% endfor %}
+-	}
+-
+-{% for (let zone in fw4.zones()): %}
+-{%  if (zone.dflags.dnat): %}
+-	chain dstnat_{{ zone.name }} {
+-{% for (let redirect in fw4.redirects("dstnat_"+zone.name)): %}
+-		{%+ include("redirect.uc", { fw4, redirect }) %}
+-{% endfor %}
+-	}
+-
+-{%  endif %}
+-{%  if (zone.dflags.snat): %}
+-	chain srcnat_{{ zone.name }} {
+-{% for (let redirect in fw4.redirects("srcnat_"+zone.name)): %}
+-		{%+ include("redirect.uc", { fw4, redirect }) %}
+-{% endfor %}
+-{%   if (zone.masq): %}
+-		meta nfproto ipv4 {%+ if (zone.masq4_src_pos): -%}
+-			ip saddr {{ fw4.set(zone.masq4_src_pos) }} {%+ endif -%}
+-		{%+ if (zone.masq4_src_neg): -%}
+-			ip saddr != {{ fw4.set(zone.masq4_src_neg) }} {%+ endif -%}
+-		{%+ if (zone.masq4_dest_pos): -%}
+-			ip daddr {{ fw4.set(zone.masq4_dest_pos) }} {%+ endif -%}
+-		{%+ if (zone.masq4_dest_neg): -%}
+-			ip daddr != {{ fw4.set(zone.masq4_dest_neg) }} {%+ endif -%}
+-		masquerade comment "!fw4: Masquerade IPv4 {{ zone.name }} traffic"
+-{%   endif %}
+-{%   if (zone.masq6): %}
+-		meta nfproto ipv6 {%+ if (zone.masq6_src_pos): -%}
+-			ip6 saddr {{ fw4.set(zone.masq6_src_pos) }} {%+ endif -%}
+-		{%+ if (zone.masq6_src_neg): -%}
+-			ip6 saddr != {{ fw4.set(zone.masq6_src_neg) }} {%+ endif -%}
+-		{%+ if (zone.masq6_dest_pos): -%}
+-			ip6 daddr {{ fw4.set(zone.masq6_dest_pos) }} {%+ endif -%}
+-		{%+ if (zone.masq6_dest_neg): -%}
+-			ip6 daddr != {{ fw4.set(zone.masq6_dest_neg) }} {%+ endif -%}
+-		masquerade comment "!fw4: Masquerade IPv6 {{ zone.name }} traffic"
+-{%   endif %}
+-	}
+-
+-{%  endif %}
+-{% endfor %}
+-
+-	#
+ 	# Raw rules (notrack & helper)
+ 	#
+
