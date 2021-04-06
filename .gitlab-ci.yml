@@ -10,17 +10,30 @@ generate:
       mvebu-cortexa9
       ipq40xx-generic
     CI_SDK_BUILD_PACKAGES: |
+      amxb-inspect
+      amxo-cg
+      amxrt
       bbf
       bbfd
       firewall4
+      libamxb
+      libamxc
+      libamxd
+      libamxj
+      libamxm
+      libamxo
+      libamxp
+      libamxt
       libtrace
       luci-mod-simple
       luci-theme-prpl
+      mod-amxb-ubus
       obuspa
       owsd
       ucode
       ucwmp
       udrone
+      uriparser
 
 build:
   extends: .execute SDK package build jobs
