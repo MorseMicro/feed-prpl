@@ -15,7 +15,8 @@
 				"luci-rpc": [ "getHostHints", "getNetworkDevices" ],
 				"network.interface": [ "down", "status", "up" ],
 				"system": [ "board", "info" ],
-				"topology": [ "getTopology" ]
+				"topology": [ "getTopology" ],
+				"prplmesh": [ "restart" ]
 			},
 			"uci": [ "cwmp", "dhcp", "firewall", "network", "obuspa", "uhttpd", "wireless" ]
 		},

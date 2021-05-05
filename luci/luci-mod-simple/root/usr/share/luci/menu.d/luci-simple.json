@@ -69,5 +69,14 @@
 			"type": "view",
 			"path": "simple/usp"
 		}
+	},
+
+	"admin/simple-prplmesh": {
+		"title": "prplMesh",
+		"order": 72,
+		"action": {
+			"type": "view",
+			"path": "simple/prplmesh"
+		}
 	}
 }
