@@ -24,10 +24,12 @@ generate:
       libamxo
       libamxp
       libamxt
+      libsahtrace
       libtrace
       luci-mod-simple
       luci-theme-prpl
       mod-amxb-ubus
+      mod-sahtrace
       obuspa
       owsd
       ucode
