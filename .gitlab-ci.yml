@@ -56,11 +56,6 @@ build prplmesh with intel_mips-xrx500 SDK:
     CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-intel_mips-xrx500:latest
     CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
 
-build prplmesh with ath79-generic SDK:
-  extends: .build prplmesh with SDK
-  variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-ath79-generic:latest
-
 build prplmesh with ipq40xx-generic SDK:
   extends: .build prplmesh with SDK
   variables:
