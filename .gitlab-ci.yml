@@ -19,6 +19,10 @@ generate:
       bbf
       bbfd
       firewall4
+      gmap-mibs-common
+      gmap-mod-ethernet-dev
+      gmap-mod-self
+      gmap-server
       libamxb
       libamxc
       libamxd
@@ -27,6 +31,7 @@ generate:
       libamxo
       libamxp
       libamxt
+      libgmap-client
       libsahtrace
       libtrace
       luci-mod-simple
