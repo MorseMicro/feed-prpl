@@ -1,3 +1,6 @@
+variables:
+  CI_DESIGNATED_BRANCH: prplwrt
+
 include:
   - remote: https://gitlab.com/prpl-foundation/prplwrt/prplwrt/-/raw/prplwrt/.gitlab/sdk.yml
 
@@ -50,23 +53,23 @@ build:
 build prplmesh with intel_mips-xrx500 SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-intel_mips-xrx500:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-intel_mips-xrx500:latest
     CI_SDK_INSTALL_FEEDS: base packages luci routing feed_intel
 
 build prplmesh with ath79-generic SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-ath79-generic:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-ath79-generic:latest
 
 build prplmesh with ipq40xx-generic SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-ipq40xx-generic:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-ipq40xx-generic:latest
 
 build prplmesh with mvebu-cortexa9 SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/sdk-mvebu-cortexa9:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplwrt/prplwrt/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
 
 build prplmesh with ath79-generic OpenWrt SDK:
   extends: .build feed with OpenWrt SDK
