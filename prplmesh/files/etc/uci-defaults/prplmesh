@@ -61,13 +61,11 @@ if grep -q GRX /tmp/sysinfo/board_name; then
         uci commit prplmesh
 fi
 
-#if prplmesh backhaul wire interface is not set
-#use wan interface as the default value
-WAN_IFACE=`uci get network.wan.ifname`
-PRPLMESH_BACKHAUL_IFACE=`uci get prplmesh.config.backhaul_wire_iface`
-if [ ! -z "$WAN_IFACE" ]; then
-        if [ -z "$PRPLMESH_BACKHAUL_IFACE" ]; then
-                uci set prplmesh.config.backhaul_wire_iface="$WAN_IFACE"
-                uci commit prplmesh
-        fi
+# Use the first interface of the LAN network as the default value
+BH_IFACE="$(uci get network.lan.ifname | cut -d" " -f1)"
+if [ -z "$BH_IFACE" ] ; then
+        logger -t prplmesh -p daemon.warn "No default wired backhaul interface was set! Please set 'prplmesh.config.backhaul_wire_iface' manually."
+else
+        uci set prplmesh.config.backhaul_wire_iface="$BH_IFACE"
+        uci commit prplmesh
 fi
