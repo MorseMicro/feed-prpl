@@ -103,6 +103,13 @@ function handleApply(map) {
 }
 
 return view.extend({
+	load: function() {
+		 return Promise.all([
+			 L.resolveDefault(uci.load('network')),
+		 ]);
+	 },
+
+
 	render: function() {
 		var m, s, o;
 
@@ -113,10 +120,17 @@ return view.extend({
 
 		o = s.option(cbiModeSelectorValue, 'mode');
 
+		s = m.section(form.NamedSection, 'config', _('Backhaul Settings'), _('Backhaul Settings'), _('For a prplMesh agent, the backhaul is the connection to the controller.<br>After saving the settings below, you will have to restart prplMesh (or reboot the device).'));
+		s.addremove = false;
+
+		o = s.option(form.Value, 'backhaul_wire_iface', _('Wired backhaul interface'));
+		o.placeholder = _('Select Interface');
+
+		L.toArray(uci.get('network', 'lan', 'ifname')).forEach(function(ifname) {
+			o.value(ifname, ifname);
+		});
+
 		return m.render();
 	},
 
-	handleSave: null,
-	handleSaveApply: null,
-	handleReset: null
 });
