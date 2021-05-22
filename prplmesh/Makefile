@@ -49,7 +49,7 @@ CMAKE_OPTIONS+= \
 	-H. -B./build
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
-	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_SOURCE_VERSION)
+	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
 endif
 
 ifeq ($(CONFIG_TARGET_intel_mips),y)
