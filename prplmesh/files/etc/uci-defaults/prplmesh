@@ -69,3 +69,19 @@ else
         uci set prplmesh.config.backhaul_wire_iface="$BH_IFACE"
         uci commit prplmesh
 fi
+
+# FIXME: the next part can be removed once prplMesh supports the same
+# MAC address for the bridge and wireless interfaces (PPM-1057).
+. /lib/functions.sh
+. /lib/netifd/wireless/mac80211.sh
+case "$(board_name)" in
+        glinet,gl-b1300)
+                export macidx=10
+                uci set network.lan.macaddr="$(mac80211_generate_mac phy0)"
+                unset macidx
+                uci commit network
+                /etc/init.d/network reload
+        ;;
+        *)
+        ;;
+esac
