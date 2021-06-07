@@ -91,7 +91,10 @@ status_function() {
 
 start_function() {
         if uci get prplmesh.config.enable > /dev/null; then
-                wlan_ready_poll || logger -t "${NAME}" -p daemon.warn "Timeout waiting for WLAN ready!"
+                wlan_ready_poll || {
+                        logger -t "${NAME}" -p daemon.warn "Timeout waiting for WLAN ready!"
+                        exit 1
+                }
                 if [ "$(uci get prplmesh.config.operating_mode)" = "Gateway" ]; then
                         logger -t "${NAME}" -p daemon.info "Start prplMesh controller & agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start
