@@ -38,6 +38,7 @@ generate:
       luci-mod-simple
       luci-theme-prpl
       mod-amxb-ubus
+      mod-ba-cli
       mod-sahtrace
       obuspa
       owsd

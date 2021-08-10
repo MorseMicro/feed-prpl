@@ -1,0 +1,24 @@
+config PACKAGE_mod-ba-cli
+    tristate
+    select SAH_MOD_BA_CLI
+
+if PACKAGE_mod-ba-cli
+
+menu "Select mod-ba-cli build options"
+    depends on PACKAGE_mod-ba-cli
+
+config SAH_MOD_BA_CLI
+    bool "Build Bus Agnostic Command Line Interface Module"
+    default y
+
+config SAH_MOD_BA_CLI_INSTALL_UBUS_CLI
+    bool "Install ubus cli"
+    default y
+
+config SAH_MOD_BA_CLI_INSTALL_PCB_CLI
+    bool "Install pcb cli"
+    default y
+
+endmenu
+
+endif
