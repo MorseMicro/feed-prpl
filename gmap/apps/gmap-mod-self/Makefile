@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-self
-PKG_VERSION:=v0.0.9
+PKG_VERSION:=v0.0.12
 SHORT_DESCRIPTION:=gmap module to fetch information about the hgw itself and the layer 2 'devices' on it
 
-PKG_SOURCE:=gmap-mod-self-v0.0.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-self/-/archive/v0.0.9
-PKG_HASH:=0663725434372d6e5452bf96ac7923eee24899095c61f54a0208bd629ed75ec5
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v0.0.9
+PKG_SOURCE:=gmap-mod-self-v0.0.12.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-self/-/archive/v0.0.12
+PKG_HASH:=42cad5951f2d4a09f06d7d5fc431085dde184525ac5420751f88300f17c4ef6b
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v0.0.12
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -18,16 +18,16 @@ PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S72$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/etc/rc.d/S72$(COMPONENT).so
 endef
 
 define SAHBackupRestore/Install
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT).so
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT).so
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT).so
 endef
 
 include $(INCLUDE_DIR)/package.mk

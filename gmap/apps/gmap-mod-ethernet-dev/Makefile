@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-ethernet-dev
-PKG_VERSION:=v0.0.4
+PKG_VERSION:=v0.0.7
 SHORT_DESCRIPTION:=gMap component that adds discovered devices to the gmap datamodel and links them to the correct interface
 
-PKG_SOURCE:=gmap-mod-ethernet-dev-v0.0.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.0.4
-PKG_HASH:=124e3f1781f2b54b3ce30588d03c51a0dff407bf88c0ad7a00a0dbc92c81d9d7
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.0.4
+PKG_SOURCE:=gmap-mod-ethernet-dev-v0.0.7.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.0.7
+PKG_HASH:=5286303cc07a9c0c0e2b04e2e495e08c29777edd1d0e5b8e70ad78d107f92a6f
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.0.7
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -18,16 +18,16 @@ PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S73$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/etc/rc.d/S73$(COMPONENT).so
 endef
 
 define SAHBackupRestore/Install
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
 	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT).so
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT).so
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT).so
 endef
 
 include $(INCLUDE_DIR)/package.mk
