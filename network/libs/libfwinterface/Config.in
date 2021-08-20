@@ -1,0 +1,28 @@
+config PACKAGE_libfwinterface
+    tristate
+    select SAH_LIB_FWINTERFACE
+
+if PACKAGE_libfwinterface
+
+menu "Select libfwinterface build options"
+    depends on PACKAGE_libfwinterface
+
+config SAH_LIB_FWINTERFACE
+    bool "Build the firewall interfaces library"
+    default n
+
+choice
+    prompt "Choose the interface to use between lib_fwrules and netfilter"
+    default SAH_LIB_FWINTERFACE_INTERFACE_IPTC
+
+config SAH_LIB_FWINTERFACE_INTERFACE_DUMMY
+    bool "Dummy interface. Does nothing"
+
+config SAH_LIB_FWINTERFACE_INTERFACE_IPTC
+    bool "Use lib_iptc as the interface"
+
+endchoice
+
+endmenu
+
+endif

@@ -1,0 +1,20 @@
+config PACKAGE_deviceinfo-manager
+    tristate
+    select SAH_AMX_TR181_DEVICEINFO
+
+if PACKAGE_deviceinfo-manager
+
+menu "Select deviceinfo-manager build options"
+    depends on PACKAGE_deviceinfo-manager
+
+config SAH_AMX_TR181_DEVICEINFO
+    bool "Build a tr181 compatible device info plugin"
+    default y
+
+config SAH_AMX_TR181_DEVICEINFO_ORDER
+    int "tr181 deviceinfo Plugin start up order"
+    default 40
+
+endmenu
+
+endif

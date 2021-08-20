@@ -19,11 +19,15 @@ generate:
       amxrt
       bbf
       bbfd
+      deviceinfo-manager
+      dhcpv4-manager
+      dhcpv6s-manager
       firewall4
       gmap-mibs-common
       gmap-mod-ethernet-dev
       gmap-mod-self
       gmap-server
+      ip-manager
       libamxb
       libamxc
       libamxd
@@ -32,16 +36,26 @@ generate:
       libamxo
       libamxp
       libamxt
+      libfwinterface
+      libfwrules
       libgmap-client
+      libnetmodel
       libsahtrace
       libtrace
       luci-mod-simple
       luci-theme-prpl
       mod-amxb-ubus
       mod-ba-cli
+      mod-dmext
       mod-sahtrace
+      netdev-plugin
+      netmodel
       obuspa
       owsd
+      routing-manager
+      time-manager
+      tr181-bridging
+      tr181-firewall
       ucode
       ucwmp
       udrone

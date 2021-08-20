@@ -1,0 +1,20 @@
+config PACKAGE_tr181-firewall
+    tristate
+    select SAH_AMX_TR181_FIREWALL
+
+if PACKAGE_tr181-firewall
+
+menu "Select tr181-firewall build options"
+    depends on PACKAGE_tr181-firewall
+
+config SAH_AMX_TR181_FIREWALL
+    bool "Build a tr181 compatible firewall manager"
+    default y
+
+config SAH_AMX_TR181_FIREWALL_ORDER
+    int "Start up order"
+    default 22
+
+endmenu
+
+endif

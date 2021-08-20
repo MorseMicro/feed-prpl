@@ -1,0 +1,20 @@
+config PACKAGE_netmodel
+    tristate
+    select SAH_AMX_NETMODEL
+
+if PACKAGE_netmodel
+
+menu "Select netmodel build options"
+    depends on PACKAGE_netmodel
+
+config SAH_AMX_NETMODEL
+    bool "Build the Network Model plugin"
+    default y
+
+config SAH_AMX_NETMODEL_ORDER
+    int "Network Model plugin startup order"
+    default 20
+
+endmenu
+
+endif
