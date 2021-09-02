@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netdev-plugin
-PKG_VERSION:=v1.3.1
+PKG_VERSION:=v1.3.2
 SHORT_DESCRIPTION:=NetDev monitors the operating system's network devices
 
-PKG_SOURCE:=netdev-v1.3.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/netdev/-/archive/v1.3.1
-PKG_HASH:=ca71af84fa74d424c30f5353cc0f6b1a3ca7b227e291101ab1595492968dd554
-PKG_BUILD_DIR:=$(BUILD_DIR)/netdev-v1.3.1
+PKG_SOURCE:=netdev-v1.3.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/netdev/-/archive/v1.3.2
+PKG_HASH:=486e9b5cbe206bffb2625f2542e5d5d01e4e622f65279244afe60ab5445bead6
+PKG_BUILD_DIR:=$(BUILD_DIR)/netdev-v1.3.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -18,7 +18,7 @@ PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S60$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S20$(COMPONENT)
 endef
 
 define SAHBackupRestore/Install

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-bridging
-PKG_VERSION:=v1.2.0
+PKG_VERSION:=v1.3.1
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-bridging-v1.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-bridging/-/archive/v1.2.0
-PKG_HASH:=88b7e737841fa98bad8873c0100cdbebe01757b6207793fc7d592e4bf708b3e4
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.2.0
+PKG_SOURCE:=tr181-bridging-v1.3.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-bridging/-/archive/v1.3.1
+PKG_HASH:=dcb1071dff8ccceb4a444180d8fe6dceaa5f16fad22a8c2c8735a295e3bef5a6
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.3.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -18,7 +18,7 @@ PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S80$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S24$(COMPONENT)
 endef
 
 include $(INCLUDE_DIR)/package.mk
@@ -33,6 +33,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxp
   DEPENDS += +libamxb
   DEPENDS += +libamxo
+  DEPENDS += +libamxm
   DEPENDS += +libsahtrace
   MENU:=1
 endef

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ip-manager
-PKG_VERSION:=v1.1.2
+PKG_VERSION:=v1.1.4
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-ip-v1.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-ip/-/archive/v1.1.2
-PKG_HASH:=5678ce5bc09b176bba60a570f6c94d819fe4505d57d613140fe0eb193b2b1257
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-ip-v1.1.2
+PKG_SOURCE:=tr181-ip-v1.1.4.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-ip/-/archive/v1.1.4
+PKG_HASH:=1659a16d24ccd1d2628e0eda820a7fa3ea28941cd314620390ddefad0f022801
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-ip-v1.1.4
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -19,7 +19,7 @@ PKG_BUILD_DEPENDS += libamxb
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S61$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S25$(COMPONENT)
 endef
 
 define SAHBackupRestore/Install

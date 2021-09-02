@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv6s-manager
-PKG_VERSION:=v0.1.0
+PKG_VERSION:=v0.2.0
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv6s-v0.1.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv6s/-/archive/v0.1.0
-PKG_HASH:=1b7dde81e0d3e351c657f15becca7c0253155f0d59e3f37603ea6b81dc4fdd19
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.1.0
+PKG_SOURCE:=tr181-dhcpv6s-v0.2.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv6s/-/archive/v0.2.0
+PKG_HASH:=b540ef482b7fa583da49b724f57e434809f5dd5ce10b29b24f2063cdd4b667f8
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.2.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,12 +22,12 @@ define SAHInit/Install
 endef
 
 define SAHBackupRestore/Install
-		install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
-		install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
-		install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-		ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B40$(COMPONENT)
-		ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R40$(COMPONENT)
-		ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R40$(COMPONENT)
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B40$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R40$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R40$(COMPONENT)
 endef
 
 include $(INCLUDE_DIR)/package.mk
