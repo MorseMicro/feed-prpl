@@ -1,0 +1,20 @@
+config PACKAGE_wan-manager
+    tristate
+    select SAH_AMX_WAN_MANAGER
+
+if PACKAGE_wan-manager
+
+menu "Select wan-manager build options"
+    depends on PACKAGE_wan-manager
+
+config SAH_AMX_WAN_MANAGER
+    bool "Build a tr181 compatible time plugin"
+    default y
+
+config SAH_AMX_WAN_MANAGER_ORDER
+    int "WAN manager plugin start up order"
+    default 80
+
+endmenu
+
+endif

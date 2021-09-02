@@ -60,6 +60,7 @@ generate:
       ucwmp
       udrone
       uriparser
+      wan-manager
 
 build:
   extends: .execute SDK package build jobs
