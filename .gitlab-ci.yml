@@ -28,6 +28,7 @@ generate:
       gmap-mod-self
       gmap-server
       ip-manager
+      libamxa
       libamxb
       libamxc
       libamxd
