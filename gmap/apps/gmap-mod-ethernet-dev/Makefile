@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-ethernet-dev
-PKG_VERSION:=v0.0.7
+PKG_VERSION:=v0.1.0
 SHORT_DESCRIPTION:=gMap component that adds discovered devices to the gmap datamodel and links them to the correct interface
 
-PKG_SOURCE:=gmap-mod-ethernet-dev-v0.0.7.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.0.7
-PKG_HASH:=5286303cc07a9c0c0e2b04e2e495e08c29777edd1d0e5b8e70ad78d107f92a6f
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.0.7
+PKG_SOURCE:=gmap-mod-ethernet-dev-v0.1.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.1.0
+PKG_HASH:=17d9f2d7172b5a37873855da24e85ecbfde0b1b49c314aba13da2d6e4f95472e
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.1.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -39,13 +39,13 @@ define Package/$(PKG_NAME)
   URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev
   DEPENDS += +libamxc
   DEPENDS += +libamxd
-  DEPENDS += +libamxj
-  DEPENDS += +libamxp
   DEPENDS += +libamxb
-  DEPENDS += +libamxo
   DEPENDS += +libmnl
+  DEPENDS += +libamxo
+  DEPENDS += +libamxj
   DEPENDS += +libgmap-client
   DEPENDS += +libsahtrace
+  DEPENDS += +libdhcpoptions
   MENU:=1
 endef
 
