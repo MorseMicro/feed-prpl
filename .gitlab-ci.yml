@@ -59,6 +59,7 @@ generate:
       routing-manager
       time-manager
       tr181-bridging
+      tr181-device
       tr181-firewall
       ucode
       ucwmp

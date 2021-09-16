@@ -1,0 +1,20 @@
+config PACKAGE_tr181-device
+    tristate
+    select SAH_AMX_TR181_DEVICE
+
+if PACKAGE_tr181-device
+
+menu "Select tr181-device build options"
+    depends on PACKAGE_tr181-device
+
+config SAH_AMX_TR181_DEVICE
+    bool "Build a tr181 compatible device plugin"
+    default y
+
+config SAH_AMX_TR181_DEVICE_ORDER
+    int "Start up order for the tr181 device plugin"
+    default 41
+
+endmenu
+
+endif
