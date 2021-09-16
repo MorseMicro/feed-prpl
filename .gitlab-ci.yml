@@ -47,6 +47,7 @@ generate:
       luci-theme-prpl
       mod-amxb-ubus
       mod-ba-cli
+      mod-dm-cli
       mod-dmext
       mod-sahtrace
       netdev-plugin
