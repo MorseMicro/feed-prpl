@@ -25,6 +25,7 @@ generate:
       firewall4
       gmap-mibs-common
       gmap-mod-ethernet-dev
+      gmap-mod-name-selector
       gmap-mod-self
       gmap-server
       ip-manager
