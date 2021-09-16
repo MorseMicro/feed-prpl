@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libsahtrace
-PKG_VERSION:=v1.0.0
+PKG_VERSION:=v1.7.2
 SHORT_DESCRIPTION:=Small and flexible library to enable tracing and logging
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/logging/libsahtrace/-/archive/$(PKG_VERSION)
-PKG_HASH:=6ee4a8b8e7ee39f94b731e9ca0aa0b342cf6565916033f39fb4ae99d3b758ab2
+PKG_HASH:=57e832f17ec5b8b74b4137b040671a88cf4d06f5df39abe574012d05d97ae680
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
