@@ -52,7 +52,8 @@ define Package/prplmesh
 		+PACKAGE_libamxb:libamxc \
 		+PACKAGE_libamxb:libamxd \
 		+PACKAGE_libamxb:libamxo \
-		+PACKAGE_libamxb:libamxp
+		+PACKAGE_libamxb:libamxp \
+		+PACKAGE_libamxb:mod-amxb-ubus
 endef
 
 define Package/prplmesh/config
