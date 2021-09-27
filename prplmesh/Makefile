@@ -24,13 +24,35 @@ define Package/prplmesh
 	TITLE:=prplmesh
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
 	MAINTAINER:=prplfoundation
-	DEPENDS:=+libstdcpp +libpthread +librt +libjson-c +libreadline +libopenssl +libnl +uci +ubus +ubox +ebtables
+	DEPENDS:= \
+		+libstdcpp \
+		+libpthread \
+		+librt \
+		+libjson-c \
+		+libreadline \
+		+libopenssl \
+		+libnl \
+		+uci \
+		+ubus \
+		+ubox \
+		+ebtables
 #	intel_mips specific dependencies:
-	DEPENDS+= +TARGET_intel_mips:dwpal_6x-uci +TARGET_intel_mips:iwlwav-hostap-uci +TARGET_intel_mips:libsafec3 +TARGET_intel_mips:bridge-ugw
+	DEPENDS+= \
+		+TARGET_intel_mips:dwpal_6x-uci \
+		+TARGET_intel_mips:iwlwav-hostap-uci \
+		+TARGET_intel_mips:libsafec3 \
+		+TARGET_intel_mips:bridge-ugw
 #	non-intel_mips dependencies:
-	DEPENDS+= +!TARGET_intel_mips:hostapd-openssl +!TARGET_intel_mips:hostapd-utils +!TARGET_intel_mips:wpa-supplicant-openssl
+	DEPENDS+= \
+		+!TARGET_intel_mips:hostapd-openssl \
+		+!TARGET_intel_mips:hostapd-utils \
+		+!TARGET_intel_mips:wpa-supplicant-openssl
 #	The ambiorix library is optional, select it if libamxb is selected:
-	DEPENDS+= +PACKAGE_libamxb:libamxb +PACKAGE_libamxb:libamxc +PACKAGE_libamxb:libamxd +PACKAGE_libamxb:libamxo +PACKAGE_libamxb:libamxp
+	DEPENDS+= +PACKAGE_libamxb:libamxb \
+		+PACKAGE_libamxb:libamxc \
+		+PACKAGE_libamxb:libamxd \
+		+PACKAGE_libamxb:libamxo \
+		+PACKAGE_libamxb:libamxp
 endef
 
 define Package/prplmesh/config
