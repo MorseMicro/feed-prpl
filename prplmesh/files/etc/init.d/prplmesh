@@ -17,8 +17,17 @@ hostapd_ready()
 wlan_reset()
 {
         wifi down
-        sleep 2
-        wifi
+        sleep 5
+        local leftover_processes="$(ps | grep '[h]ostapd\|[s]upp')"
+        if [ -n "$leftover_processes" ]; then
+                logger -t "${NAME}" -p daemon.warn "Wlan procceses still running after wifi down: $leftover_processes"
+                echo "Wlan procceses still running after wifi down: $leftover_processes"
+                # STA interfaces/processes sometimes not closed properly (https://jira.prplfoundation.org/browse/PPM-1778)
+                # This issue was spotted after wifi driver release update UGW8.5.2 in prplos.
+                # Currently just log this event and continue.
+                # In case wlan will not recover wlan_ready() will handle it.
+        fi   
+        wifi up
 }
 
 wlan_ready()
@@ -40,7 +49,7 @@ get_hostap_iface()
 wlan_ready_poll()
 {
         local delay=${1-3}
-        local timeout=10
+        local timeout=60
 
         # load the prplmesh config to be able to get the radio iface:
         config_load prplmesh
@@ -157,7 +166,6 @@ __uci_set_repeater_mode__() {
 repeater_mode() {
         stop
         __uci_set_repeater_mode__
-        /etc/init.d/network reload
         start
         echo "prplmesh repeater mode set"
 }
@@ -198,7 +206,6 @@ certification_mode() {
                 __uci_set_certification_mode__
                 ;;
         esac
-        /etc/init.d/network reload
         start
 }
 
