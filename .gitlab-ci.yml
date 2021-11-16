@@ -55,6 +55,7 @@ generate:
       mod-dmstats
       mod-sahtrace
       mod-vlan-ioctl
+      mod-vlan-uci
       netdev-plugin
       netmodel
       obuspa
