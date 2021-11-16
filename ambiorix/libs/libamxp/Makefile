@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxp
-PKG_VERSION:=v0.9.5
+PKG_VERSION:=v0.9.11
 SHORT_DESCRIPTION:=Common patterns implementation
 
-PKG_SOURCE:=libamxp-v0.9.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/libraries/libamxp/-/archive/v0.9.5
-PKG_HASH:=d687cbb51c0a533aa3105b20820a372de7bc17f91100b4294d5dd348288558a6
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxp-v0.9.5
+PKG_SOURCE:=libamxp-v0.9.11.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxp/-/archive/v0.9.11
+PKG_HASH:=8842af271b7f35592baf6832c997893160acd39a21d1f38847a180a7a4ef5199
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxp-v0.9.11
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,7 +22,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/libraries/libamxp
+  URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxp
   DEPENDS += +libamxc
   MENU:=1
 endef

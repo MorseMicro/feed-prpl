@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxa
-PKG_VERSION:=v0.2.1
+PKG_VERSION:=v0.3.0
 SHORT_DESCRIPTION:=Access control verification
 
-PKG_SOURCE:=libamxa-v0.2.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/libraries/libamxa/-/archive/v0.2.1
-PKG_HASH:=e95b7b3343380f17f11407d5c9a0a6b2806b94039b69c88cc7e0d5bea43fd4b4
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxa-v0.2.1
+PKG_SOURCE:=libamxa-v0.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxa/-/archive/v0.3.0
+PKG_HASH:=e45898ca43bafc9a7a7ef92dd65d5944e8bcc68f3f83d8184fc83eddf8160101
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxa-v0.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/libraries/libamxa
+  URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxa
   DEPENDS += +libamxc
   DEPENDS += +libamxj
   DEPENDS += +libamxd

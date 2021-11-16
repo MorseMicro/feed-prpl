@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=amxrt
-PKG_VERSION:=v1.1.3
+PKG_VERSION:=v1.3.1
 SHORT_DESCRIPTION:=Data model runtime
 
-PKG_SOURCE:=amxrt-v1.1.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/applications/amxrt/-/archive/v1.1.3
-PKG_HASH:=012724b14ea80b82fc0ffabac93f804bec916246027cdc5df35940d3a0493c0f
-PKG_BUILD_DIR:=$(BUILD_DIR)/amxrt-v1.1.3
+PKG_SOURCE:=amxrt-v1.3.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amxrt/-/archive/v1.3.1
+PKG_HASH:=234b990f0402690692ef9b1530da95b96587cf52b9ca3046e2ef45e1e4e66300
+PKG_BUILD_DIR:=$(BUILD_DIR)/amxrt-v1.3.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/applications/amxrt
+  URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amxrt
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxp

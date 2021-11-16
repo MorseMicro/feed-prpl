@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=amx-cli
-PKG_VERSION:=v0.2.17
+PKG_VERSION:=v0.2.19
 SHORT_DESCRIPTION:=Ambiorix interactive CLI
 
-PKG_SOURCE:=amx-cli-v0.2.17.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/applications/amx-cli/-/archive/v0.2.17
-PKG_HASH:=708d3e29a21f1fd8c79b59689a8c1b62cf05fcda811a05580f2f65183ab0d273
-PKG_BUILD_DIR:=$(BUILD_DIR)/amx-cli-v0.2.17
+PKG_SOURCE:=amx-cli-v0.2.19.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amx-cli/-/archive/v0.2.19
+PKG_HASH:=992a2d7129f0cad24107cc75d4301c0595b1add14d4a59ce9cbcd24fcf7a5eb1
+PKG_BUILD_DIR:=$(BUILD_DIR)/amx-cli-v0.2.19
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/applications/amx-cli
+  URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amx-cli
   DEPENDS += +libamxc
   DEPENDS += +libamxp
   DEPENDS += +libamxt
