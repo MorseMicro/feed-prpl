@@ -67,6 +67,7 @@ generate:
       tr181-bridging
       tr181-device
       tr181-dhcpv4client
+      tr181-dhcpv6client
       tr181-firewall
       ucode
       ucwmp
