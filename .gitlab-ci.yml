@@ -23,6 +23,7 @@ generate:
       deviceinfo-manager
       dhcpv4-manager
       dhcpv6s-manager
+      ethernet-manager
       firewall4
       gmap-mibs-common
       gmap-mod-ethernet-dev

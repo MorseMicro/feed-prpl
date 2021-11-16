@@ -1,0 +1,20 @@
+config PACKAGE_ethernet-manager
+    tristate
+    select SAH_AMX_TR181_ETHERNET
+
+if PACKAGE_ethernet-manager
+
+menu "Select ethernet-manager build options"
+    depends on PACKAGE_ethernet-manager
+
+config SAH_AMX_TR181_ETHERNET
+    bool "Build a tr181 compatible ethernet plugin"
+    default y
+
+config SAH_AMX_TR181_ETHERNET_ORDER
+    int "Start up order for the tr181 ethernet plugin"
+    default 21
+
+endmenu
+
+endif
