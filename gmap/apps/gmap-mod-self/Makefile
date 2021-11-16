@@ -1,34 +1,18 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-self
-PKG_VERSION:=v0.0.12
+PKG_VERSION:=v0.0.15
 SHORT_DESCRIPTION:=gmap module to fetch information about the hgw itself and the layer 2 'devices' on it
 
-PKG_SOURCE:=gmap-mod-self-v0.0.12.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-self/-/archive/v0.0.12
-PKG_HASH:=42cad5951f2d4a09f06d7d5fc431085dde184525ac5420751f88300f17c4ef6b
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v0.0.12
+PKG_SOURCE:=gmap-mod-self-v0.0.15.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-self/-/archive/v0.0.15
+PKG_HASH:=19c1f755338282e25be73b34be3f7aa175dcd774a44cd8af2b9d84d5ab485298
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v0.0.15
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
-COMPONENT:=gmap-mod-self
-
 PKG_RELEASE:=1
-
-define SAHInit/Install
-	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/etc/rc.d/S72$(COMPONENT).so
-endef
-
-define SAHBackupRestore/Install
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT).so
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT).so
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT).so
-endef
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -36,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-self
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-self
   DEPENDS += +libamxc
   DEPENDS += +libamxj
   DEPENDS += +libamxd
@@ -61,9 +45,6 @@ define Build/Install
 	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
-
-	$(call SAHInit/Install)
-	$(call SAHBackupRestore/Install)
 endef
 
 define Build/InstallDev

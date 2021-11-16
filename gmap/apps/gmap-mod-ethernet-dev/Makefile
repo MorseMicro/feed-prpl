@@ -1,34 +1,18 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-ethernet-dev
-PKG_VERSION:=v0.1.0
+PKG_VERSION:=v0.1.1
 SHORT_DESCRIPTION:=gMap component that adds discovered devices to the gmap datamodel and links them to the correct interface
 
-PKG_SOURCE:=gmap-mod-ethernet-dev-v0.1.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.1.0
-PKG_HASH:=17d9f2d7172b5a37873855da24e85ecbfde0b1b49c314aba13da2d6e4f95472e
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.1.0
+PKG_SOURCE:=gmap-mod-ethernet-dev-v0.1.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-ethernet-dev/-/archive/v0.1.1
+PKG_HASH:=f339c523bd871cba04720f5b7dcf39e218bdfd613766fbc8798df5c1b80f141f
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v0.1.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
-COMPONENT:=gmap-mod-ethernet-dev
-
 PKG_RELEASE:=1
-
-define SAHInit/Install
-	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/etc/rc.d/S73$(COMPONENT).so
-endef
-
-define SAHBackupRestore/Install
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B10$(COMPONENT).so
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R10$(COMPONENT).so
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT).so ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R10$(COMPONENT).so
-endef
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -36,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-ethernet-dev
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-ethernet-dev
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxb
@@ -62,9 +46,6 @@ define Build/Install
 	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
-
-	$(call SAHInit/Install)
-	$(call SAHBackupRestore/Install)
 endef
 
 define Build/InstallDev
