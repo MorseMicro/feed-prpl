@@ -1,0 +1,20 @@
+config PACKAGE_tr181-usermanagement
+    tristate
+    select SAH_AMX_USERMANAGEMENT
+
+if PACKAGE_tr181-usermanagement
+
+menu "Select tr181-usermanagement build options"
+    depends on PACKAGE_tr181-usermanagement
+
+config SAH_AMX_USERMANAGEMENT
+    bool "Build usermanagement"
+    default y
+
+config SAH_AMX_USERMANAGEMENT_ORDER
+    int "TR-181 compatible user management plugin"
+    default 16
+
+endmenu
+
+endif
