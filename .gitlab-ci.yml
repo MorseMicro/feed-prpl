@@ -13,6 +13,7 @@ generate:
       mvebu-cortexa9
       ipq40xx-generic
     CI_SDK_BUILD_PACKAGES: |
+      acl-manager
       amxb-inspect
       amx-cli
       amxo-cg
