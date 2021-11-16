@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-bridging
-PKG_VERSION:=v1.4.0
+PKG_VERSION:=v1.7.0
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-bridging-v1.4.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-bridging/-/archive/v1.4.0
-PKG_HASH:=98caf3d606ef644bcda1ef87530f8cee100c89071f088cfa9beec69c1dbc6c26
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.4.0
+PKG_SOURCE:=tr181-bridging-v1.7.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-bridging/-/archive/v1.7.0
+PKG_HASH:=3fa85f34ddec966afa3943567baeb1edec95f75b318add1931b208faf64e618a
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.7.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -18,7 +18,7 @@ PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S24$(COMPONENT)
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/etc/rc.d/S22$(COMPONENT)
 endef
 
 include $(INCLUDE_DIR)/package.mk
@@ -27,14 +27,16 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/plugins/tr181-bridging
+  URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-bridging
   DEPENDS += +libamxc
   DEPENDS += +libamxd
+  DEPENDS += +libamxj
   DEPENDS += +libamxp
   DEPENDS += +libamxb
   DEPENDS += +libamxo
   DEPENDS += +libamxm
   DEPENDS += +libsahtrace
+  DEPENDS += +mod-dmstats
   MENU:=1
 endef
 

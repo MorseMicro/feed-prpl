@@ -13,7 +13,7 @@ config SAH_AMX_TR181_TIME
 
 config SAH_AMX_TR181_TIME_ORDER
     int "tr181 time plugin start up order"
-    default 80
+    default 30
 
 endmenu
 

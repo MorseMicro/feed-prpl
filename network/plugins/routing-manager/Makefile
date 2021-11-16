@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=routing-manager
-PKG_VERSION:=v1.0.5
+PKG_VERSION:=v1.1.3
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-routing-v1.0.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-routing/-/archive/v1.0.5
-PKG_HASH:=0227d9be5f6f651825ee1eed5369186eaea359103f6a40d85cc457ca69e89253
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-routing-v1.0.5
+PKG_SOURCE:=tr181-routing-v1.1.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-routing/-/archive/v1.1.3
+PKG_HASH:=f71089c8deb2838ccf567da47ebd9e2e7d9b503832346e8838eba9833bd00fcc
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-routing-v1.1.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -37,13 +37,14 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/plugins/tr181-routing
+  URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-routing
   DEPENDS += +amxrt
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxp
   DEPENDS += +libamxb
   DEPENDS += +libamxo
+  DEPENDS += +libamxm
   DEPENDS += +libsahtrace
   DEPENDS += +mod-dmext
   MENU:=1

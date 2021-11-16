@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv4-manager
-PKG_VERSION:=v1.4.0
+PKG_VERSION:=v1.5.2
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv4-v1.4.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv4/-/archive/v1.4.0
-PKG_HASH:=1b9b2ec5f1bb635f6630527a112b929013b6d54db2cbe0973d36296a68ec2d91
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.4.0
+PKG_SOURCE:=tr181-dhcpv4-v1.5.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4/-/archive/v1.5.2
+PKG_HASH:=f52f74f7b8c0b61d372e855b178473403250c6999130ca414d9294b38384c980
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.5.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,9 +36,10 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv4
+  URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4
   DEPENDS += +amxrt
   DEPENDS += +libamxc
+  DEPENDS += +libamxj
   DEPENDS += +libamxd
   DEPENDS += +libamxp
   DEPENDS += +libamxb

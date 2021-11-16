@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libnetmodel
-PKG_VERSION:=v0.1.2
+PKG_VERSION:=v0.1.3
 SHORT_DESCRIPTION:=NetModel client library
 
-PKG_SOURCE:=libnetmodel-v0.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/libraries/libnetmodel/-/archive/v0.1.2
-PKG_HASH:=ede02051e21069008afe9517ff926bb98be9b32063953ae8d1f5dde10471cf3d
-PKG_BUILD_DIR:=$(BUILD_DIR)/libnetmodel-v0.1.2
+PKG_SOURCE:=libnetmodel-v0.1.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libnetmodel/-/archive/v0.1.3
+PKG_HASH:=4fd7052ba41fbd90584754f82ecf3aeb3ff592564ac065fba2c0083d6627081f
+PKG_BUILD_DIR:=$(BUILD_DIR)/libnetmodel-v0.1.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/libraries/libnetmodel
+  URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libnetmodel
   DEPENDS += +libamxc
   DEPENDS += +libamxp
   DEPENDS += +libamxd

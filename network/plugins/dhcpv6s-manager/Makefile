@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv6s-manager
-PKG_VERSION:=v0.2.0
+PKG_VERSION:=v0.6.8
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv6s-v0.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv6s/-/archive/v0.2.0
-PKG_HASH:=b540ef482b7fa583da49b724f57e434809f5dd5ce10b29b24f2063cdd4b667f8
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.2.0
+PKG_SOURCE:=tr181-dhcpv6s-v0.6.8.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s/-/archive/v0.6.8
+PKG_HASH:=d4874a3ce5a869603806ecba5311191d1f93fa2fedcbe20af54d1af51a6a489d
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.6.8
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,13 +36,14 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/plugins/tr181-dhcpv6s
+  URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s
   DEPENDS += +amxrt
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxp
   DEPENDS += +libamxb
   DEPENDS += +libamxo
+  DEPENDS += +libamxm
   DEPENDS += +libsahtrace
   DEPENDS += +mod-dmext
   MENU:=1

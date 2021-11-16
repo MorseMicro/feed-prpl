@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netdev-plugin
-PKG_VERSION:=v1.3.3
+PKG_VERSION:=v1.3.4
 SHORT_DESCRIPTION:=NetDev monitors the operating system's network devices
 
-PKG_SOURCE:=netdev-v1.3.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/plugins/netdev/-/archive/v1.3.3
-PKG_HASH:=168da0b8c378f13c5fc00b5dbcbfb57c86422a0e4b388e5282a6578d48d0e6be
-PKG_BUILD_DIR:=$(BUILD_DIR)/netdev-v1.3.3
+PKG_SOURCE:=netdev-v1.3.4.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/netdev/-/archive/v1.3.4
+PKG_HASH:=ad9a14882c8d6347aa0ca100fd5d2caffdea8033401f89e1d2a4f33c9405f576
+PKG_BUILD_DIR:=$(BUILD_DIR)/netdev-v1.3.4
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,7 +36,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/plugins/netdev
+  URL:=https://gitlab.com/prpl-foundation/components/core/plugins/netdev
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxp
