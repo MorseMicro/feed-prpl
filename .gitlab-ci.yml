@@ -52,6 +52,7 @@ generate:
       mod-ba-cli
       mod-dm-cli
       mod-dmext
+      mod-dmstats
       mod-sahtrace
       netdev-plugin
       netmodel
