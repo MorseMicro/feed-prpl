@@ -74,6 +74,7 @@ generate:
       ucwmp
       udrone
       uriparser
+      wan-autosensing
       wan-manager
 
 build:

@@ -1,0 +1,20 @@
+config PACKAGE_wan-autosensing
+    tristate
+    select SAH_AMX_WAN_AUTOSENSING
+
+if PACKAGE_wan-autosensing
+
+menu "Select wan-autosensing build options"
+    depends on PACKAGE_wan-autosensing
+
+config SAH_AMX_WAN_AUTOSENSING
+    bool "Build a tr181 compatible WAN autosensing plugin"
+    default y
+
+config SAH_AMX_WAN_AUTOSENSING_ORDER
+    int "WAN Autosensing plugin start up order"
+    default 90
+
+endmenu
+
+endif
