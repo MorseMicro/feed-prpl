@@ -1,0 +1,20 @@
+config PACKAGE_pcm-manager
+    tristate
+    select SAH_AMX_PCM
+
+if PACKAGE_pcm-manager
+
+menu "Select pcm-manager build options"
+    depends on PACKAGE_pcm-manager
+
+config SAH_AMX_PCM
+    bool "Upgrade persistent configuration manager"
+    default y
+
+config SAH_AMX_PCM_ORDER
+    int "Start order of the TR-181 persistent configuration manager"
+    default 17
+
+endmenu
+
+endif

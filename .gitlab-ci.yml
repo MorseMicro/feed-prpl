@@ -61,6 +61,7 @@ generate:
       netmodel
       obuspa
       owsd
+      pcm-manager
       routing-manager
       time-manager
       tr181-bridging
