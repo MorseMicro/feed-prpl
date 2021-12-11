@@ -58,6 +58,7 @@ generate:
       mod-dmext
       mod-dmproxy
       mod-dmstats
+      mod-netmodel
       mod-pcm-svc
       mod-sahtrace
       mod-vlan-ioctl
