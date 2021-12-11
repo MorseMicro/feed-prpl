@@ -1,0 +1,20 @@
+config PACKAGE_moca-manager
+    tristate
+    select SAH_AMX_TR181_MOCA
+
+if PACKAGE_moca-manager
+
+menu "Select moca-manager build options"
+    depends on PACKAGE_moca-manager
+
+config SAH_AMX_TR181_MOCA
+    bool "Build a tr181 compatible moca plugin"
+    default y
+
+config SAH_AMX_TR181_MOCA_ORDER
+    int "Start up order for the tr181 moca plugin"
+    default 25
+
+endmenu
+
+endif

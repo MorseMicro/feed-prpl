@@ -51,6 +51,7 @@ generate:
       libtrace
       luci-mod-simple
       luci-theme-prpl
+      moca-manager
       mod-amxb-ubus
       mod-ba-cli
       mod-dm-cli
