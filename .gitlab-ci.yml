@@ -40,6 +40,7 @@ generate:
       libamxm
       libamxo
       libamxp
+      libamxs
       libamxt
       libdhcpoptions
       libfwinterface
