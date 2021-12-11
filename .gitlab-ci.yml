@@ -75,6 +75,7 @@ generate:
       tr181-dhcpv6client
       tr181-firewall
       tr181-qos
+      tr181-routeradvertisement
       tr181-usermanagement
       ucode
       ucwmp
