@@ -57,6 +57,7 @@ generate:
       mod-dmext
       mod-dmproxy
       mod-dmstats
+      mod-pcm-svc
       mod-sahtrace
       mod-vlan-ioctl
       mod-vlan-uci
