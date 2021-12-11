@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-vlan-ioctl
-PKG_VERSION:=v0.1.0
+PKG_VERSION:=v0.1.1
 SHORT_DESCRIPTION:=SoC module to help handling vlans
 
-PKG_SOURCE:=mod-vlan-ioctl-v0.1.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-vlan-ioctl/-/archive/v0.1.0
-PKG_HASH:=0392e97529baafb648c5e1fcf72a470187f997fb77fa0aeae0cb20c965dbb875
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-vlan-ioctl-v0.1.0
+PKG_SOURCE:=mod-vlan-ioctl-v0.1.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-vlan-ioctl/-/archive/v0.1.1
+PKG_HASH:=3c2582e6ec4dad1a12f4b4a6d4ebe5b74ed57ea2ae34aee64ee46269e3c9542e
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-vlan-ioctl-v0.1.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-vlan-ioctl
+  URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-vlan-ioctl
   DEPENDS += +libamxc
   DEPENDS += +libamxm
   DEPENDS += +libsahtrace

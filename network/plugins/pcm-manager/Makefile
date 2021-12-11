@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pcm-manager
-PKG_VERSION:=v0.3.1
+PKG_VERSION:=v0.4.1
 SHORT_DESCRIPTION:=Upgrade Persistent Configuration Manager
 
-PKG_SOURCE:=tr181-pcm-v0.3.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.3.1
-PKG_HASH:=6e4d2e5a7876d1bed8e558bf8d28e5e973cad77cff93a2227c94380ac737db3e
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.3.1
+PKG_SOURCE:=tr181-pcm-v0.4.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.4.1
+PKG_HASH:=5ce059ef8cd3abf8cb46c493e27b990c6c7644a458097ff8ad1f7e9fff2072b1
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.4.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -28,13 +28,16 @@ define Package/$(PKG_NAME)
   SUBMENU:=Plugins
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm
-  DEPENDS += +libamxb
-  DEPENDS += +libamxc
-  DEPENDS += +libamxp
-  DEPENDS += +libamxd
-  DEPENDS += +libamxo
   DEPENDS += +amxrt
+  DEPENDS += +libamxc
+  DEPENDS += +libamxd
+  DEPENDS += +libamxp
+  DEPENDS += +libamxb
+  DEPENDS += +libamxo
+  DEPENDS += +libamxm
+  DEPENDS += +libamxj
   DEPENDS += +libsahtrace
+  DEPENDS += +mod-dmext
   MENU:=1
 endef
 

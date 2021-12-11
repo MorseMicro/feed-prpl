@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dmext
-PKG_VERSION:=v0.1.4
+PKG_VERSION:=v0.2.0
 SHORT_DESCRIPTION:=Data model extension module
 
-PKG_SOURCE:=mod-dmext-v0.1.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-dmext/-/archive/v0.1.4
-PKG_HASH:=61b950143199999e9adf5a4e10faf050af61d79936366d7fd9a20c2eba8d9674
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmext-v0.1.4
+PKG_SOURCE:=mod-dmext-v0.2.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmext/-/archive/v0.2.0
+PKG_HASH:=c1a641e4bbe06767582866e2c87202c3bbfe130be55f541f16c175a7a8515807
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmext-v0.2.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -21,7 +21,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-dmext
+  URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmext
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxb
