@@ -55,6 +55,7 @@ generate:
       mod-ba-cli
       mod-dm-cli
       mod-dmext
+      mod-dmproxy
       mod-dmstats
       mod-sahtrace
       mod-vlan-ioctl
