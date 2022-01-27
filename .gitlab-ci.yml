@@ -69,6 +69,7 @@ generate:
       netmodel
       netmodel-ip
       obuspa
+      odl-generator
       owsd
       pcm-manager
       routing-manager
