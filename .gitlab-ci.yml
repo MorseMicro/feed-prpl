@@ -61,6 +61,7 @@ generate:
       mod-netmodel
       mod-pcm-svc
       mod-sahtrace
+      mod-sahtrace
       mod-vlan-ioctl
       mod-vlan-uci
       netdev-plugin
