@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-server
-PKG_VERSION:=v0.2.0
+PKG_VERSION:=v0.3.0
 SHORT_DESCRIPTION:=Service implementing the gmap data model
 
-PKG_SOURCE:=gmap-server-v0.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-server/-/archive/v0.2.0
-PKG_HASH:=85ce9a5480d28e602ae6991e66bb4e4f6af27601918b4eca6422a4da2c0da0dc
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-server-v0.2.0
+PKG_SOURCE:=gmap-server-v0.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-server/-/archive/v0.3.0
+PKG_HASH:=22cef9593888036d4fe67f03d22a02464ffbb72ff83cae89a9990f402e6665eb
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-server-v0.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,7 +36,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-server
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-server
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxp
