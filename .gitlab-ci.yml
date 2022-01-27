@@ -64,6 +64,7 @@ generate:
       mod-sahtrace
       mod-vlan-ioctl
       mod-vlan-uci
+      multisettings
       netdev-plugin
       netmodel
       netmodel-ip

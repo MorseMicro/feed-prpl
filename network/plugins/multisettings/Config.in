@@ -1,0 +1,20 @@
+config PACKAGE_multisettings
+    tristate
+    select SAH_AMX_MULTISETTINGS
+
+if PACKAGE_multisettings
+
+menu "Select multisettings build options"
+    depends on PACKAGE_multisettings
+
+config SAH_AMX_MULTISETTINGS
+    bool "Build a tr181 compatible multisettings plugin"
+    default y
+
+config SAH_AMX_MULTISETTINGS_ORDER
+    int "Start up order for the tr181 multisettings plugin"
+    default 25
+
+endmenu
+
+endif
