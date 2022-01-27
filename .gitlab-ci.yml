@@ -67,6 +67,7 @@ generate:
       multisettings
       netdev-plugin
       netmodel
+      netmodel-dhcpv4
       netmodel-ip
       obuspa
       odl-generator
