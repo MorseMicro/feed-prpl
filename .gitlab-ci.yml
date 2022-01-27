@@ -69,6 +69,7 @@ generate:
       netmodel
       netmodel-dhcpv4
       netmodel-dhcpv6
+      netmodel-ethernet
       netmodel-ip
       obuspa
       odl-generator
