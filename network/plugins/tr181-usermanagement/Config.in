@@ -15,6 +15,10 @@ config SAH_AMX_USERMANAGEMENT_ORDER
     int "TR-181 compatible user management plugin"
     default 16
 
+config SAH_AMX_USERMANAGEMENT_DISABLE_SHA512
+    bool "Disable SHA512 and use the insecure MD5 instead for hashing passwords"
+    default n
+
 endmenu
 
 endif
