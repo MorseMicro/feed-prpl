@@ -1,0 +1,39 @@
+From c148fde9f505e00102b31ca43fee1b9c559302b4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Sat, 5 Feb 2022 09:15:04 +0100
+Subject: [PATCH] ocg_user_output: fix amxo_libversion API change in libamxo
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+libamxo in commit 382eb85a4a8f ("Issue: #71 Cannot load unknown instance parameter
+with "populate-behavior.unknown-parameter=add" [fix]") changed API of
+`amxo_lib_version()` to `amxo_libversion()` and thus now `amxo-cg` fails to compile:
+
+ ocg_user_output.c: In function 'ocg_usage':
+ ocg_user_output.c:120:57: error: implicit declaration of function 'amxo_lib_version'; did you mean 'amxo_libversion'? [-Werror=implicit-function-declaration]
+             VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, amxo_lib_version());
+                                                         ^~~~~~~~~~~~~~~~
+                                                         amxo_libversion
+
+So fix it by renaming that API call to a changed function name.
+
+References: https://gitlab.com/prpl-foundation/prplos/feed-prpl/-/jobs/2056547406#L7431
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ src/ocg_user_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/ocg_user_output.c b/src/ocg_user_output.c
+index 641c73d7697a..2bdf26410461 100644
+--- a/src/ocg_user_output.c
++++ b/src/ocg_user_output.c
+@@ -117,7 +117,7 @@ static void ocg_usage_gen_xml(void) {
+ 
+ void ocg_usage(UNUSED int argc, char* argv[]) {
+     printf("Ambiorix ODL File Parser/Generator v%d.%d.%d\n\tpowered by libamxo v%s\n",
+-           VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, amxo_lib_version());
++           VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, amxo_libversion());
+ 
+     printf("\n%s [OPTIONS] <odl files> <directories>\n", argv[0]);
+     printf("\n");
