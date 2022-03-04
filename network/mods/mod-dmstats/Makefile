@@ -5,7 +5,7 @@ PKG_VERSION:=v0.1.1
 SHORT_DESCRIPTION:=Reusable stats module
 
 PKG_SOURCE:=mod-dmstats-v0.1.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-dmstats/-/archive/v0.1.1
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmstats/-/archive/v0.1.1
 PKG_HASH:=d3ac3efc4f5e101f18c3dc651f842b68436de828237abfb8e96729ac222c6287
 PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmstats-v0.1.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-dmstats
+  URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmstats
   DEPENDS += +libamxc
   DEPENDS += +libamxp
   DEPENDS += +libamxd

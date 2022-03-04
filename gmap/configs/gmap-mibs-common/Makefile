@@ -5,7 +5,7 @@ PKG_VERSION:=v0.2.3
 SHORT_DESCRIPTION:=Generic mib files for the gmap service
 
 PKG_SOURCE:=gmap-mibs-common-v0.2.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/mibs/gmap-mibs-common/-/archive/v0.2.3
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common/-/archive/v0.2.3
 PKG_HASH:=d350eac8b25841093149a8fe3313dfa567b024084091c2f6f9355fba0374c50c
 PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mibs-common-v0.2.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Configurations
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/gmap/mibs/gmap-mibs-common
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common
   DEPENDS += +gmap-server
   DEPENDS += +libamxc
   DEPENDS += +libamxp

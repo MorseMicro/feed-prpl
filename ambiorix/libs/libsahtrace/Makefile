@@ -5,7 +5,7 @@ PKG_VERSION:=v1.8.0
 SHORT_DESCRIPTION:=Small and flexible library to enable tracing and logging
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/logging/libsahtrace/-/archive/$(PKG_VERSION)
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libsahtrace/-/archive/$(PKG_VERSION)
 PKG_HASH:=d1bebeb820de8c15028c9cf17c473eeb07454e4d88c21c8fac339015faa81ea5
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/logging/libsahtrace
+  URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libsahtrace
   MENU:=1
 endef
 

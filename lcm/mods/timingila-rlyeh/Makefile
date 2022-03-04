@@ -5,7 +5,7 @@ PKG_VERSION:=v0.2.5
 SHORT_DESCRIPTION:=The module timingila-rlyeh provides rlyeh support as a packager backend to timingila
 
 PKG_SOURCE:=timingila-rlyeh-v0.2.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/lcm/modules/timingila-rlyeh/-/archive/v0.2.5
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh/-/archive/v0.2.5
 PKG_HASH:=204d923b374ee5ced4fd85063accb0a2637074b0033df52a2099c0d344941cdc
 PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-rlyeh-v0.2.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -21,7 +21,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=SoftAtHome
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/lcm/modules/timingila-rlyeh
+  URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh
   DEPENDS += +libamxc
   DEPENDS += +libamxm
   DEPENDS += +libamxp

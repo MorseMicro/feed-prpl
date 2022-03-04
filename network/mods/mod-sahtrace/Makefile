@@ -5,7 +5,7 @@ PKG_VERSION:=v0.0.9
 SHORT_DESCRIPTION:=Module for sahtrace logging
 
 PKG_SOURCE:=mod-sahtrace-v0.0.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-sahtrace/-/archive/v0.0.9
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-sahtrace/-/archive/v0.0.9
 PKG_HASH:=80e1d6af17916f5dfd65dbdd3622c69e9ded46d8774b0f48cb928ac2c2149727
 PKG_BUILD_DIR:=$(BUILD_DIR)/mod-sahtrace-v0.0.9
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=ambiorix
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/ambiorix/modules/mod-sahtrace
+  URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-sahtrace
   DEPENDS += +libamxc
   DEPENDS += +libamxd
   DEPENDS += +libamxo

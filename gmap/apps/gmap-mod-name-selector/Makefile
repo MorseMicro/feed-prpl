@@ -5,7 +5,7 @@ PKG_VERSION:=v0.1.2
 SHORT_DESCRIPTION:=Name selection module for gmap
 
 PKG_SOURCE:=gmap-mod-name-selector-v0.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-name-selector/-/archive/v0.1.2
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-name-selector/-/archive/v0.1.2
 PKG_HASH:=4e6ffc69f79ac440b974b2d403da56a2974a1f3a536a2fba11aaa1ad15eb2fd6
 PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-name-selector-v0.1.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/soft.at.home/gmap/applications/gmap-mod-name-selector
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common
   DEPENDS += +gmap-server
   DEPENDS += +libamxc
   DEPENDS += +libamxp
