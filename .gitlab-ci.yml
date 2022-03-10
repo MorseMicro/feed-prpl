@@ -85,6 +85,7 @@ generate:
       time-manager
       timingila
       timingila-cthulhu
+      timingila-rlyeh
       tr181-bridging
       tr181-device
       tr181-dhcpv4client
