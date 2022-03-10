@@ -21,6 +21,7 @@ generate:
       amxrt
       bbf
       bbfd
+      cthulhu
       deviceinfo-manager
       dhcpv4-manager
       dhcpv6s-manager

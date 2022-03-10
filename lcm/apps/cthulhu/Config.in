@@ -1,0 +1,20 @@
+config PACKAGE_cthulhu
+    tristate
+    select SAH_SERVICES_CTHULHU
+
+if PACKAGE_cthulhu
+
+menu "Select cthulhu build options"
+    depends on PACKAGE_cthulhu
+
+config SAH_SERVICES_CTHULHU
+    bool "Build Cthulhu"
+    default y
+
+config SAH_SERVICES_CTHULHU_INIT_ORDER
+    int "Cthulhu plugin start up order"
+    default 90
+
+endmenu
+
+endif
