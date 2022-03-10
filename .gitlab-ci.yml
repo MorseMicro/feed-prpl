@@ -50,6 +50,7 @@ generate:
       libgmap-client
       libnetmodel
       libocispec
+      librlyeh
       libsahtrace
       libtrace
       luci-mod-simple
