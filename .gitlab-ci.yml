@@ -76,6 +76,7 @@ generate:
       odl-generator
       owsd
       pcm-manager
+      rlyeh
       routing-manager
       time-manager
       tr181-bridging

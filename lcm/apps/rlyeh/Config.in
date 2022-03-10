@@ -1,0 +1,20 @@
+config PACKAGE_rlyeh
+    tristate
+    select SAH_SERVICES_RLYEH
+
+if PACKAGE_rlyeh
+
+menu "Select rlyeh build options"
+    depends on PACKAGE_rlyeh
+
+config SAH_SERVICES_RLYEH
+    bool "Build Rlyeh"
+    default y
+
+config SAH_SERVICES_RLYEH_ORDER
+    int "Rlyeh plugin start up order"
+    default 90
+
+endmenu
+
+endif
