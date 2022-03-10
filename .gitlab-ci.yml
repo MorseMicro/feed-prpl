@@ -43,6 +43,7 @@ generate:
       libamxp
       libamxs
       libamxt
+      libcthulhu
       libdhcpoptions
       libfwinterface
       libfwrules
