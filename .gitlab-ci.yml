@@ -22,6 +22,7 @@ generate:
       bbf
       bbfd
       cthulhu
+      cthulhu-lxc
       deviceinfo-manager
       dhcpv4-manager
       dhcpv6s-manager

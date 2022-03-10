@@ -1,0 +1,47 @@
+changes defaults to use /opt/prplos
+Index: cthulhu-lxc/src/makefile
+===================================================================
+--- cthulhu-lxc.orig/src/makefile
++++ cthulhu-lxc/src/makefile
+@@ -9,11 +9,11 @@ TARGET_SO = $(OBJDIR)/$(COMPONENT).so
+ # directories
+ # source directories
+ INCDIRS = $(INCDIR) $(INCDIR_PRIV)
+-ifeq ($(CONFIG_SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH),y)
++ifeq ($(CONFIG_SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH),n)
++	LIBDIR =
++else
+ 	LIBDIR = -L$(STAGINGDIR)/opt/prplos/usr/lib
+ 	INCDIRS += $(if $(STAGINGDIR), $(STAGINGDIR)/opt/prplos/usr/include)
+-else
+-	LIBDIR =
+ endif
+ 
+ SRCDIR = $(shell pwd)
+@@ -41,9 +41,9 @@ else
+ endif
+ 
+ ifdef CONFIG_SAH_LIB_CTHULHU-LXC_LXC_TOOLS_PREFIX
+-	CFLAGS_LXC_TOOLS_PREFIX ?= -D'LXC_TOOLS_PREFIX="$(CONFIG_SAH_LIB_CTHULHU-LXC_LXC_TOOLS_PREFIX)"' 
++	CFLAGS_LXC_TOOLS_PREFIX ?= -D'LXC_TOOLS_PREFIX="$(CONFIG_SAH_LIB_CTHULHU-LXC_LXC_TOOLS_PREFIX)"'
+ endif
+-CFLAGS_LXC_TOOLS_PREFIX ?= -D'LXC_TOOLS_PREFIX="/usr/bin/"'
++CFLAGS_LXC_TOOLS_PREFIX ?= -D'LXC_TOOLS_PREFIX="/opt/prplos/usr/bin/"'
+ CFLAGS += $(CFLAGS_LXC_TOOLS_PREFIX)
+ 
+ LDFLAGS += $(LIBDIR) \
+@@ -57,11 +57,11 @@ LDFLAGS += $(LIBDIR) \
+ all: $(TARGET_SO)
+ 
+ $(TARGET_SO): $(OBJECTS)
+-ifeq ($(CONFIG_SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH),y)
++ifeq ($(CONFIG_SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH),n)
++	$(CC) -Wl,-soname,$(COMPONENT).so -o $@ $(OBJECTS) $(LDFLAGS)
++else
+ 	echo "!!! Compiling with --rpath to /opt/prplos/usr/lib/ !!!"
+ 	$(CC) -Wl,-rpath=/opt/prplos/usr/lib/,-soname,$(COMPONENT).so -o $@ $(OBJECTS) $(LDFLAGS)
+-else
+-	$(CC) -Wl,-soname,$(COMPONENT).so -o $@ $(OBJECTS) $(LDFLAGS)
+ endif
+ 
+ -include $(OBJECTS:.o=.d)
