@@ -1,0 +1,32 @@
+config PACKAGE_timingila
+    tristate
+    select SAH_SERVICES_TIMINGILA
+
+if PACKAGE_timingila
+
+menu "Select timingila build options"
+    depends on PACKAGE_timingila
+
+config SAH_SERVICES_TIMINGILA
+    bool "Build TIMINGILA"
+    default y
+
+config SAH_SERVICES_TIMINGILA_INIT_ORDER
+    int "TIMINGILA plugin start up order"
+    default 91
+
+config SAH_SERVICES_TIMINGILA_INIT_ADAPTERS
+    bool "Init Timingila adapters"
+    default y
+
+config SAH_SERVICES_TIMINGILA_ADAPTER_PACKAGER
+    string "Timingila adapter packager so path"
+    default "/usr/lib/timingila-rlyeh/timingila-rlyeh.so"
+
+config SAH_SERVICES_TIMINGILA_ADAPTER_CONTAINER
+    string "Timingila adapter container so path"
+    default "/usr/lib/timingila-cthulhu/timingila-cthulhu.so"
+
+endmenu
+
+endif

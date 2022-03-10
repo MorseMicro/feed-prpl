@@ -79,6 +79,7 @@ generate:
       rlyeh
       routing-manager
       time-manager
+      timingila
       tr181-bridging
       tr181-device
       tr181-dhcpv4client
