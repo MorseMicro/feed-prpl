@@ -84,6 +84,7 @@ generate:
       routing-manager
       time-manager
       timingila
+      timingila-cthulhu
       tr181-bridging
       tr181-device
       tr181-dhcpv4client
