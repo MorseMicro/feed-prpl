@@ -49,6 +49,7 @@ generate:
       libfwrules
       libgmap-client
       libnetmodel
+      libocispec
       libsahtrace
       libtrace
       luci-mod-simple
