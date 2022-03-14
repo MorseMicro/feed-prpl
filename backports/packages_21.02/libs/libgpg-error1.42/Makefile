@@ -7,11 +7,11 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=libgpg-error
+PKG_NAME:=libgpg-error1.42
 PKG_VERSION:=1.42
 PKG_RELEASE:=$(AUTORELEASE)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=libgpg-error-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=https://mirrors.dotsrc.org/gcrypt/libgpg-error \
 		http://ring.ksc.gr.jp/archives/net/gnupg/libgpg-error \
 		https://www.gnupg.org/ftp/gcrypt/libgpg-error
@@ -25,16 +25,18 @@ PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
+UNPACK_CMD=tar -xf "$(DL_DIR)/$(PKG_SOURCE)" -C $(PKG_BUILD_DIR) --strip-components=1
+
 include $(INCLUDE_DIR)/package.mk
 
-define Package/libgpg-error
+define Package/libgpg-error1.42
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=GnuPG error handling helper library
   URL:=https://www.gnupg.org/related_software/libgpg-error/
 endef
 
-define Package/libgpg-error/description
+define Package/libgpg-error1.42/description
 	An helper library for common error codes and descriptions.
 	This is a library that defines common error values for all GnuPG
 	components. Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt,
@@ -48,55 +50,58 @@ CONFIGURE_ARGS += \
 	--disable-doc \
 	--disable-languages \
 	--disable-rpath \
-	--disable-tests
+	--disable-tests \
+	--bindir=/opt/prplos/usr/bin \
+	--includedir=/opt/prplos/usr/include \
+	--libdir=/opt/prplos/usr/lib 
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(2)/bin $(1)/usr/bin
+	$(INSTALL_DIR) $(2)/opt/prplos/bin $(1)/opt/prplos/usr/bin
 	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)/usr/bin/gpg-error-config \
-		$(2)/bin/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/bin/gpg-error-config \
+		$(2)/opt/prplos/bin/
 	$(SED) \
 		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/usr,g' \
-		$(2)/bin/gpg-error-config
-	ln -sf $(STAGING_DIR)/host/bin/gpg-error-config $(1)/usr/bin/gpg-error-config
+		$(2)/opt/prplos/bin/gpg-error-config
+	ln -sf $(STAGING_DIR)/host/opt/prplos/bin/gpg-error-config $(1)/opt/prplos/usr/bin/gpg-error-config
 
 	$(INSTALL_BIN) \
-		$(PKG_INSTALL_DIR)/usr/bin/gpgrt-config \
-		$(2)/bin/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/bin/gpgrt-config \
+		$(2)/opt/prplos/bin/
 	$(SED) \
 		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/usr,g' \
-		$(2)/bin/gpgrt-config
-	ln -sf $(STAGING_DIR)/host/bin/gpgrt-config $(1)/usr/bin/gpgrt-config
+		$(2)/opt/prplos/bin/gpgrt-config
+	ln -sf $(STAGING_DIR)/host/opt/prplos/bin/gpgrt-config $(1)/opt/prplos/usr/bin/gpgrt-config
 
-	$(INSTALL_DIR) $(1)/usr/include
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/include
 	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)/usr/include/gpg-error.h \
-		$(1)/usr/include/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/include/gpg-error.h \
+		$(1)/opt/prplos/usr/include/
 
 	$(INSTALL_DATA) \
-		$(PKG_INSTALL_DIR)/usr/include/gpgrt.h \
-		$(1)/usr/include/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/include/gpgrt.h \
+		$(1)/opt/prplos/usr/include/
 
-	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libgpg-error.{la,a,so*} \
-		$(1)/usr/lib/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/libgpg-error.{la,a,so*} \
+		$(1)/opt/prplos/usr/lib/
 
-	$(INSTALL_DIR) $(1)/usr/share/aclocal
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/share/aclocal
 	$(INSTALL_DATA) \
 		$(PKG_INSTALL_DIR)/usr/share/aclocal/gpg-error.m4 \
-		$(1)/usr/share/aclocal/
+		$(1)/opt/prplos/usr/share/aclocal/
 
 	$(INSTALL_DATA) \
 		$(PKG_INSTALL_DIR)/usr/share/aclocal/gpgrt.m4 \
-		$(1)/usr/share/aclocal/
+		$(1)/opt/prplos/usr/share/aclocal/
 endef
 
-define Package/libgpg-error/install
-	$(INSTALL_DIR) $(1)/usr/lib
+define Package/libgpg-error1.42/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libgpg-error.so.* \
-		$(1)/usr/lib/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/libgpg-error.so.* \
+		$(1)/opt/prplos/usr/lib/
 endef
 
-$(eval $(call BuildPackage,libgpg-error))
+$(eval $(call BuildPackage,libgpg-error1.42))
