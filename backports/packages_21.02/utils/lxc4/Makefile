@@ -8,11 +8,13 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=lxc
+PKG_NAME:=lxc4
 PKG_VERSION:=4.0.10
 PKG_RELEASE:=$(AUTORELEASE)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+UNPACK_CMD=tar -xf "$(DL_DIR)/$(PKG_SOURCE)" -C $(PKG_BUILD_DIR) --strip-components=1
+
+PKG_SOURCE:=lxc-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://linuxcontainers.org/downloads/lxc/
 PKG_HASH:=a10c518056d2e497bd600e4ffac2853bdeab1e835bf455a6d87cc8df128bfae9
 
@@ -26,248 +28,251 @@ PKG_USE_MIPS16:=0
 
 include $(INCLUDE_DIR)/package.mk
 
-LXC_APPLETS_BIN += \
+LXC4_APPLETS_BIN += \
 	attach autostart cgroup copy config console create destroy device \
 	execute freeze info monitor snapshot start stop unfreeze unshare \
 	usernsexec wait top ls
 
-LXC_APPLETS_LIB += \
+LXC4_APPLETS_LIB += \
 	monitord user-nic
 
-LXC_SCRIPTS += \
+LXC4_SCRIPTS += \
 	checkconfig
 
-DEPENDS_APPLETS = +libpthread +libcap +liblxc
+DEPENDS_APPLETS = +libpthread +libcap +liblxc4
 
-DEPENDS_create = +lxc-configs +lxc-hooks +lxc-templates +flock
+DEPENDS_create = +lxc4-configs +lxc4-hooks +lxc4-templates +flock
 
-define Package/lxc/Default
+define Package/lxc4/Default
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=LXC userspace tools
   URL:=https://linuxcontainers.org/
-  DEPENDS:=lxc
+  DEPENDS:=lxc4
 endef
 
-define Package/lxc
-  $(call Package/lxc/Default)
+define Package/lxc4
+  $(call Package/lxc4/Default)
   DEPENDS:=@!arc
   MENU:=1
 endef
 
-define Package/lxc-auto
-  $(call Package/lxc/Default)
+define Package/lxc4-auto
+  $(call Package/lxc4/Default)
   TITLE:= (initscript)
-  DEPENDS+=+lxc-start +lxc-stop
+  DEPENDS+=+lxc4-start +lxc4-stop
 endef
 
-define Package/lxc-auto/description
+define Package/lxc4-auto/description
  LXC is the userspace control package for Linux Containers, a lightweight
  virtual system mechanism sometimes described as "chroot on steroids".
  This package adds an initscript for starting and stopping the containers
  on boot and shutdown.
 endef
 
-define Package/lxc-auto/conffiles
-/etc/config/lxc-auto
+define Package/lxc4-auto/conffiles
+/opt/prplos/etc/config/lxc-auto
 endef
 
-define Package/lxc-unprivileged
-  $(call Package/lxc/Default)
+define Package/lxc4-unprivileged
+  $(call Package/lxc4/Default)
   TITLE:=Helper script for unprivileged containers support
   DEPENDS+=+shadow-utils +shadow-newuidmap +shadow-newgidmap
 endef
 
-define Package/lxc-unprivileged/description
+define Package/lxc4-unprivileged/description
  Support for unprivileged containers requires newuidmap and newguidmap.
  This package makes sure they are available & have correct permissions.
 endef
 
-define Package/lxc-unprivileged/install
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DATA) ./files/lxc-unprivileged.defaults $(1)/etc/uci-defaults/lxc-unprivileged
+define Package/lxc4-unprivileged/install
+	$(INSTALL_DIR) $(1)/opt/prplos/etc/uci-defaults
+	$(INSTALL_DATA) ./files/lxc-unprivileged.defaults $(1)/opt/prplos/etc/uci-defaults/lxc-unprivileged
 endef
 
-define Package/lxc/config
+define Package/lxc4/config
   source "$(SOURCE)/Config.in"
 endef
 
-define Package/lxc/description
+define Package/lxc4/description
  LXC is the userspace control package for Linux Containers, a lightweight
  virtual system mechanism sometimes described as "chroot on steroids".
 endef
 
-define Package/lxc-common
-  $(call Package/lxc/Default)
+define Package/lxc4-common
+  $(call Package/lxc4/Default)
   TITLE:=LXC common files
 endef
 
-define Package/lxc-hooks
-  $(call Package/lxc/Default)
+define Package/lxc4-hooks
+  $(call Package/lxc4/Default)
   TITLE:=LXC virtual machine hooks
 endef
 
-define Package/lxc-templates
-  $(call Package/lxc/Default)
+define Package/lxc4-templates
+  $(call Package/lxc4/Default)
   TITLE:=LXC virtual machine templates
 endef
 
-define Package/lxc-configs
-  $(call Package/lxc/Default)
+define Package/lxc4-configs
+  $(call Package/lxc4/Default)
   TITLE:=LXC virtual machine common config files
 endef
 
-define Package/liblxc
-  $(call Package/lxc/Default)
+define Package/liblxc4
+  $(call Package/lxc4/Default)
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=LXC userspace library
   DEPENDS+= +libcap +libpthread +LXC_SECCOMP:libseccomp +libopenssl
 endef
 
-define Package/lxc-init
-  $(call Package/lxc/Default)
+define Package/lxc4-init
+  $(call Package/lxc4/Default)
   TITLE:=LXC Lua bindings
-  DEPENDS+= +liblxc
+  DEPENDS+= +liblxc4
 endef
 
 CONFIGURE_ARGS += \
 	--disable-werror \
-	--disable-rpath \
 	--disable-doc \
 	--disable-api-docs \
 	--disable-apparmor \
 	--disable-selinux \
 	--$(if $(CONFIG_LXC_SECCOMP),en,dis)able-seccomp \
 	--enable-capabilities \
-	--disable-examples
+	--disable-examples \
+	--with-global-conf="/opt/prplos/etc/lxc/lxc.conf"  \
+	--sysconfdir="/opt/prplos/etc/" \
+	--libdir="/opt/prplos/usr/lib/" \
+	--with-runtime-path="/var/run/"
 
 ifdef CONFIG_USE_MIPS16
   TARGET_CFLAGS += -minterlink-mips16
 endif
-TARGET_LDFLAGS += -lgcc_eh
+TARGET_LDFLAGS += -lgcc_eh -Wl,-rpath=/opt/prplos/usr/lib/
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/lxc/
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/include/lxc/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/include/lxc/* \
-		$(1)/usr/include/lxc/
+		$(1)/opt/prplos/usr/include/lxc/
 
-	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/liblxc.so* \
-		$(1)/usr/lib/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/liblxc.so* \
+		$(1)/opt/prplos/usr/lib/
 
-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib/pkgconfig
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/lxc.pc \
-		$(1)/usr/lib/pkgconfig/
-	$(SED) 's,/usr/include,$$$${prefix}/include,g' $(1)/usr/lib/pkgconfig/lxc.pc
-	$(SED) 's,/usr/lib,$$$${prefix}/lib,g' $(1)/usr/lib/pkgconfig/lxc.pc
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/pkgconfig/lxc.pc \
+		$(1)/opt/prplos/usr/lib/pkgconfig/
+	$(SED) 's,/usr/include,$$$${prefix}/include,g' $(1)/opt/prplos/usr/lib/pkgconfig/lxc.pc
+	$(SED) 's,/usr/lib,$$$${prefix}/lib,g' $(1)/opt/prplos/usr/lib/pkgconfig/lxc.pc
 endef
 
 
-define Package/lxc/install
+define Package/lxc4/install
 	true
 endef
 
-define Package/lxc-auto/install
-	$(INSTALL_DIR) $(1)/etc/config $(1)/etc/init.d
-	$(INSTALL_CONF) ./files/lxc-auto.config $(1)/etc/config/lxc-auto
-	$(INSTALL_BIN) ./files/lxc-auto.init $(1)/etc/init.d/lxc-auto
+define Package/lxc4-auto/install
+	$(INSTALL_DIR) $(1)/opt/prplos/etc/config $(1)/opt/prplos/etc/init.d
+	$(INSTALL_CONF) ./files/lxc-auto.config $(1)/opt/prplos/etc/config/lxc-auto
+	$(INSTALL_BIN) ./files/lxc-auto.init $(1)/opt/prplos/etc/init.d/lxc-auto
 endef
 
-define Package/lxc-common/conffiles
-/etc/lxc/default.conf
-/etc/lxc/lxc.conf
+define Package/lxc4-common/conffiles
+/opt/prplos/etc/lxc/default.conf
+/opt/prplos/etc/lxc/lxc.conf
 endef
 
-define Package/lxc-common/install
-	$(INSTALL_DIR) $(1)/usr/lib/lxc/rootfs
+define Package/lxc4-common/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib/lxc/rootfs
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/lxc/rootfs/README \
-		$(1)/usr/lib/lxc/rootfs/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/lxc/rootfs/README \
+		$(1)/opt/prplos/usr/lib/lxc/rootfs/
 
-	$(INSTALL_DIR) $(1)/usr/share/lxc
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/share/lxc
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/lxc/lxc.functions \
-		$(1)/usr/share/lxc/
+		$(1)/opt/prplos/usr/share/lxc/
 
-	$(INSTALL_DIR) $(1)/etc/lxc/
+	$(INSTALL_DIR) $(1)/opt/prplos/etc/lxc/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/etc/lxc/default.conf \
-		$(1)/etc/lxc/default.conf
+		$(PKG_INSTALL_DIR)/opt/prplos/etc/lxc/default.conf \
+		$(1)/opt/prplos/etc/lxc/default.conf
 
-	$(INSTALL_DIR) $(1)/etc/lxc/
+	$(INSTALL_DIR) $(1)/opt/prplos/etc/lxc/
 	$(CP) \
 		./files/lxc.conf \
-		$(1)/etc/lxc/lxc.conf
+		$(1)/opt/prplos/etc/lxc/lxc.conf
 
-	$(INSTALL_DIR) $(1)/srv/lxc/
+	$(INSTALL_DIR) $(1)/opt/prplos/srv/lxc/
 endef
 
-define Package/lxc-hooks/install
-	$(INSTALL_DIR) $(1)/usr/share/lxc/hooks
+define Package/lxc4-hooks/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/share/lxc/hooks
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/lxc/hooks/* \
-		$(1)/usr/share/lxc/hooks/
+		$(1)/opt/prplos/usr/share/lxc/hooks/
 endef
 
-define Package/lxc-templates/install
-	$(INSTALL_DIR) $(1)/usr/share/lxc/templates/
+define Package/lxc4-templates/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/share/lxc/templates/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/lxc/templates/lxc-* \
-		$(1)/usr/share/lxc/templates/
+		$(1)/opt/prplos/usr/share/lxc/templates/
 endef
 
-define Package/lxc-configs/install
-	$(INSTALL_DIR) $(1)/usr/share/lxc/config/
+define Package/lxc4-configs/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/share/lxc/config/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/share/lxc/config/* \
-		$(1)/usr/share/lxc/config/
+		$(1)/opt/prplos/usr/share/lxc/config/
 endef
 
-define Package/liblxc/install
-	$(INSTALL_DIR) $(1)/usr/lib/
+define Package/liblxc4/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/lib/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/liblxc.so* \
-		$(1)/usr/lib/
+		$(PKG_INSTALL_DIR)/opt/prplos/usr/lib/liblxc.so* \
+		$(1)/opt/prplos/usr/lib/
 endef
 
-define Package/lxc-init/install
-	$(INSTALL_DIR) $(1)/sbin
+define Package/lxc4-init/install
+	$(INSTALL_DIR) $(1)/opt/prplos/sbin
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/sbin/init.lxc \
-		$(1)/sbin/
+		$(1)/opt/prplos/sbin/
 endef
 
 define GenPlugin
-  define Package/lxc-$(1)
-    $(call Package/lxc/Default)
-    TITLE:=Utility lxc-$(1) from the LXC userspace tools
-    DEPENDS+= +lxc-common $(2) $(DEPENDS_$(1))
+  define Package/lxc4-$(1)
+    $(call Package/lxc4/Default)
+    TITLE:=Utility lxc4-$(1) from the LXC userspace tools
+    DEPENDS+= +lxc4-common $(2) $(DEPENDS_$(1)) liblxc4
   endef
 
-  define Package/lxc-$(1)/install
-	$(INSTALL_DIR) $$(1)$(3)
+  define Package/lxc4-$(1)/install
+	$(INSTALL_DIR) $$(1)/opt/prplos/$(3)
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)$(3)/lxc-$(1) \
-		$$(1)$(3)/
+		$$(1)/opt/prplos/$(3)/
   endef
 
-  $$(eval $$(call BuildPackage,lxc-$(1)))
+  $$(eval $$(call BuildPackage,lxc4-$(1)))
 endef
 
 
-$(eval $(call BuildPackage,lxc))
-$(eval $(call BuildPackage,lxc-common))
-$(eval $(call BuildPackage,lxc-hooks))
-$(eval $(call BuildPackage,lxc-configs))
-$(eval $(call BuildPackage,lxc-templates))
-$(eval $(call BuildPackage,liblxc))
-$(eval $(call BuildPackage,lxc-init))
-$(eval $(call BuildPackage,lxc-auto))
-$(eval $(call BuildPackage,lxc-unprivileged))
-$(foreach u,$(LXC_APPLETS_BIN),$(eval $(call GenPlugin,$(u),$(DEPENDS_APPLETS),"/usr/bin")))
-$(foreach u,$(LXC_APPLETS_LIB),$(eval $(call GenPlugin,$(u),$(DEPENDS_APPLETS),"/usr/lib/lxc")))
-$(foreach u,$(LXC_SCRIPTS),$(eval $(call GenPlugin,$(u),,"/usr/bin")))
+$(eval $(call BuildPackage,lxc4))
+$(eval $(call BuildPackage,lxc4-common))
+$(eval $(call BuildPackage,lxc4-hooks))
+$(eval $(call BuildPackage,lxc4-configs))
+$(eval $(call BuildPackage,lxc4-templates))
+$(eval $(call BuildPackage,liblxc4))
+$(eval $(call BuildPackage,lxc4-init))
+$(eval $(call BuildPackage,lxc4-auto))
+$(eval $(call BuildPackage,lxc4-unprivileged))
+$(foreach u,$(LXC4_APPLETS_BIN),$(eval $(call GenPlugin,$(u),$(DEPENDS_APPLETS),"/usr/bin")))
+$(foreach u,$(LXC4_APPLETS_LIB),$(eval $(call GenPlugin,$(u),$(DEPENDS_APPLETS),"/usr/lib/lxc")))
+$(foreach u,$(LXC4_SCRIPTS),$(eval $(call GenPlugin,$(u),,"/usr/bin")))
