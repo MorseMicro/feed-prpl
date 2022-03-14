@@ -18,12 +18,15 @@ PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
+EXTRA_LDFLAGS:=-L$(STAGING_DIR)/opt/prplos/usr/ -L$(STAGING_DIR)/opt/prplos/usr/lib/
+EXTRA_CPPFLAGS:=-I$(STAGING_DIR)/opt/prplos/usr/include
+
 define Package/libgpgme
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=GnuPG Made Easy (GPGME) library
   URL:=https://gnupg.org/software/gpgme/index.html
-  DEPENDS:=+libassuan +libgpg-error
+  DEPENDS:=+libassuan +libgpg-error1.42
 endef
 
 define Package/libgpgmepp
@@ -45,7 +48,7 @@ endef
 
 CONFIGURE_ARGS += \
 	--with-libassuan-prefix="$(STAGING_DIR)/usr/" \
-	--with-gpg-error-prefix="$(STAGING_DIR)/usr/" \
+	--with-gpg-error-prefix="$(STAGING_DIR)/opt/prplos/usr/" \
 	--disable-gpgconf-test \
 	--disable-gpg-test \
 	--disable-gpgsm-test \
