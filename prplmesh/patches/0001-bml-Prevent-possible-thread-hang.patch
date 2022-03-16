@@ -1,0 +1,39 @@
+From 139f92dcc96f69860900512f7c4c0aad860fa39e Mon Sep 17 00:00:00 2001
+From: Moran Shoeg <moranx.shoeg@intel.com>
+Date: Wed, 19 Jan 2022 18:15:44 +0200
+Subject: [PATCH] bml: Prevent possible thread hang
+
+If the calling to the thread_base::stop() from outside the thread
+context, it can lead to a race with the thread_init() function that
+runs within the thread context.
+To prevent the race, keep the same flow of the thread_base::run()
+function but without changing the 'should_stop' flag. Thus the race
+is prevented.
+
+References: https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/merge_requests/2826
+Signed-off-by: Moran Shoeg <moranx.shoeg@intel.com>
+---
+ common/beerocks/bcl/source/beerocks_thread_base.cpp | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/common/beerocks/bcl/source/beerocks_thread_base.cpp b/common/beerocks/bcl/source/beerocks_thread_base.cpp
+index dbbb7447af74..7acbc99fad74 100644
+--- a/common/beerocks/bcl/source/beerocks_thread_base.cpp
++++ b/common/beerocks/bcl/source/beerocks_thread_base.cpp
+@@ -51,11 +51,11 @@ void thread_base::stop(bool block)
+ 
+ void thread_base::run()
+ {
+-    should_stop = !thread_init();
+-
+-    while (!should_stop) {
+-        if (!work()) {
+-            break;
++    if (thread_init()) {
++        while (!should_stop) {
++            if (!work()) {
++                break;
++            }
+         }
+     }
+     on_thread_stop();
