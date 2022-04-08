@@ -65,6 +65,7 @@ generate:
       mod-dmstats
       mod-netmodel
       mod-pcm-svc
+      mod-qos-tc
       mod-sahtrace
       mod-sahtrace
       mod-vlan-ioctl
