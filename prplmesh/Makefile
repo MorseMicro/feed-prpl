@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prplmesh
-PKG_VERSION:=2.3.0
-PKG_RELEASE:=2
+PKG_VERSION:=3.0.1
+PKG_RELEASE:=1
 PKG_REV:=$(PKG_VERSION)
 
 PKG_SOURCE:=prplMesh-$(PKG_REV).tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/archive/$(PKG_REV)
-PKG_HASH:=f961d56fb60f88ea96e4ef1f6e63908c542a2f61673a67d8ff54cf84b374a09a
+PKG_HASH:=fd088195b3d0968f50665fae6a00978082d6232c71b90e9d6c48b0f537e238cb
 PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 
 PKG_CONFIG_DEPENDS:= \
@@ -22,7 +22,7 @@ define Package/prplmesh
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=prplmesh
-	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/README.md
+	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/blob/master/README.md
 	MAINTAINER:=prplfoundation
 	DEPENDS:= \
 		+libstdcpp \
