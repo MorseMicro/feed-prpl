@@ -44,6 +44,8 @@ define Package/$(PKG_NAME)
   DEPENDS += +libnl-route
   DEPENDS += +!BUSYBOX_CONFIG_MKFS_EXT2:e2fsprogs
   DEPENDS += +kmod-loop
+  DEPENDS += +kmod-veth
+  DEPENDS += +kmod-fs-ext4
   MENU:=1
 endef
 
