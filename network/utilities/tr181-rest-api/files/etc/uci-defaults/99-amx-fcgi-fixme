@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# fix amx-fcgi fcgi socket handling
+sed -i 's|fcgi-socket = "$(LIGHTTPD_CHROOT)/var/run/amx-fcgi.sock";|fcgi-socket = "$(LIGHTTPD_CHROOT)/var/run/http/amx-fcgi.sock";|' /etc/amx/amx-fcgi/amx-fcgi.odl
+sed -i 's|LIGHTTPD_USER=lighttpd LIGHTTPD_CHROOT=/webui/|mkdir -p /var/run/http; chown http:www-data /var/run/http; LIGHTTPD_USER=http LIGHTTPD_CHROOT=/|' /etc/init.d/amx-fcgi
+
+# for demo purposes, we disable the ACLs by default
+sed -i 's|disable = false,|disable = true,|' /etc/amx/amx-fcgi/amx-fcgi.odl
+
+exit 0

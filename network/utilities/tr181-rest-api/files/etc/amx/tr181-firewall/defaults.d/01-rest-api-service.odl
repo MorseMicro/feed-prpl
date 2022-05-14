@@ -1,0 +1,11 @@
+%populate {
+    object 'Firewall.X_Prpl_Service' {
+        instance add(Alias=rest_api) {
+            parameter Protocol = "TCP";
+            parameter DestinationPort = "8080";
+            parameter Interface = "br-lan";
+            parameter IPVersion = 4;
+            parameter Enable = 1;
+        }
+    }
+}
