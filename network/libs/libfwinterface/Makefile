@@ -30,6 +30,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +kmod-ipt-ipopt
   DEPENDS += +kmod-ipt-nat
   DEPENDS += +kmod-ipt-nat6
+  DEPENDS += +kmod-ipt-nfqueue
   DEPENDS += +kmod-ipt-raw
   DEPENDS += +kmod-ipt-raw6
   DEPENDS += +kmod-nf-conntrack
@@ -44,10 +45,12 @@ define Package/$(PKG_NAME)
   DEPENDS += +kmod-nf-reject
   DEPENDS += +kmod-nf-reject6
   DEPENDS += +libamxc
-  DEPENDS += +libsahtrace
   DEPENDS += +libfwrules
-  DEPENDS += +iptables
   DEPENDS += +libiptc
+  DEPENDS += +libip4tc
+  DEPENDS += +libip6tc
+  DEPENDS += +libsahtrace
+  DEPENDS += +libxtables
   MENU:=1
 endef
 

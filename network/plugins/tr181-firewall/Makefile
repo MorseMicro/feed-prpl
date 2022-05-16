@@ -38,17 +38,8 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-dmext
   DEPENDS += +libfwrules
   DEPENDS += +libfwinterface
-  DEPENDS += +iptables
   DEPENDS += +libmnl
   DEPENDS += +libnetfilter-queue
-  DEPENDS += +libip4tc
-  DEPENDS += +libip6tc
-  DEPENDS += +libxtables
-  DEPENDS += +kmod-ipt-core
-  DEPENDS += +kmod-ipt-conntrack
-  DEPENDS += +kmod-nf-conntrack6
-  DEPENDS += +kmod-ipt-nat
-  DEPENDS += +kmod-ipt-nfqueue
   MENU:=1
 endef
 
