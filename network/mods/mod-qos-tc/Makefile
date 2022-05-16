@@ -21,6 +21,8 @@ define Package/$(PKG_NAME)
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc
+  DEPENDS += +kmod-sched
+  DEPENDS += +kmod-sched-core
   DEPENDS += +libamxc
   DEPENDS += +libamxm
   DEPENDS += +libnl-core
