@@ -65,6 +65,7 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(INSTALL_DIR) $(1)/etc/amx/tr181-firewall/defaults.d
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
