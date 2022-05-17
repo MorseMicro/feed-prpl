@@ -1,0 +1,20 @@
+config PACKAGE_tr181-qos
+    tristate
+    select SAH_AMX_TR181_QOS
+
+if PACKAGE_tr181-qos
+
+menu "Select tr181-qos build options"
+    depends on PACKAGE_tr181-qos
+
+config SAH_AMX_TR181_QOS
+    bool "Build A TR-181 Compatible QOS manager"
+    default y
+
+config SAH_AMX_TR181_QOS_ORDER
+    int "TR-181 QoS plugin start order"
+    default 49
+
+endmenu
+
+endif

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfwinterface
-PKG_VERSION:=v1.3.0
+PKG_VERSION:=v1.3.5
 SHORT_DESCRIPTION:=A library providing interfaces between lib_fwrules and netfilter
 
-PKG_SOURCE:=libfwinterface-v1.3.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.0
-PKG_HASH:=bb1b70e96a8ea21a7c34e48e9600a192fe3cab4de7aa8f7fd2733ab95e0378fb
-PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.0
+PKG_SOURCE:=libfwinterface-v1.3.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.5
+PKG_HASH:=9998ccd48d58565129690e676573bc8c0611f8de4819fad8d2f29047dc76d7b8
+PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

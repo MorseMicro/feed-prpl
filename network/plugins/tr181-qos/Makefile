@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-qos
-PKG_VERSION:=v1.1.2
+PKG_VERSION:=v1.1.10
 SHORT_DESCRIPTION:=TR-181 QoS model plugin
 
-PKG_SOURCE:=tr181-qos-v1.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-qos/-/archive/v1.1.2
-PKG_HASH:=d39f79196d6855c7ff737843decb24cdc5720d8bfed399ab66999442936c700c
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-qos-v1.1.2
+PKG_SOURCE:=tr181-qos-v1.1.10.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-qos/-/archive/v1.1.10
+PKG_HASH:=f0d03e922f0ff96b5554e6b30bbb505bda5aad7efa16642d1c824a810629b81c
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-qos-v1.1.10
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,11 +46,11 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_QOS_ORDER=$(CONFIG_SAH_AMX_TR181_QOS_ORDER))
 endef
 
 define Build/Install
-	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
+	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_QOS_ORDER=$(CONFIG_SAH_AMX_TR181_QOS_ORDER))
 	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
@@ -59,11 +59,15 @@ define Build/Install
 endef
 
 define Build/InstallDev
-	$(call Build/Install/Default, install INSTALL=install D=$(STAGING_DIR) DEST=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
+	$(call Build/Install/Default, install INSTALL=install D=$(STAGING_DIR) DEST=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_QOS_ORDER=$(CONFIG_SAH_AMX_TR181_QOS_ORDER))
 endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+endef
+
+define Package/$(PKG_NAME)/config
+	source "$(SOURCE)/Config.in"
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
