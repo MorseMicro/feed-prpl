@@ -21,7 +21,7 @@ generate:
       amxrt
       bbf
       bbfd
-      c-ares
+      c-ares1
       cthulhu
       cthulhu-lxc
       deviceinfo-manager
