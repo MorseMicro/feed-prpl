@@ -56,7 +56,7 @@ generate:
       libqosmod
       libsahtrace
       libtrace
-      libwebsockets
+      libwebsockets4
       luci-mod-simple
       luci-theme-prpl
       moca-manager
