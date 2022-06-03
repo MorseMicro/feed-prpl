@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=odl-generator
-PKG_VERSION:=v0.4.1
+PKG_VERSION:=v0.5.0
 SHORT_DESCRIPTION:=Odl generator using ucode
 
-PKG_SOURCE:=odl-generator-v0.4.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/utilities/odl-generator/-/archive/v0.4.1
-PKG_HASH:=103920125166824c4f665eadf2f0e4ccde15bb0ee9218f19fd8549f4f02ba5c9
-PKG_BUILD_DIR:=$(BUILD_DIR)/odl-generator-v0.4.1
+PKG_SOURCE:=odl-generator-v0.5.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/utilities/odl-generator/-/archive/v0.5.0
+PKG_HASH:=397c8740acad48c63cc2ceefeacec48bcf055205166ed71ca506392a2c563a5e
+PKG_BUILD_DIR:=$(BUILD_DIR)/odl-generator-v0.5.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -17,7 +17,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
+  CATEGORY:=amx
   SUBMENU:=Utilities
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/utilities/odl-generator
