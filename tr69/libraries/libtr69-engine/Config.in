@@ -1,0 +1,20 @@
+config PACKAGE_libtr69-engine
+    tristate
+    select SAH_LIB_TR069_ENGINE
+
+if PACKAGE_libtr69-engine
+
+menu "Select libtr69-engine build options"
+    depends on PACKAGE_libtr69-engine
+
+config SAH_LIB_TR069_ENGINE
+    bool "Build TR069 Engine"
+    default y
+
+config SAH_SERVICES_TR069_DISABLE_XML_PROLOG
+    bool "Disable XML Prolog for dmxmlparser lib"
+    default n
+
+endmenu
+
+endif
