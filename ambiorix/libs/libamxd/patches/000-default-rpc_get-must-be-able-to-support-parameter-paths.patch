@@ -1,0 +1,25 @@
+From 1a1310a0236928e13664e97418b12de68dc81f72 Mon Sep 17 00:00:00 2001
+From: Matthias Franck <7363593-Matthias_franck@users.noreply.gitlab.com>
+Date: Thu, 9 Jun 2022 13:44:31 +0000
+Subject: [PATCH] Update src/amxd_dm_get_function.c
+
+---
+ src/amxd_dm_get_function.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/amxd_dm_get_function.c b/src/amxd_dm_get_function.c
+index 3111e28..12eb3eb 100644
+--- a/src/amxd_dm_get_function.c
++++ b/src/amxd_dm_get_function.c
+@@ -202,6 +202,9 @@ amxd_status_t amxd_object_func_get(amxd_object_t* object,
+     parameter = amxd_path_get_param(&path);
+     object_path = amxd_path_get(&path, AMXD_OBJECT_TERMINATE);
+     if((parameter != NULL) && (parameter[0] != 0)) {
++        if(params == NULL) {
++            params = amxc_var_add_key(amxc_llist_t, args, "parameters", NULL);
++        }
+         amxc_var_add(cstring_t, params, parameter);
+     }
+ 
+-- 
+GitLab
