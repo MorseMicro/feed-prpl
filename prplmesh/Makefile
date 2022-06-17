@@ -13,6 +13,8 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_WIRELESS_STA \
 	CONFIG_TARGET_intel_mips \
+	CONFIG_TARGET_brcmbca \
+	CONFIG_USE_PRPLMESH_WHM \
 	CONFIG_PACKAGE_libamxb
 
 CMAKE_BINARY_SUBDIR:=build
@@ -44,11 +46,11 @@ define Package/prplmesh
 		+TARGET_intel_mips:iwlwav-hostap-uci \
 		+TARGET_intel_mips:libsafec3 \
 		+TARGET_intel_mips:bridge-ugw
-#	non-intel_mips dependencies:
+#	non-intel_mips neither broadcom dependencies:
 	DEPENDS+= \
-		+!TARGET_intel_mips:hostapd-openssl \
-		+!TARGET_intel_mips:hostapd-utils \
-		+!TARGET_intel_mips:wpa-supplicant-openssl
+		+!(TARGET_intel_mips||TARGET_brcmbca):hostapd-openssl \
+		+!(TARGET_intel_mips||TARGET_brcmbca):hostapd-utils \
+		+!(TARGET_intel_mips||TARGET_brcmbca):wpa-supplicant-openssl
 #	The ambiorix library is optional, select it if libamxb is selected:
 	DEPENDS+= +PACKAGE_libamxb:libamxb \
 		+PACKAGE_libamxb:libamxc \
@@ -56,6 +58,8 @@ define Package/prplmesh
 		+PACKAGE_libamxb:libamxo \
 		+PACKAGE_libamxb:libamxp \
 		+PACKAGE_libamxb:mod-amxb-ubus
+#	pwhm dependency:
+	DEPENDS+= +USE_PRPLMESH_WHM:pwhm
 endef
 
 define Package/prplmesh/config
@@ -69,10 +73,20 @@ CMAKE_OPTIONS+= \
 	-DPLATFORM_STAGING_DIR=$(STAGING_DIR) \
 	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
 	-DBUILD_TESTS=ON \
-	$(if $(CONFIG_PACKAGE_libamxb), -DENABLE_NBAPI=ON)
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
+endif
+
+ifeq ($(CONFIG_PACKAGE_libamxb),y)
+	CMAKE_OPTIONS += -DENABLE_NBAPI=ON
+ifeq ($(CONFIG_PACKAGE_mod-amxb-ubus),y)
+	CMAKE_OPTIONS += -DUBUS_SOCK="-DAMBIORIX_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_BUS_URI=\\\"ubus:/var/run/ubus.sock\\\""
+ifeq ($(CONFIG_USE_PRPLMESH_WHM),y)
+	CMAKE_OPTIONS += -DUSE_PRPLMESH_WHM=ON
+	CMAKE_OPTIONS += -DWBAPI_SOCK="-DAMBIORIX_WBAPI_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_WBAPI_BUS_URI=\\\"ubus:/var/run/ubus.sock\\\""
+endif
+endif
 endif
 
 ifeq ($(CONFIG_TARGET_intel_mips),y)
