@@ -76,6 +76,8 @@ generate:
       librlyeh
       libqosmod
       libsahtrace
+      libswla
+      libswlc
       libtr69-engine
       libtrace
       libwebsockets4
@@ -114,6 +116,7 @@ generate:
       odl-generator
       owsd
       pcm-manager
+      pwhm
       rlyeh
       routing-manager
       syslog-ng
