@@ -1,9 +1,9 @@
 variables:
-  CI_DESIGNATED_BRANCH: prplos
+  CI_DESIGNATED_BRANCH: prplos-next
   CI_SDK_PIPELINE_SOURCE: parent_pipeline
 
 include:
-  - remote: https://gitlab.com/prpl-foundation/prplOS/prplos/-/raw/prplos/.gitlab/sdk.yml
+  - remote: https://gitlab.com/prpl-foundation/prplOS/prplos/-/raw/prplos-next/.gitlab/sdk.yml
 
 .expensive_job_rules:
   rules:
