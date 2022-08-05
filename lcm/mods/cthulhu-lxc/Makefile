@@ -30,7 +30,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxd
   DEPENDS += +libamxo
   DEPENDS += +libsahtrace
-  DEPENDS += +liblxc4
+  DEPENDS += +liblxc
   DEPENDS += +libcthulhu
   DEPENDS += +yajl
   MENU:=1

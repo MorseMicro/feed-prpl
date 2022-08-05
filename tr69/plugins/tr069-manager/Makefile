@@ -42,7 +42,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libevent2
   DEPENDS += +libtr69-engine
   DEPENDS += +uriparser
-  DEPENDS += +libcares1
+  DEPENDS += +libcares
   DEPENDS += +libnetmodel
   MENU:=1
 endef
