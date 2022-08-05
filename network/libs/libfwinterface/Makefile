@@ -24,7 +24,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxc
   DEPENDS += +libsahtrace
   DEPENDS += +libfwrules
-  DEPENDS += +libiptc
   DEPENDS += +kmod-ifb
   DEPENDS += +kmod-ip6tables
   DEPENDS += +kmod-ipt-conntrack
