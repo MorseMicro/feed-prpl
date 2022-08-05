@@ -1,0 +1,34 @@
+From 003ab2a8f7ad5c38c4f36ec62d60cf1067c8b274 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Fri, 5 Aug 2022 14:01:56 +0200
+Subject: [PATCH] src: makefile: fix missing libsahtrace search path
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Currently build fails during linking step:
+
+ cannot find -lsahtrace
+
+That's happening due to the fact, that libsahtrace is being installed to
+STAGINGDIR/lib, but that path is missing in the linker paths. So fix it
+by adding STAGING_LIBDIR into the linker args.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ src/makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/makefile b/src/makefile
+index 16b155bdc999..d5ff2ce9c01f 100644
+--- a/src/makefile
++++ b/src/makefile
+@@ -32,7 +32,7 @@ else
+ 	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=c11
+ endif
+ 
+-LDFLAGS += -shared -fPIC \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxc -lamxp -lamxd -lamxo -lamxm -lsahtrace
+ 
+ # targets
