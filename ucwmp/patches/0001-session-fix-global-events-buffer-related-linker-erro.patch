@@ -1,0 +1,30 @@
+From 99190ff633643aa0039a99c6bc4604d174fa7341 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Fri, 5 Aug 2022 15:28:28 +0200
+Subject: [PATCH] session: fix global events buffer related linker error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes following linking error:
+
+ ld: session/rpc.c:26: multiple definition of `events'
+     session/main.c:47: first defined here
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ session/main.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/session/main.c b/session/main.c
+index b8f76da1b587..c5287c5dc08a 100644
+--- a/session/main.c
++++ b/session/main.c
+@@ -44,7 +44,6 @@ static char *cur_request;
+ static char *url, *username, *password;
+ 
+ static LIST_HEAD(cookies);
+-struct blob_buf events;
+ 
+ struct cookie {
+ 	struct list_head list;
