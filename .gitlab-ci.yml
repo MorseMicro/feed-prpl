@@ -146,7 +146,6 @@ generate:
       tr181-routeradvertisement
       tr181-usermanagement
       tr181-xpon
-      ucode
       ucwmp
       udrone
       uriparser
