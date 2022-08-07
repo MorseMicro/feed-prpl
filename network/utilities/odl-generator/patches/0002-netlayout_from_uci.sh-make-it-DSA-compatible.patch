@@ -1,0 +1,87 @@
+From 5bde3ab9827792e4e0b1077b5133b524f1bd2b66 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Sun, 7 Aug 2022 08:27:15 +0200
+Subject: [PATCH 2/2] netlayout_from_uci.sh: make it DSA compatible
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+OpenWrt 22.03 supports DSA and the network configuration was reworked,
+so the helper script needs to be reworked as well.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ files/netlayout_from_uci.sh | 39 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
+
+diff --git a/files/netlayout_from_uci.sh b/files/netlayout_from_uci.sh
+index e01f625fc58f..152e9ea43d45 100755
+--- a/files/netlayout_from_uci.sh
++++ b/files/netlayout_from_uci.sh
+@@ -9,7 +9,8 @@ NETLAYOUT=/etc/networklayout.json
+ 
+ netlayout_add_wan_itf()
+ {
+-	local itf_name=$(uci get network.wan.ifname)
++	local itf_name=$(uci -q get network.wan.ifname)
++	[ -z "$itf_name" ] && itf_name=$(uci -q get network.wan.device)
+ 
+ 	json_select Interfaces
+ 	json_add_object 
+@@ -58,6 +59,8 @@ netlayout_add_itf_to_bridge()
+ netlayout_add_lan_bridged_itfs()
+ {
+ 	local bridged=$(uci get network.lan.ifname)
++	local bridged=$(uci -q get network.lan.ifname)
++	[ -z "$bridged" ] && return
+ 	
+ 	#first add all lan interface description
+ 	for itf in $bridged ; do
+@@ -72,6 +75,39 @@ netlayout_add_lan_bridged_itfs()
+ 	done
+ }
+ 
++netlayout_add_lan_dsa_bridged_itfs()
++{
++	local intf=$(uci -q get network.lan.device)
++	[ -z "$intf" ] && return
++
++	. /lib/functions.sh
++
++	add_network_device()
++	{
++		local name
++		local ports
++		local cfg="$1"
++
++		config_get name "$cfg" name
++		config_get ports "$cfg" ports
++
++		[ "$intf" != "$name" ] && return
++
++		#first add all lan interface description
++		for itf in $ports; do
++			netlayout_add_itf_description "$(echo $itf | tr 'a-z' 'A-Z')"  "${itf}" "ethernet"
++		done
++
++		#then add all lan interfaces as bridge ports
++		for itf in $ports; do
++			netlayout_add_itf_to_bridge "Lan" "$(echo $itf | tr 'a-z' 'A-Z')"  "${itf}"
++		done
++	}
++
++	config_load network
++	config_foreach add_network_device device
++}
++
+ netlayout_add_wireless_itf()
+ {
+ 	local itf_name=$1 
+@@ -175,6 +211,7 @@ if [ ! -s $NETLAYOUT ]; then
+ 	netlayout_init
+ 	netlayout_add_wan_itf
+ 	netlayout_add_lan_bridged_itfs
++	netlayout_add_lan_dsa_bridged_itfs
+ 	netlayout_add_wireless_itfs
+ 
+ 	json_dump -i > $NETLAYOUT

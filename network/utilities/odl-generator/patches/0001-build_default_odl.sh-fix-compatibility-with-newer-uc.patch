@@ -1,0 +1,47 @@
+From 0b7545ee428d553a0c75166299bcf3d388b70b4b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Sun, 7 Aug 2022 07:32:23 +0200
+Subject: [PATCH 1/2] build_default_odl.sh: fix compatibility with newer ucode
+ versions
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+OpenWrt 22.03 uses latest ucode version which contains commit
+46188077ef72 ("main: rework CLI frontend") where the CLI args were
+reworked little bit:
+
+  - Change command line flags to be align better with those of other
+    interpreters and with the gcc compiler, e.g. `-D` and `-U` to
+    define and undefine globals, `-e` to execute script expression etc.
+
+  - Pass only excess CLI arguments as `ARGV` to scripts, e.g.
+    `ucode -e 'print("Hello world")' -- -x -y` would pass only
+    `[ "-x", "-y" ]` as ARGV contents
+
+  - Default to raw mode and introduce flag to enable template mode
+
+So fix it by trying to (naively) detecting the ucode version and
+adjusting the CLI args accorddingly.
+
+References: https://github.com/jow-/ucode/commit/46188077ef
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ files/build_default_odl.sh | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/files/build_default_odl.sh b/files/build_default_odl.sh
+index 4fd39f31781c..d49bd11b60df 100755
+--- a/files/build_default_odl.sh
++++ b/files/build_default_odl.sh
+@@ -16,5 +16,9 @@ TEMPLATES=$(find $ODL_PATH -name "*.odl.uc")
+ #process all found odl.uc file and create odl resulting file jsut next to it
+ for ODLTMPL in  $TEMPLATES; do 
+ 	TARGETODL=$(echo $ODLTMPL |sed "s|\.odl\.uc|.odl|"); 
+- 	ucode -E BD=$NETLAYOUT -e '{"ODL_UC_PATH":"'${ODLTMPL}'"}' -i $UC_TEMPLATE_PROCESSOR > $TARGETODL
++	if ucode | grep -q '== Usage =='; then
++		ucode -E BD=$NETLAYOUT -e '{"ODL_UC_PATH":"'${ODLTMPL}'"}' -i $UC_TEMPLATE_PROCESSOR > $TARGETODL
++	else
++		ucode -T -F BD=$NETLAYOUT -D '{"ODL_UC_PATH":"'${ODLTMPL}'"}' $UC_TEMPLATE_PROCESSOR > $TARGETODL
++	fi
+ done
