@@ -62,10 +62,36 @@ if grep -q GRX /tmp/sysinfo/board_name; then
 fi
 
 # Use the first interface of the LAN network as the default value
-BH_IFACE="$(uci get network.lan.ifname | cut -d" " -f1)"
+BH_IFACE="$(uci -q get network.lan.ifname | cut -d" " -f1)"
+if [ -z "$BH_IFACE" ]; then
+	intf=$(uci -q get network.lan.device)
+	[ -z "$intf" ] && return
+
+	. /lib/functions.sh
+
+	add_network_device()
+	{
+		local name
+		local ports
+		local cfg="$1"
+
+		[ -n "$BH_IFACE" ] && return
+
+		config_get name "$cfg" name
+		config_get ports "$cfg" ports
+
+		[ "$intf" != "$name" ] && return
+		BH_IFACE="${ports%% *}"
+	}
+
+	config_load network
+	config_foreach add_network_device device
+fi
+
 if [ -z "$BH_IFACE" ] ; then
         logger -t prplmesh -p daemon.warn "No default wired backhaul interface was set! Please set 'prplmesh.config.backhaul_wire_iface' manually."
 else
+        logger -t prplmesh -p daemon.info "Using $BH_IFACE as backhaul_wire_iface"
         uci set prplmesh.config.backhaul_wire_iface="$BH_IFACE"
         uci commit prplmesh
 fi
