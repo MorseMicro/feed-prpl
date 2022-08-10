@@ -1,0 +1,46 @@
+From 6b7764842f56e8aa21623033fc2ce2c994cad989 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Wed, 10 Aug 2022 08:35:35 +0200
+Subject: [PATCH] cwmp_plugin: odl: make it less chatty
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+It seems, that current debugging sahtrace settings can create 1MB worth
+of logs every hour. So let's fix it by lowering the tracing levels to
+200.
+
+Fixes: PCF-663
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ .../amx/cwmp_plugin/odl/cwmp_plugin.odl                | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/dmdeviceadapter/amx/cwmp_plugin/odl/cwmp_plugin.odl b/src/dmdeviceadapter/amx/cwmp_plugin/odl/cwmp_plugin.odl
+index 7a910628d1c9..c75f9d4242ed 100644
+--- a/src/dmdeviceadapter/amx/cwmp_plugin/odl/cwmp_plugin.odl
++++ b/src/dmdeviceadapter/amx/cwmp_plugin/odl/cwmp_plugin.odl
+@@ -5,7 +5,7 @@
+     // SAHTRACE
+     sahtrace = {
+         type = "syslog",
+-        level = 500
++        level = 200
+     };
+ 
+     // main files
+@@ -40,10 +40,10 @@
+     backends = ["/usr/bin/mods/amxb/mod-amxb-ubus.so"];
+ 
+     trace-zones = {
+-        CWMP_PLUGIN = 500,
+-        CWMPD = 500,
+-        DM_DA = 500,
+-        DM_ENGINE = 500,
++        CWMP_PLUGIN = 200,
++        CWMPD = 200,
++        DM_DA = 200,
++        DM_ENGINE = 200,
+         DM_COM = 200,
+         DM_COMMON = 200,
+         DM_HS = 200
