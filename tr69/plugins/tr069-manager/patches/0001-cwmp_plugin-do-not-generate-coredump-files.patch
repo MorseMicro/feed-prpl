@@ -1,0 +1,41 @@
+From ce01ba8da97cffa1fe30a3e8ab12cb11abce066a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Fri, 12 Aug 2022 15:07:01 +0200
+Subject: [PATCH] cwmp_plugin: do not generate coredump files
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In the prplMesh operational tests (at least on GL.iNet B1300), cwmpd
+leaves core files behind:
+
+ $ ls -1 /tmp/cwmpd.* | wc -l
+ 755
+
+Some of them are empty, some of them are 520KB big. Over time, this
+leads to the tmpfs being full:
+
+ $ du -c /tmp/cwmpd.* -h | tail -n1
+ 117.8M  total
+
+So fix it by removing that unlimited size on coredump file generation
+setting.
+
+Fixes: PPM-2251
+Reported-by: Raphaël Mélotte <raphael.melotte@mind.be>
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ src/dmdeviceadapter/amx/cwmp_plugin/scripts/cwmp_plugin.sh | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/dmdeviceadapter/amx/cwmp_plugin/scripts/cwmp_plugin.sh b/src/dmdeviceadapter/amx/cwmp_plugin/scripts/cwmp_plugin.sh
+index 0e3f73167e33..1d28cda6d351 100644
+--- a/src/dmdeviceadapter/amx/cwmp_plugin/scripts/cwmp_plugin.sh
++++ b/src/dmdeviceadapter/amx/cwmp_plugin/scripts/cwmp_plugin.sh
+@@ -1,6 +1,5 @@
+ #!/bin/sh
+ 
+-ulimit -c unlimited
+ name="cwmp_plugin"
+ 
+ case $1 in
