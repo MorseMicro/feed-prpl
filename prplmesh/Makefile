@@ -15,6 +15,8 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_TARGET_intel_mips \
 	CONFIG_PACKAGE_libamxb
 
+CMAKE_BINARY_SUBDIR:=build
+
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
@@ -60,7 +62,6 @@ define Package/prplmesh/config
 	source "$(SOURCE)/Config.in"
 endef
 
-CMAKE_SOURCE_DIR:=
 CMAKE_OPTIONS+= \
 	-DTARGET_PLATFORM=openwrt \
 	-DCMAKE_INSTALL_PREFIX=/opt/prplmesh \
@@ -68,8 +69,7 @@ CMAKE_OPTIONS+= \
 	-DPLATFORM_STAGING_DIR=$(STAGING_DIR) \
 	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
 	-DBUILD_TESTS=ON \
-	$(if $(CONFIG_PACKAGE_libamxb), -DENABLE_NBAPI=ON) \
-	-H. -B./build
+	$(if $(CONFIG_PACKAGE_libamxb), -DENABLE_NBAPI=ON)
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
@@ -83,10 +83,6 @@ else
 	CMAKE_OPTIONS+= -DBWL_TYPE=NL80211 \
 		-DTARGET_PLATFORM_TYPE=turris-omnia
 endif
-
-Build/Compile:=cmake --build $(PKG_BUILD_DIR)/build -- $(MAKE_INSTALL_FLAGS) install -j
-Build/Install:=
-Build/Clean:=cd $(PKG_BUILD_DIR) && rm -rf .built .configured_* .prepared_* build/ ipkg-* || true
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib
