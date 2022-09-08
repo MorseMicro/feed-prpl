@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pwhm
-PKG_VERSION:=v1.5.9
+PKG_VERSION:=v1.11.11
 SHORT_DESCRIPTION:=PrplMesh WHM
 
-PKG_SOURCE:=pwhm-v1.5.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm/-/archive/v1.5.9
-PKG_HASH:=291093ab9b90f643ecc8120ad4ace5cf1bf44dbd8fbb9daa5d8c0f2856097b20
-PKG_BUILD_DIR:=$(BUILD_DIR)/pwhm-v1.5.9
+PKG_SOURCE:=pwhm-v1.11.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm/-/archive/v1.11.1
+PKG_HASH:=aa4b3b9cbaa88e5cd08d8f7f357bef577164d6f0e27652576322468ad1b66b22
+PKG_BUILD_DIR:=$(BUILD_DIR)/pwhm-v1.11.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -68,6 +68,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
