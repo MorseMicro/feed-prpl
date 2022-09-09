@@ -87,6 +87,7 @@ generate:
       netmodel-ip
       netmodel-iprouter
       netmodel-logical
+      netmodel-netdev
       obuspa
       odl-generator
       owsd
