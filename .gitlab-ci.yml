@@ -85,6 +85,7 @@ generate:
       netmodel-dhcpv6
       netmodel-ethernet
       netmodel-ip
+      netmodel-iprouter
       obuspa
       odl-generator
       owsd
