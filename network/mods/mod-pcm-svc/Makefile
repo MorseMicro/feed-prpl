@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-pcm-svc
-PKG_VERSION:=v0.2.1
+PKG_VERSION:=v0.3.2
 SHORT_DESCRIPTION:=Upgrade Persistent Configuration Manager service module
 
-PKG_SOURCE:=mod-pcm-svc-v0.2.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-pcm-svc/-/archive/v0.2.1
-PKG_HASH:=515a190521160b852ad0042b0b4b225557470a06557ec9642d11e20a11bdc25a
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-pcm-svc-v0.2.1
+PKG_SOURCE:=mod-pcm-svc-v0.3.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-pcm-svc/-/archive/v0.3.2
+PKG_HASH:=9e2623d206b333bacd9e8ef65a98dd9e6f237f09e985047e9dab1db4a2c6b9ad
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-pcm-svc-v0.3.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -52,6 +52,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

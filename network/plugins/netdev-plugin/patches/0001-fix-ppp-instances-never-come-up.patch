@@ -1,0 +1,25 @@
+From 27e536ef5932926bde680a69f0140d529ede5e87 Mon Sep 17 00:00:00 2001
+From: Matthias FRANCK <matthias.franck_ext@softathome.com>
+Date: Fri, 26 Aug 2022 13:45:57 +0200
+Subject: [PATCH] PPP instances never come up [fix]
+
+---
+ src/dm_link.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/dm_link.c b/src/dm_link.c
+index 7862603..9243497 100644
+--- a/src/dm_link.c
++++ b/src/dm_link.c
+@@ -337,6 +337,9 @@ static void handleNewLink(rtnlmsg_t* msg) {
+         if((strcmp(link->name, "lo") == 0) && (link->state == 0)) {
+             link->state = 6;
+         }
++        if((link->type == ARPHRD_PPP) && (link->state == 0)) {
++            link->state = 6;
++        }
+         amxd_trans_set_value(cstring_t, &transaction, "State", convert_bin2str(state_converter, link->state, NULL));
+     }
+     rta = rtnlmsg_attr(msg, IFLA_MASTER);
+-- 
+GitLab

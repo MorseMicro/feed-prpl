@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfwinterface
-PKG_VERSION:=v1.3.5
+PKG_VERSION:=v1.3.7
 SHORT_DESCRIPTION:=A library providing interfaces between lib_fwrules and netfilter
 
-PKG_SOURCE:=libfwinterface-v1.3.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.5
-PKG_HASH:=9998ccd48d58565129690e676573bc8c0611f8de4819fad8d2f29047dc76d7b8
-PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.5
+PKG_SOURCE:=libfwinterface-v1.3.7.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.7
+PKG_HASH:=b78517baf9eb16562d69683c4c18bd848b31da5074aa6baef9effb508a8a35a0
+PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.7
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -21,6 +21,10 @@ define Package/$(PKG_NAME)
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface
+  DEPENDS += +libamxc
+  DEPENDS += +libsahtrace
+  DEPENDS += +libfwrules
+  DEPENDS += +libiptc
   DEPENDS += +kmod-ifb
   DEPENDS += +kmod-ip6tables
   DEPENDS += +kmod-ipt-conntrack
@@ -44,9 +48,11 @@ define Package/$(PKG_NAME)
   DEPENDS += +kmod-nfnetlink-queue
   DEPENDS += +kmod-nf-reject
   DEPENDS += +kmod-nf-reject6
-  DEPENDS += +libamxc
-  DEPENDS += +libfwrules
-  DEPENDS += +libiptc
+  DEPENDS += +kmod-ipt-conntrack-extra
+  DEPENDS += +kmod-ip6tables-extra
+  DEPENDS += +kmod-nf-nathelper
+  DEPENDS += +kmod-nf-nathelper-extra
+  DEPENDS += +ip6tables-extra
   DEPENDS += +libip4tc
   DEPENDS += +libip6tc
   DEPENDS += +libsahtrace
@@ -74,6 +80,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

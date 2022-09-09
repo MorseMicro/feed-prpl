@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wan-autosensing
-PKG_VERSION:=v0.2.0
+PKG_VERSION:=v0.2.7
 SHORT_DESCRIPTION:=WAN Autosensing
 
-PKG_SOURCE:=wan-autosensing-v0.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-autosensing/-/archive/v0.2.0
-PKG_HASH:=a3d83acb52067bc2b6e17e70e9e91e42e027e5506d40477c6766cd47f60086e8
-PKG_BUILD_DIR:=$(BUILD_DIR)/wan-autosensing-v0.2.0
+PKG_SOURCE:=wan-autosensing-v0.2.7.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-autosensing/-/archive/v0.2.7
+PKG_HASH:=f59b4828be8faa43b8490c4df97c459f65a1b4202178c7b98cbe24bdb6aed019
+PKG_BUILD_DIR:=$(BUILD_DIR)/wan-autosensing-v0.2.7
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -35,6 +35,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +amxrt
   DEPENDS += +libsahtrace
+  DEPENDS += +libnetmodel
   MENU:=1
 endef
 

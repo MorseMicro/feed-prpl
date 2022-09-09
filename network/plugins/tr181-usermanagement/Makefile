@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-usermanagement
-PKG_VERSION:=v0.5.0
+PKG_VERSION:=v0.6.9
 SHORT_DESCRIPTION:=tr181 user management plugin
 
-PKG_SOURCE:=tr181-usermanagement-v0.5.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.5.0
-PKG_HASH:=2cc38568c4ba3cb80f608d47280a64e1bbf0482e02309bedfea407e042a83317
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.5.0
+PKG_SOURCE:=tr181-usermanagement-v0.6.9.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.6.9
+PKG_HASH:=8d9b8e7ff5405d0d79bb9240ed7cf89bb6d82931a33ab3c59d4764735d354f4b
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.6.9
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -58,6 +58,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

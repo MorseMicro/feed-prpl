@@ -1,0 +1,184 @@
+From 5a448a5da044e7c1a87bdda0c1b39ec1f3b9dd50 Mon Sep 17 00:00:00 2001
+From: Alexander Van Parys <alexander.vanparys@softathome.com>
+Date: Fri, 19 Aug 2022 15:36:55 +0200
+Subject: [PATCH] Create netmodel query for IPCP IPv4 addresses
+
+---
+ include_priv/ipv4_utils.h |  2 +
+ src/ip_manager_ipv4.c     |  7 ++++
+ src/ipv4_utils.c          | 84 ++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 92 insertions(+), 1 deletion(-)
+
+diff --git a/include_priv/ipv4_utils.h b/include_priv/ipv4_utils.h
+index d06beff..fcd0f0e 100644
+--- a/include_priv/ipv4_utils.h
++++ b/include_priv/ipv4_utils.h
+@@ -92,6 +92,8 @@ amxd_status_t ipv4_addr_info_new(ipv4_addr_info_t** addr_info, amxd_object_t* ad
+ amxd_status_t ipv4_addr_info_clean(ipv4_addr_info_t** addr_info);
+ int nm_open_dhcpv4_query(ipv4_addr_info_t* addr_info);
+ void nm_close_dhcpv4_query(ipv4_addr_info_t* addr_info);
++int nm_open_ipcpv4_query(ipv4_addr_info_t* addr_info);
++void nm_close_ipcpv4_query(ipv4_addr_info_t* addr_info);
+ ipv4_addressing_type_t convert_to_ipv4_addr_type(const char* s_addr_type);
+ int ipv4_addr_apply(ipv4_addr_info_t* addr_info);
+ void ipv4_address_stop_subscription(ipv4_addr_info_t* addr_info);
+diff --git a/src/ip_manager_ipv4.c b/src/ip_manager_ipv4.c
+index 1e2918c..d0e7c0a 100644
+--- a/src/ip_manager_ipv4.c
++++ b/src/ip_manager_ipv4.c
+@@ -349,11 +349,18 @@ void _ipv4_addressingtype_changed(UNUSED const char* const sig_name,
+     switch(addr_type) {
+     case IPV4_ADDR_TYPE_STATIC:
+         nm_close_dhcpv4_query(addr_info);
++        nm_close_ipcpv4_query(addr_info);
+         break;
+     case IPV4_ADDR_TYPE_DHCP:
++        nm_close_ipcpv4_query(addr_info);
+         rv = nm_open_dhcpv4_query(addr_info);
+         when_failed_trace(rv, exit, ERROR, "Failed to apply DHCP IPv4 Address");
+         break;
++    case IPV4_ADDR_TYPE_IPCP:
++        nm_close_dhcpv4_query(addr_info);
++        rv = nm_open_ipcpv4_query(addr_info);
++        when_failed_trace(rv, exit, ERROR, "Failed to apply IPCP IPv4 Address");
++        break;
+     default:
+         SAH_TRACEZ_ERROR(ME, "Unhandled IPv4 Address type");
+         break;
+diff --git a/src/ipv4_utils.c b/src/ipv4_utils.c
+index 31aaeec..5cae98f 100644
+--- a/src/ipv4_utils.c
++++ b/src/ipv4_utils.c
+@@ -80,8 +80,40 @@
+ #include "ipv4_utils.h"
+ 
+ #define DHCPv4_FLAG "dhcpv4"
++#define PPP_FLAG "ppp"
+ #define ME "ip-mngr"
+ 
++static void nm_ipcpv4_address_cb(UNUSED const char* sig_name, const amxc_var_t* result, void* userdata) {
++    SAH_TRACEZ_IN(ME);
++
++    ipv4_addr_info_t* addr_info = NULL;
++    amxd_trans_t* trans = NULL;
++    char* path = NULL;
++
++    when_null_trace(userdata, exit, ERROR, "No userdata provided");
++    addr_info = (ipv4_addr_info_t*) userdata;
++
++    SAH_TRACEZ_INFO(ME, "IPCP address '%s' found", GETP_CHAR(result, ""));
++    when_false_trace(netdev_name_known(addr_info->intf_obj), exit, ERROR, "NetDev name for this interface not yet known");
++
++    trans = ip_manager_trans_create(addr_info->addr_obj);
++    amxd_trans_set_value(cstring_t, trans, "IPAddress", GETP_CHAR(result, ""));
++    amxd_trans_set_value(cstring_t, trans, "SubnetMask", "255.255.255.255");
++
++    path = is_ip_added_to_netdev(addr_info->intf_obj, addr_info->addr_obj, GETP_CHAR(result, ""), IP_VERSION_4);
++    if(path != NULL) {
++        netdev_ip_addr_param_change_subscribe(addr_info->ipv4_param_subscr, path, addr_info->addr_obj);
++    }
++    amxd_trans_set_value(cstring_t, trans, "Status", path != NULL ? STATUS_ENABLED : STATUS_ERROR);
++
++    ip_manager_trans_apply(trans);
++
++exit:
++    free(path);
++    SAH_TRACEZ_OUT(ME);
++    return;
++}
++
+ static void nm_dhcpv4_address_cb(UNUSED const char* sig_name, const amxc_var_t* result, void* userdata) {
+     SAH_TRACEZ_IN(ME);
+ 
+@@ -170,6 +202,7 @@ amxd_status_t ipv4_addr_info_clean(ipv4_addr_info_t** addr_info) {
+     }
+ 
+     nm_close_dhcpv4_query((*addr_info));
++    nm_close_ipcpv4_query((*addr_info));
+     amxb_subscription_delete(&(*addr_info)->ipv4_param_subscr);
+     free(*addr_info);
+     *addr_info = NULL;
+@@ -214,6 +247,37 @@ exit:
+     return;
+ }
+ 
++int nm_open_ipcpv4_query(ipv4_addr_info_t* addr_info) {
++    SAH_TRACEZ_IN(ME);
++    int rv = -1;
++    char* path = NULL;
++
++    when_null_trace(addr_info, exit, ERROR, "No address info provided");
++
++    path = amxd_object_get_path(addr_info->intf_obj, AMXD_OBJECT_INDEXED | AMXD_OBJECT_TERMINATE);
++    addr_info->nm_ip_query = netmodel_openQuery_getFirstParameter(path, ME, "LocalIPAddress",
++                                                                  PPP_FLAG,
++                                                                  netmodel_traverse_down,
++                                                                  nm_ipcpv4_address_cb,
++                                                                  addr_info);
++    when_null_trace(addr_info->nm_ip_query, exit, ERROR, "Failed to start query for the PPP IP address");
++
++exit:
++    free(path);
++    SAH_TRACEZ_OUT(ME);
++    return rv;
++}
++
++void nm_close_ipcpv4_query(ipv4_addr_info_t* addr_info) {
++    SAH_TRACEZ_IN(ME);
++    when_null_trace(addr_info, exit, ERROR, "No address info provided");
++    nm_close_query(&addr_info->nm_ip_query);
++
++exit:
++    SAH_TRACEZ_OUT(ME);
++    return;
++}
++
+ ipv4_addressing_type_t convert_to_ipv4_addr_type(const char* s_addr_type) {
+     SAH_TRACEZ_IN(ME);
+     ipv4_addressing_type_t addr_type = IPV4_ADDR_TYPE_UNKNOWN;
+@@ -259,6 +323,10 @@ int ipv4_addr_apply(ipv4_addr_info_t* addr_info) {
+             rv = nm_open_dhcpv4_query(addr_info);
+             when_failed_trace(rv, exit, ERROR, "Failed to open DHCPv4 query");
+             break;
++        case IPV4_ADDR_TYPE_IPCP:
++            rv = nm_open_ipcpv4_query(addr_info);
++            when_failed_trace(rv, exit, ERROR, "Failed to open IPCP query");
++            break;
+         default:
+             SAH_TRACEZ_ERROR(ME, "Unhandled IPv4 Address type");
+             break;
+@@ -282,6 +350,10 @@ void ipv4_address_stop_subscription(ipv4_addr_info_t* addr_info) {
+         nm_close_dhcpv4_query(addr_info);
+         make_ip_address_empty(addr_info->addr_obj, IP_VERSION_4);
+         break;
++    case IPV4_ADDR_TYPE_IPCP:
++        nm_close_ipcpv4_query(addr_info);
++        make_ip_address_empty(addr_info->addr_obj, IP_VERSION_4);
++        break;
+     default:
+         SAH_TRACEZ_ERROR(ME, "Unhandled IPv4 Address type");
+         break;
+@@ -331,9 +403,19 @@ int ipv4_addr_disable(ipv4_addr_info_t* addr_info) {
+         SAH_TRACEZ_ERROR(ME, "Failed to delete IPv4 address");
+     }
+ 
+-    if(addr_info->addr_type == IPV4_ADDR_TYPE_DHCP) {
++    switch(addr_info->addr_type) {
++    case IPV4_ADDR_TYPE_STATIC:
++        break;
++    case IPV4_ADDR_TYPE_DHCP:
+         nm_close_dhcpv4_query(addr_info);
+         make_ip_address_empty(addr_info->addr_obj, IP_VERSION_4);
++        break;
++    case IPV4_ADDR_TYPE_IPCP:
++        nm_close_ipcpv4_query(addr_info);
++        make_ip_address_empty(addr_info->addr_obj, IP_VERSION_4);
++        break;
++    default:
++        break;
+     }
+ 
+     SAH_TRACEZ_OUT(ME);
+-- 
+GitLab
+

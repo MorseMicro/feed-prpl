@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv4-manager
-PKG_VERSION:=v1.5.5
+PKG_VERSION:=v1.6.12
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv4-v1.5.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4/-/archive/v1.5.5
-PKG_HASH:=af717d7fcab1758608d500e367757a5b52e2ade78309224567f701aa17bf1823
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.5.5
+PKG_SOURCE:=tr181-dhcpv4-v1.6.12.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4/-/archive/v1.6.12
+PKG_HASH:=16c9802bb9fd240c39c413412e5b808ca16124a2f41174cac6c12e18f69a9280
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.6.12
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -40,11 +40,13 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +libamxc
   DEPENDS += +libamxj
-  DEPENDS += +libamxd
   DEPENDS += +libamxp
+  DEPENDS += +libamxd
   DEPENDS += +libamxb
   DEPENDS += +libamxo
+  DEPENDS += +libamxs
   DEPENDS += +libsahtrace
+  DEPENDS += +libnetmodel
   DEPENDS += +mod-dmext
   MENU:=1
 endef

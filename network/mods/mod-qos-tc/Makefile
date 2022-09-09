@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-qos-tc
-PKG_VERSION:=v1.0.3
+PKG_VERSION:=v1.0.5
 SHORT_DESCRIPTION:=Linux tc QoS Implementation
 
-PKG_SOURCE:=mod-qos-tc-v1.0.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc/-/archive/v1.0.3
-PKG_HASH:=affcabc81bdc79852648a3ebe6a8691883407c86a6a7ad8cde73260eaa7e5bdc
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-qos-tc-v1.0.3
+PKG_SOURCE:=mod-qos-tc-v1.0.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc/-/archive/v1.0.5
+PKG_HASH:=54cf1b4ae67da92cfb43ba68d0c4bc7836cf1c452c638a9c05f9731cdba4ec16
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-qos-tc-v1.0.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -21,14 +21,14 @@ define Package/$(PKG_NAME)
   SUBMENU:=Modules
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc
-  DEPENDS += +kmod-sched
-  DEPENDS += +kmod-sched-core
   DEPENDS += +libamxc
   DEPENDS += +libamxm
   DEPENDS += +libnl-core
   DEPENDS += +libnl-route
   DEPENDS += +libqosmod
   DEPENDS += +libsahtrace
+  DEPENDS += +kmod-sched
+  DEPENDS += +kmod-sched-core
   MENU:=1
 endef
 

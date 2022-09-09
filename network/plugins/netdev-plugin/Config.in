@@ -1,0 +1,24 @@
+config PACKAGE_netdev-plugin
+    tristate
+    select SAH_SERVICES_NETDEV
+
+if PACKAGE_netdev-plugin
+
+menu "Select netdev-plugin build options"
+    depends on PACKAGE_netdev-plugin
+
+config SAH_SERVICES_NETDEV
+    bool "Build NetDev"
+    default y
+
+config WRITE_LINK_WITH_IOCTL
+    bool "Use IOCTL to write the links"
+    default n
+
+config 64_BITS_NETWORK_STATISTICS
+    bool "Use 64 bit network statistics instead of 32 bit"
+    default n
+
+endmenu
+
+endif

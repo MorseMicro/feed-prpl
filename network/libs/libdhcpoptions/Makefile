@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libdhcpoptions
-PKG_VERSION:=v0.2.0
+PKG_VERSION:=v0.3.1
 SHORT_DESCRIPTION:=Library to parse and evaluate the binary data of DHCP options
 
-PKG_SOURCE:=libdhcpoptions-v0.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libdhcpoptions/-/archive/v0.2.0
-PKG_HASH:=92e44c961247bf4d1dae6eb0c2dda832003f9487837992e7820440a34089d9ab
-PKG_BUILD_DIR:=$(BUILD_DIR)/libdhcpoptions-v0.2.0
+PKG_SOURCE:=libdhcpoptions-v0.3.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libdhcpoptions/-/archive/v0.3.1
+PKG_HASH:=ca3a11e25a43e9c4d3ace118dd3c3fb32b2f902bf3d5b2fa0593e6fb82b0f285
+PKG_BUILD_DIR:=$(BUILD_DIR)/libdhcpoptions-v0.3.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

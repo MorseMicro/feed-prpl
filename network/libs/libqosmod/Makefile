@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libqosmod
-PKG_VERSION:=v0.1.5
+PKG_VERSION:=v0.1.6
 SHORT_DESCRIPTION:=A library for the qos modules
 
-PKG_SOURCE:=libqosmod-v0.1.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libqosmod/-/archive/v0.1.5
-PKG_HASH:=2d58747577edbaf80002eeab325a633702ba88f743972451d5ebda7200251548
-PKG_BUILD_DIR:=$(BUILD_DIR)/libqosmod-v0.1.5
+PKG_SOURCE:=libqosmod-v0.1.6.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libqosmod/-/archive/v0.1.6
+PKG_HASH:=1ea2ffb359987c6a0888a58463800e3dfe2f60d34ab01f1c165308a17bf8b4ab
+PKG_BUILD_DIR:=$(BUILD_DIR)/libqosmod-v0.1.6
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

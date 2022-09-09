@@ -15,6 +15,10 @@ config SAH_AMX_TR181_DEVICEINFO_ORDER
     int "tr181 deviceinfo Plugin start up order"
     default 40
 
+config SAH_AMX_ADD_SYSINIT_DONE_SCRIPT
+    bool "Add sysinit_done script"
+    default n
+
 endmenu
 
 endif

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv6s-manager
-PKG_VERSION:=v0.6.11
+PKG_VERSION:=v0.9.6
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv6s-v0.6.11.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s/-/archive/v0.6.11
-PKG_HASH:=7d24d0d67e08cf6ff1325dd14cbf241b8bfea67443101f65cea082d0674ff17a
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.6.11
+PKG_SOURCE:=tr181-dhcpv6s-v0.9.6.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s/-/archive/v0.9.6
+PKG_HASH:=7f67c4559f1b0a9937022a00ccb4679f7b2a9e2f4c7c564977d4581dfa4ce9d6
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.9.6
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -45,7 +45,10 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +libamxm
   DEPENDS += +libsahtrace
+  DEPENDS += +libnetmodel
+  DEPENDS += +mod-netmodel
   DEPENDS += +mod-dmext
+  DEPENDS += +mod-fw-amx
   MENU:=1
 endef
 

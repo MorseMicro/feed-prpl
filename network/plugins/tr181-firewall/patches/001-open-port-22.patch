@@ -1,0 +1,44 @@
+From ffc0015c42a8330b7b195640c5aa1017e032a722 Mon Sep 17 00:00:00 2001
+From: sahnalys12 <boris.vanhoof@softathome.com>
+Date: Thu, 18 Aug 2022 09:16:04 +0200
+Subject: [PATCH] open ssh lan
+
+---
+ odl/defaults.d/40_service_defaults.odl | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/odl/defaults.d/40_service_defaults.odl b/odl/defaults.d/40_service_defaults.odl
+index 6a08571..93df82c 100644
+--- a/odl/defaults.d/40_service_defaults.odl
++++ b/odl/defaults.d/40_service_defaults.odl
+@@ -80,6 +80,27 @@
+             parameter Enable = 1;
+             parameter Persistent = 1;
+         }
++        instance add(Alias=ssh-lan) {
++            parameter Protocol = "TCP";
++            parameter DestinationPort = "22";
++            parameter Interface = "${lan}";
++            parameter Enable = 1;
++            parameter Persistent = 1;
++        }
++        instance add(Alias=ssh-guest) {
++            parameter Protocol = "TCP";
++            parameter DestinationPort = "22";
++            parameter Interface = "${guest}";
++            parameter Enable = 1;
++            parameter Persistent = 1;
++        }
++        instance add(Alias=ssh-lcm) {
++            parameter Protocol = "TCP";
++            parameter DestinationPort = "22";
++            parameter Interface = "${lcm}";
++            parameter Enable = 1;
++            parameter Persistent = 1;
++        }
+         instance add(Alias=http) {
+             parameter Protocol = "TCP";
+             parameter DestinationPort = "80,443";
+-- 
+GitLab
+

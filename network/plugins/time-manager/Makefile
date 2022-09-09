@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=time-manager
-PKG_VERSION:=v1.2.5
+PKG_VERSION:=v2.1.2
 SHORT_DESCRIPTION:=TR181 Time plugin
 
-PKG_SOURCE:=tr181-time-v1.2.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-time/-/archive/v1.2.5
-PKG_HASH:=9912e67ff296c36342f1fff08e14ce32847078451cada96a7bf78fc24c456b96
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-time-v1.2.5
+PKG_SOURCE:=tr181-time-v2.1.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-time/-/archive/v2.1.2
+PKG_HASH:=82296331467d2a70cccffe24441936d93dcf1a7f506c6e4b269af78c544954da
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-time-v2.1.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -37,6 +37,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
   DEPENDS += +mod-dmext
+  DEPENDS += +libamxm
   MENU:=1
 endef
 
@@ -62,6 +63,7 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+  $(CP) ./files/* $(1)/
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
