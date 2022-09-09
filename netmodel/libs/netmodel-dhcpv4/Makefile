@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel-dhcpv4
-PKG_VERSION:=v0.2.1
+PKG_VERSION:=v1.0.1
 SHORT_DESCRIPTION:=Network Model DHCPv4client client
 
-PKG_SOURCE:=netmodel-dhcpv4-v0.2.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-dhcpv4/-/archive/v0.2.1
-PKG_HASH:=463fb1373301f96544a3f25e7c3d0be5fa83fe0147f7630c3ec3ee19d2565569
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-dhcpv4-v0.2.1
+PKG_SOURCE:=netmodel-dhcpv4-v1.0.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-dhcpv4/-/archive/v1.0.1
+PKG_HASH:=60efecf29d6f969e88a1795012f0a533cd32b0c0db55ccf5bfd58679c25f1e50
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-dhcpv4-v1.0.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -27,6 +27,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxb
   DEPENDS += +libamxo
   DEPENDS += +libamxs
+  DEPENDS += +libamxm
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
   MENU:=1

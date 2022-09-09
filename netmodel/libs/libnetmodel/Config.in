@@ -1,0 +1,20 @@
+config PACKAGE_libnetmodel
+    tristate
+    select SAH_LIB_NETMODEL
+
+if PACKAGE_libnetmodel
+
+menu "Select libnetmodel build options"
+    depends on PACKAGE_libnetmodel
+
+config SAH_LIB_NETMODEL
+    bool "Build NetModel library"
+    default y
+
+config SAH_LIB_NETMODEL_SOP
+    bool "Build the Netmodel library for SOP"
+    default n
+
+endmenu
+
+endif
