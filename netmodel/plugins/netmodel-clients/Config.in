@@ -1,0 +1,20 @@
+config PACKAGE_netmodel-clients
+    tristate
+    select SAH_AMX_NETMODEL_CLIENTS
+
+if PACKAGE_netmodel-clients
+
+menu "Select netmodel-clients build options"
+    depends on PACKAGE_netmodel-clients
+
+config SAH_AMX_NETMODEL_CLIENTS
+    bool "Build the Network Model clients plugin"
+    default y
+
+config SAH_AMX_NETMODEL_CLIENTS_ORDER
+    int "Network Model clients plugin startup order"
+    default 20
+
+endmenu
+
+endif

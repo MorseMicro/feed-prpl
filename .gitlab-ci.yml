@@ -81,6 +81,7 @@ generate:
       netdev-plugin
       netmodel
       netmodel-bridge
+      netmodel-clients
       netmodel-dhcpv4
       netmodel-dhcpv6
       netmodel-ethernet
