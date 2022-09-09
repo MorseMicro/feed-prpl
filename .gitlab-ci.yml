@@ -100,6 +100,7 @@ generate:
       tr181-device
       tr181-dhcpv4client
       tr181-dhcpv6client
+      tr181-dns
       tr181-firewall
       tr181-qos
       tr181-routeradvertisement

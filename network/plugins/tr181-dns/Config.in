@@ -1,0 +1,20 @@
+config PACKAGE_tr181-dns
+    tristate
+    select SAH_AMX_TR181_DNS
+
+if PACKAGE_tr181-dns
+
+menu "Select tr181-dns build options"
+    depends on PACKAGE_tr181-dns
+
+config SAH_AMX_TR181_DNS
+    bool "Build a tr181 compatible dns plugin"
+    default y
+
+config SAH_AMX_TR181_DNS_ORDER
+    int "Start up order for the tr181 dns plugin"
+    default 30
+
+endmenu
+
+endif
