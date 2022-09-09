@@ -1,0 +1,20 @@
+config PACKAGE_mod-fw-amx
+    tristate
+    select SAH_MOD_FW-AMX
+
+if PACKAGE_mod-fw-amx
+
+menu "Select mod-fw-amx build options"
+    depends on PACKAGE_mod-fw-amx
+
+config SAH_MOD_FW-AMX
+    bool "Build the tr181-firewall amx module"
+    default n
+
+config SAH_MOD_FW-AMX_SOP
+    bool "Build the tr181-firewall amx module for SOP"
+    default n
+
+endmenu
+
+endif

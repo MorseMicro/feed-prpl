@@ -69,6 +69,7 @@ generate:
       mod-dmext
       mod-dmproxy
       mod-dmstats
+      mod-fw-amx
       mod-netmodel
       mod-pcm-svc
       mod-qos-tc
