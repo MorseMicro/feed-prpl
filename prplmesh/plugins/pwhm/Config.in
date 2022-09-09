@@ -33,20 +33,6 @@ config SAH_WPS_FRIENDLY_NAME
     default "SAH_WPS_FriendlyName"
     depends on USE_SAH_WPS_FRIENDLY_NAME
 
-choice
-    prompt "WPS IE Board Serial Number"
-
-config SAH_WPS_IE_SERIAL_DEFAULT
-    bool "Plain board serial number"
-
-config SAH_WPS_IE_SERIAL_FT_REQ
-    bool "First 50% of board serial number"
-
-config SAH_WPS_IE_RANDOM_SERIAL
-    bool "Generate Random serial number"
-
-endchoice
-
 config SAH_WLD_INIT_LEGACY
     bool "Legacy: Init wld from vendor plugin"
     default n
