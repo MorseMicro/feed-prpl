@@ -1,0 +1,20 @@
+config PACKAGE_tr181-logical
+    tristate
+    select SAH_AMX_TR181_LOGICAL
+
+if PACKAGE_tr181-logical
+
+menu "Select tr181-logical build options"
+    depends on PACKAGE_tr181-logical
+
+config SAH_AMX_TR181_LOGICAL
+    bool "Build a tr181 compatible logical plugin"
+    default y
+
+config SAH_AMX_TR181_LOGICAL_ORDER
+    int "Start up order for the tr181 logical plugin"
+    default 30
+
+endmenu
+
+endif
