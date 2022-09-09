@@ -80,6 +80,7 @@ generate:
       multisettings
       netdev-plugin
       netmodel
+      netmodel-bridge
       netmodel-dhcpv4
       netmodel-dhcpv6
       netmodel-ethernet
