@@ -89,6 +89,7 @@ generate:
       netmodel-logical
       netmodel-netdev
       netmodel-ppp
+      netmodel-vlan
       obuspa
       odl-generator
       owsd
