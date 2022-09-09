@@ -1,0 +1,20 @@
+config PACKAGE_tr181-neighbordiscovery
+    tristate
+    select SAH_AMX_TR181_NEIGHBORDISCOVERY
+
+if PACKAGE_tr181-neighbordiscovery
+
+menu "Select tr181-neighbordiscovery build options"
+    depends on PACKAGE_tr181-neighbordiscovery
+
+config SAH_AMX_TR181_NEIGHBORDISCOVERY
+    bool "Build a tr181 compatible neighbordiscovery plugin"
+    default y
+
+config SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER
+    int "Start up order for the tr181 NEIGHBORDISCOVERY plugin"
+    default 50
+
+endmenu
+
+endif
