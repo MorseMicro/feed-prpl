@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxp
-PKG_VERSION:=v0.9.15
+PKG_VERSION:=v0.10.5
 SHORT_DESCRIPTION:=Common patterns implementation
 
-PKG_SOURCE:=libamxp-v0.9.15.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxp/-/archive/v0.9.15
-PKG_HASH:=2fd633a36cad2db42c84b253b8ff9530ace9f91efe440d87feaa2083d6c2977d
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxp-v0.9.15
+PKG_SOURCE:=libamxp-v0.10.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxp/-/archive/v0.10.5
+PKG_HASH:=eb42af2c4c4a94ebfa13d705014f07cee34b6cb06fa7e8d063852c241adfafb1
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxp-v0.10.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -47,6 +47,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

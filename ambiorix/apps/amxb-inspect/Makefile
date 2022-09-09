@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=amxb-inspect
-PKG_VERSION:=v1.1.1
+PKG_VERSION:=v1.2.0
 SHORT_DESCRIPTION:=Ambiorix Backend inspector/validation tool
 
-PKG_SOURCE:=amxb-inspect-v1.1.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amxb-inspect/-/archive/v1.1.1
-PKG_HASH:=c9db622a2892929ca7f4b4d1423722264c87b3f55c29a64c897f1b52096a68a2
-PKG_BUILD_DIR:=$(BUILD_DIR)/amxb-inspect-v1.1.1
+PKG_SOURCE:=amxb-inspect-v1.2.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/amxb-inspect/-/archive/v1.2.0
+PKG_HASH:=54a5eb895da39e1b376438507597066ea8b1b03f1febc46da4a043fbb312b5e6
+PKG_BUILD_DIR:=$(BUILD_DIR)/amxb-inspect-v1.2.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

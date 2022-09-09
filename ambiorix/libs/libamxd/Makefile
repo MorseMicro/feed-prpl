@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxd
-PKG_VERSION:=v3.5.1
+PKG_VERSION:=v3.6.17
 SHORT_DESCRIPTION:=Data model C-API
 
-PKG_SOURCE:=libamxd-v3.5.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxd/-/archive/v3.5.1
-PKG_HASH:=2572eb9b6919dc1e1a2adaebf5312a28cbeb12676690b2abc56241e5717c5be6
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxd-v3.5.1
+PKG_SOURCE:=libamxd-v3.6.17.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxd/-/archive/v3.6.17
+PKG_HASH:=70186cf9ea45c6543977a2073175ad31eb756ba04cba71d90a3d9f163a00b093
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxd-v3.6.17
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,6 +46,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

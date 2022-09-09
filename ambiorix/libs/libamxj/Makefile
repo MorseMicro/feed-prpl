@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxj
-PKG_VERSION:=v0.3.37
-SHORT_DESCRIPTION:=JSON parser & generator using yajl and lib_amxc variants
+PKG_VERSION:=v0.3.43
+SHORT_DESCRIPTION:=JSON parser & generator using yajl and libamxc variants
 
-PKG_SOURCE:=libamxj-v0.3.37.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxj/-/archive/v0.3.37
-PKG_HASH:=df2cb096503e4e21e5d9981e9079e04d2a351d55545099e3f5583bcd02293759
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxj-v0.3.37
+PKG_SOURCE:=libamxj-v0.3.43.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxj/-/archive/v0.3.43
+PKG_HASH:=6dec5bb0c9723051ddb5b961ecf0047c055ad851d524e51827a815cc29ae6c06
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxj-v0.3.43
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -27,7 +27,7 @@ define Package/$(PKG_NAME)
 endef
 
 define Package/$(PKG_NAME)/description
-	JSON parser & generator using yajl and lib_amxc variants
+	JSON parser & generator using yajl and libamxc variants
 endef
 
 define Build/Compile
@@ -46,6 +46,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 

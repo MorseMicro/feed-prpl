@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxm
-PKG_VERSION:=v0.0.38
+PKG_VERSION:=v0.0.44
 SHORT_DESCRIPTION:=modularity api, simplifies creation of add-ons (plug-ins, modules)
 
-PKG_SOURCE:=libamxm-v0.0.38.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxm/-/archive/v0.0.38
-PKG_HASH:=95cca8a8a512519222b4ace261bf73dc9527b3fdc8cf2d7148c49571ea6fd5f9
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxm-v0.0.38
+PKG_SOURCE:=libamxm-v0.0.44.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxm/-/archive/v0.0.44
+PKG_HASH:=51c16fef60ab42cff9fecf10d19694233e949a07fa0c8d9d1ee1f582d6ab2278
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxm-v0.0.44
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,6 +46,9 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
