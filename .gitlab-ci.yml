@@ -99,6 +99,7 @@ generate:
       mod-sahtrace
       mod-vlan-ioctl
       mod-vlan-uci
+      mod-whm-dummy
       multisettings
       netdev-plugin
       netmodel
