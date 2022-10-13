@@ -1,10 +1,29 @@
 variables:
   CI_DESIGNATED_BRANCH: prplos
+  CI_SDK_PIPELINE_SOURCE: parent_pipeline
 
 include:
   - remote: https://gitlab.com/prpl-foundation/prplOS/prplos/-/raw/prplos/.gitlab/sdk.yml
 
+.expensive_job_rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "$CI_DESIGNATED_BRANCH"
+
+generate full:
+  rules:
+    - !reference [.expensive_job_rules, rules]
+  extends: .generate
+
 generate:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  extends: .generate
+  variables:
+    CI_SDK_TARGETS: |
+      ipq40xx-generic
+
+.generate:
   extends: .generate SDK package build jobs
   variables:
     CI_SDK_TARGETS: |
@@ -123,9 +142,26 @@ generate:
       wan-manager
 
 build:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   extends: .execute SDK package build jobs
 
+build full:
+  rules:
+    - !reference [.expensive_job_rules, rules]
+  stage: build
+  needs:
+    - generate full
+
+  trigger:
+    include:
+      - artifact: sdk-package-jobs.yml
+        job: generate full
+    strategy: depend
+
 .build prplmesh with SDK:
+  rules:
+    - !reference [.expensive_job_rules, rules]
   tags:
     - firmware-builder
   extends: .build feed with SDK
@@ -140,6 +176,9 @@ build prplmesh with intel_mips-xrx500 SDK:
 
 build prplmesh with ipq40xx-generic SDK:
   extends: .build prplmesh with SDK
+  rules:
+    - !reference [generate, rules]
+    - !reference [.expensive_job_rules, rules]
   variables:
     CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-ipq40xx-generic:latest
 
@@ -149,6 +188,8 @@ build prplmesh with mvebu-cortexa9 SDK:
     CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
 
 build prplmesh with ath79-generic OpenWrt SDK:
+  rules:
+    - !reference [.expensive_job_rules, rules]
   extends: .build feed with OpenWrt SDK
   tags:
     - firmware-builder
