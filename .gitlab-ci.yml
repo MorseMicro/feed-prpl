@@ -7,7 +7,7 @@ include:
 
 .expensive_job_rules:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "$CI_DESIGNATED_BRANCH"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DESIGNATED_BRANCH
 
 generate full:
   rules:
