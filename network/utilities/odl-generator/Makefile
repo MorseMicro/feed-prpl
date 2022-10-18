@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=odl-generator
-PKG_VERSION:=proj_prpl_M1-2022_v0.2.5
+PKG_VERSION:=proj_prpl_M1-2022_v0.3.1
 SHORT_DESCRIPTION:=Odl generator using ucode
 
-PKG_SOURCE:=odl-generator-proj_prpl_M1-2022_v0.2.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/utilities/odl-generator/-/archive/proj_prpl_M1-2022_v0.2.5
-PKG_HASH:=d00973deedf9d725216c9af9eb6953d07dd20cf942bec9a5be17168292af62d7
-PKG_BUILD_DIR:=$(BUILD_DIR)/odl-generator-proj_prpl_M1-2022_v0.2.5
+PKG_SOURCE:=odl-generator-proj_prpl_M1-2022_v0.3.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/utilities/odl-generator/-/archive/proj_prpl_M1-2022_v0.3.1
+PKG_HASH:=9b9e597424d7b925cd4967353e2463ae80f5c3404ac6e3fd7ebd9ce7ec8af4cf
+PKG_BUILD_DIR:=$(BUILD_DIR)/odl-generator-proj_prpl_M1-2022_v0.3.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
