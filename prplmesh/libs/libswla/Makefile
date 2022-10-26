@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libswla
-PKG_VERSION:=v1.1.2
+PKG_VERSION:=v2.0.3
 SHORT_DESCRIPTION:=Shared Wifi Library using amx
 
-PKG_SOURCE:=libswla-v1.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/libraries/libswla/-/archive/v1.1.2
-PKG_HASH:=afc7fc4bd60ab9b05593b48fa1484fd0f28cdb2c3b60fbddf00fef4c142bd1e4
-PKG_BUILD_DIR:=$(BUILD_DIR)/libswla-v1.1.2
+PKG_SOURCE:=libswla-v2.0.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/libraries/libswla/-/archive/v2.0.3
+PKG_HASH:=998f578c168595cb56b2e1fed9a106a0c352286bdf638b60e13b82fdef4cc63a
+PKG_BUILD_DIR:=$(BUILD_DIR)/libswla-v2.0.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
