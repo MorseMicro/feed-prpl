@@ -31,8 +31,20 @@ define Package/$(PKG_NAME)
   MENU:=1
 endef
 
+define Package/$(PKG_NAME)-mock
+  CATEGORY:=ambiorix
+  SUBMENU:=Modules
+  TITLE:=$(SHORT_DESCRIPTION) mock
+  URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-xpon-prpl
+  DEPENDS += $(PKG_NAME)
+endef
+
 define Package/$(PKG_NAME)/description
 	xpon prpl module
+endef
+
+define Package/$(PKG_NAME)-mock/description
+	xpon prpl module mock
 endef
 
 define Build/Compile
@@ -57,4 +69,11 @@ define Package/$(PKG_NAME)/install
 	fi
 endef
 
+define Package/$(PKG_NAME)-mock/install
+	$(INSTALL_DIR) $(1)/opt/prplos/usr/bin
+	$(CP) $(PKG_BUILD_DIR)/test/onu_hal_mock/onu_hal_mock/src/onu_hal_mock $(1)/opt/prplos/usr/bin/xpon-onu-hal-mock
+	$(CP) $(PKG_BUILD_DIR)/test/onu_hal_mock/dbgtool/src/dbgtool $(1)/opt/prplos/usr/bin/xpon-onu-hal-mock-dbgtool
+endef
+
 $(eval $(call BuildPackage,$(PKG_NAME)))
+$(eval $(call BuildPackage,$(PKG_NAME)-mock))
