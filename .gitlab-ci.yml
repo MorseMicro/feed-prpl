@@ -75,6 +75,7 @@ generate:
       libocispec
       librlyeh
       libqosmod
+      libradiotap
       libsahtrace
       libswla
       libswlc
