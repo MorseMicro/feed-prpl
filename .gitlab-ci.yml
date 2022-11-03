@@ -22,13 +22,14 @@ generate:
   variables:
     CI_SDK_TARGETS: |
       ipq40xx-generic
+      x86-64-22.03.2
 
 .generate:
   extends: .generate SDK package build jobs
   variables:
     CI_SDK_TARGETS: |
       intel_mips-xrx500
-      ath79-generic-19.07.7
+      x86-64-22.03.2
       mvebu-cortexa9
       ipq40xx-generic
     CI_SDK_BUILD_PACKAGES: |
@@ -201,12 +202,12 @@ build prplmesh with mvebu-cortexa9 SDK:
   variables:
     CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
 
-build prplmesh with ath79-generic OpenWrt SDK:
+build prplmesh with x86-64 OpenWrt 22.03.2 SDK:
   rules:
+    - !reference [generate, rules]
     - !reference [.expensive_job_rules, rules]
-  extends: .build feed with OpenWrt SDK
+  extends: .build feed with x86-64-22.03.2 SDK
   tags:
     - firmware-builder
   variables:
-    CI_SDK_IMAGE: openwrtorg/sdk:ath79-generic-19.07.7
     CI_SDK_BUILD_PACKAGES: prplmesh
