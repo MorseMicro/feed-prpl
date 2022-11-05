@@ -1,0 +1,107 @@
+From 4f7e3457e3c3d1d0ff2161fc2072e57bd3825939 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Sat, 5 Nov 2022 07:41:54 +0100
+Subject: [PATCH] src: makefile: fix libsahtrace linking with gcc 11.2.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Currently build fails during linking step of gcc 11.2.0 toolchain due to:
+
+ cannot find -lsahtrace
+
+That's happening due to the fact, that libsahtrace is being installed to
+STAGINGDIR/lib, but that path is missing in the linker paths as the
+order of the linker arguments seems to matter. So fix it by adding
+STAGING_LIBDIR into the linker args before any other args.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ makefile                      | 4 ++--
+ mod-config-dummy/src/makefile | 2 +-
+ mod-config-uci/src/makefile   | 2 +-
+ mod-time-chrony/src/makefile  | 2 +-
+ mod-time-dummy/src/makefile   | 2 +-
+ src/makefile                  | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/makefile b/makefile
+index 58c777f303da..fa3f3253d7b1 100644
+--- a/makefile
++++ b/makefile
+@@ -23,8 +23,8 @@ all:
+ 	$(MAKE) -C src all
+ 	$(MAKE) -C mod-config-dummy/src all
+ 	$(MAKE) -C mod-config-uci/src all
+-	$(MAKE) -C mod-time-dummy/src all
+-	$(MAKE) -C mod-time-chrony/src all
++	$(MAKE) -C mod-time-dummy/src all STAGINGDIR="$(STAGING_DIR)"
++	$(MAKE) -C mod-time-chrony/src all STAGINGDIR="$(STAGING_DIR)"
+ 
+ clean:
+ 	$(MAKE) -C src clean
+diff --git a/mod-config-dummy/src/makefile b/mod-config-dummy/src/makefile
+index f5b1b8ca6147..4c67753d2f5f 100644
+--- a/mod-config-dummy/src/makefile
++++ b/mod-config-dummy/src/makefile
+@@ -32,7 +32,7 @@ else
+     CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxc -lamxm  -lsahtrace
+ 
+ # targets
+diff --git a/mod-config-uci/src/makefile b/mod-config-uci/src/makefile
+index af5e506651a9..a32872a4d71e 100644
+--- a/mod-config-uci/src/makefile
++++ b/mod-config-uci/src/makefile
+@@ -32,7 +32,7 @@ else
+     CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxc -lamxm  -lsahtrace
+ 
+ # targets
+diff --git a/mod-time-chrony/src/makefile b/mod-time-chrony/src/makefile
+index 2fce6b1c6b8a..5a7278ecf600 100644
+--- a/mod-time-chrony/src/makefile
++++ b/mod-time-chrony/src/makefile
+@@ -32,7 +32,7 @@ else
+     CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxc -lamxm  -lsahtrace
+ 
+ # targets
+diff --git a/mod-time-dummy/src/makefile b/mod-time-dummy/src/makefile
+index 247968cef449..eab591450080 100644
+--- a/mod-time-dummy/src/makefile
++++ b/mod-time-dummy/src/makefile
+@@ -32,7 +32,7 @@ else
+     CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxc -lamxm  -lsahtrace
+ 
+ # targets
+diff --git a/src/makefile b/src/makefile
+index ede062834be5..7dfad2b7bf15 100644
+--- a/src/makefile
++++ b/src/makefile
+@@ -57,7 +57,7 @@ else
+ 	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+            -lamxb -lamxc -lamxp -lamxd -lamxo -lsahtrace -pthread -lnetmodel -lamxm
+ 
+ CFLAGS += -DSAHTRACES_ENABLED -DSAHTRACES_LEVEL=500
