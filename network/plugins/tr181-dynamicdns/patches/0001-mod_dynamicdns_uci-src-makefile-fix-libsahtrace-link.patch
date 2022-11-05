@@ -1,0 +1,50 @@
+From ebf02d50a3fd5ad38adfc1485fdba7e90dede72f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Wed, 21 Dec 2022 20:09:42 +0100
+Subject: [PATCH] mod_dynamicdns_uci: src: makefile: fix libsahtrace linking
+ with gcc 11.2.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Currently build fails during linking step of gcc 11.2.0 toolchain due to:
+
+ cannot find -lsahtrace
+
+That's happening due to the fact, that libsahtrace is being installed to
+STAGINGDIR/lib, but that path is missing in the linker paths as the
+order of the linker arguments seems to matter. So fix it by adding
+STAGING_LIBDIR into the linker args before any other args.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ makefile                        | 2 +-
+ mod_dynamicdns_uci/src/makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/makefile b/makefile
+index 7724fe2824d9..49224f3b3460 100644
+--- a/makefile
++++ b/makefile
+@@ -21,7 +21,7 @@ endef
+ # targets
+ all:
+ 	$(MAKE) -C src all
+-	$(MAKE) -C mod_dynamicdns_uci/src all
++	$(MAKE) -C mod_dynamicdns_uci/src all STAGINGDIR="$(STAGING_DIR)"
+ 
+ clean:
+ 	$(MAKE) -C src clean
+diff --git a/mod_dynamicdns_uci/src/makefile b/mod_dynamicdns_uci/src/makefile
+index 914a0000a4c6..110167907aa8 100644
+--- a/mod_dynamicdns_uci/src/makefile
++++ b/mod_dynamicdns_uci/src/makefile
+@@ -39,7 +39,7 @@ else
+ 	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11
+ endif
+ 
+-LDFLAGS += -shared -fPIC $(STAGING_LIBDIR) \
++LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC \
+ 		   -lm -lamxc -lamxm -lamxj -lamxp -lsahtrace
+ 
+ # targets
