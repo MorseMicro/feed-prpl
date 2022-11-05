@@ -1,0 +1,53 @@
+From cb11036d13687c5839cdf8bc5fdc0a5bb4251772 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Sat, 5 Nov 2022 10:23:29 +0100
+Subject: [PATCH] src: makefile: workaround compile error with libxml2 version
+ 2.10.0+
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+amxo-cg compiles fine with OpenWrt 19.07 which uses libxml2 version
+2.9.14, but it fails to compile with OpenWrt 22.03 which uses libxml2
+version 2.10.2.
+
+libxml2 since version v2.10.0 in commit 40483d0ce26 ("Deprecate module
+init and cleanup functions") has deprecated certain API functions which
+leads to following compiler error:
+
+  xml/gen_xml.c: In function 'gen_xml_close':
+  xml/gen_xml.c:167:5: error: 'xmlCleanupGlobals' is deprecated [-Werror=deprecated-declarations]
+   167 |     xmlCleanupGlobals();
+       |     ^~~~~~~~~~~~~~~~~
+  In file included from /target-x86_64_musl/usr/include/libxml2/libxml/xmlIO.h:117,
+                   from /target-x86_64_musl/usr/include/libxml2/libxml/parser.h:811,
+                   from ../include_priv/gen_xml.h:80,
+                   from xml/gen_xml.c:66:
+  /target-x86_64_musl/usr/include/libxml2/libxml/globals.h:30:24: note: declared here
+     30 | XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
+        |                        ^~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
+
+So lets workaround it by allowing the use of those deprecated, but still
+available APIs.
+
+References: PCF-736
+References: https://github.com/GNOME/libxml2/commit/40483d0ce26119fd3b23aea6cce532a8a78670cf
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ src/makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/makefile b/src/makefile
+index b28b4b2623ca..e76735c06fba 100644
+--- a/src/makefile
++++ b/src/makefile
+@@ -37,6 +37,8 @@ else
+ 	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=gnu11 
+ endif
+ 
++CFLAGS += -Wno-error=deprecated-declarations
++
+ LDFLAGS += $(shell pkg-config --libs libxml-2.0) $(STAGING_LIBDIR) -lamxc -lamxd -lamxo
+ 
+ # targets
