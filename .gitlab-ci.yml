@@ -121,6 +121,7 @@ generate:
       pwhm
       rlyeh
       routing-manager
+      station-sniffer
       syslog-ng
       time-manager
       timingila
