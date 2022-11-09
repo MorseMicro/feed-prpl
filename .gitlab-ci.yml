@@ -155,6 +155,50 @@ generate:
       wan-autosensing
       wan-manager
 
+.generate SDK package build jobs:
+  stage: generate
+  image: alpine
+
+  variables:
+    CI_SDK_BUILD_PACKAGES: |
+      please-provide
+    CI_SDK_PACKAGE_JOBS_TEMPLATE: |
+      {% if env['CI_SDK_PIPELINE_SOURCE'] %}
+      workflow:
+        rules:
+          - if: $$CI_PIPELINE_SOURCE == "{{ env['CI_SDK_PIPELINE_SOURCE'] }}"
+      {% endif %}
+      include:
+        - remote: https://gitlab.com/prpl-foundation/prplos/prplos/-/raw/$CI_DESIGNATED_BRANCH/.gitlab/sdk.yml
+      {% for sdk in env['CI_SDK_TARGETS'].rstrip().split("\n") %}
+        {% for package in env['CI_SDK_BUILD_PACKAGES'].rstrip().split("\n") %}
+      build {{ package | trim }} with {{ sdk | trim }} SDK:
+        extends: .build feed with {{ sdk | trim }} SDK
+        variables:
+          CI_SDK_BUILD_PACKAGES: {{ package | trim }}
+          CI_SDK_BUILD_CONFIG_EXTRA: +PACKAGE_{{ package | trim }}
+        {% endfor %}
+      {% endfor %}
+
+  before_script:
+    - apk add python3 py3-pip
+    - pip3 install jinja2
+
+  script:
+    - |
+      echo "$CI_SDK_PACKAGE_JOBS_TEMPLATE" | python3 -c '
+      import os
+      import sys
+      import jinja2
+      sys.stdout.write(
+        jinja2.Template(sys.stdin.read()
+      ).render(env=os.environ))' > sdk-package-jobs.yml
+    - cat sdk-package-jobs.yml
+
+  artifacts:
+    paths:
+      - sdk-package-jobs.yml
+
 build:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
