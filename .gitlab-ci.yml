@@ -172,11 +172,13 @@ generate:
         - remote: https://gitlab.com/prpl-foundation/prplos/prplos/-/raw/$CI_DESIGNATED_BRANCH/.gitlab/sdk.yml
       {% for sdk in env['CI_SDK_TARGETS'].rstrip().split("\n") %}
         {% for package in env['CI_SDK_BUILD_PACKAGES'].rstrip().split("\n") %}
+          {% if not ("whm" in package and "22.03" in sdk) %}
       build {{ package | trim }} with {{ sdk | trim }} SDK:
         extends: .build feed with {{ sdk | trim }} SDK
         variables:
           CI_SDK_BUILD_PACKAGES: {{ package | trim }}
           CI_SDK_BUILD_CONFIG_EXTRA: +PACKAGE_{{ package | trim }}
+          {% endif %}
         {% endfor %}
       {% endfor %}
 
