@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel-bridge
-PKG_VERSION:=v1.0.2
+PKG_VERSION:=v1.0.3
 SHORT_DESCRIPTION:=Network Model bridge client
 
-PKG_SOURCE:=netmodel-bridge-v1.0.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-bridge/-/archive/v1.0.2
-PKG_HASH:=ad929e6a1d11987196b1d5b6ba3fd354e023684e073fd78f4f2000c9a30c5f83
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-bridge-v1.0.2
+PKG_SOURCE:=netmodel-bridge-v1.0.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-bridge/-/archive/v1.0.3
+PKG_HASH:=bb7fcca331d9833d14c485fa890203a0d168f639241d2a9e28225e2ddc97b9ad
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-bridge-v1.0.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -54,6 +54,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

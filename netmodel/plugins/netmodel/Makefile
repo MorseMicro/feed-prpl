@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel
-PKG_VERSION:=v2.2.0
+PKG_VERSION:=v2.3.0
 SHORT_DESCRIPTION:=Network Model plugin
 
-PKG_SOURCE:=netmodel-v2.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/netmodel/-/archive/v2.2.0
-PKG_HASH:=e31cefec3c1d25616befbfc47454620ffeb563426e52e07743e40722f86916da
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-v2.2.0
+PKG_SOURCE:=netmodel-v2.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/netmodel/-/archive/v2.3.0
+PKG_HASH:=0ea9b9449ef7b741fb8079d108f9bfa4a2450bddc80b21c986a5106359241cec
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-v2.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -62,10 +62,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 define Package/$(PKG_NAME)/config
