@@ -145,6 +145,7 @@ generate:
       tr181-qos
       tr181-routeradvertisement
       tr181-usermanagement
+      tr181-xpon
       ucode
       ucwmp
       udrone

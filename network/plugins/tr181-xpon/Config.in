@@ -1,0 +1,24 @@
+config PACKAGE_tr181-xpon
+    tristate
+    select SAH_AMX_TR181_XPON
+
+if PACKAGE_tr181-xpon
+
+menu "Select tr181-xpon build options"
+    depends on PACKAGE_tr181-xpon
+
+config SAH_AMX_TR181_XPON
+    bool "Build a TR-181 XPON manager"
+    default y
+
+config SAH_AMX_TR181_XPON_ORDER
+    int "TR-181 XPON manager start up order"
+    default 30
+
+config SAH_AMX_TR181_XPON_MAX_ONUS
+    int "Maximum number of ONUs"
+    default 1
+
+endmenu
+
+endif
