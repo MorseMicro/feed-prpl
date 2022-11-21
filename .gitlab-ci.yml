@@ -76,6 +76,7 @@ generate:
       libqoscommon
       librlyeh
       libqosmod
+      libqosnode
       libradiotap
       libsahtrace
       libswla
