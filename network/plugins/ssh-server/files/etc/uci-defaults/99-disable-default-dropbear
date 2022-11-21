@@ -1,0 +1,6 @@
+#!/bin/sh
+
+/etc/init.d/dropbear disable
+rm -f /etc/config/dropbear
+
+exit 0

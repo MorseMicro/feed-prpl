@@ -1,0 +1,24 @@
+config PACKAGE_ssh-server
+    tristate
+    select SAH_AMX_SSH_SERVER
+
+if PACKAGE_ssh-server
+
+menu "Select ssh-server build options"
+    depends on PACKAGE_ssh-server
+
+config SAH_AMX_SSH_SERVER
+    bool "Build ssh server plugin"
+    default y
+
+config SAH_AMX_SSH_SERVER_ORDER
+    int "start up order of ssh server plugin"
+    default 25
+
+config SAH_AMX_SSH_SERVER_SOP
+    bool "Build ssh server plugin for SOP"
+    default n
+
+endmenu
+
+endif
