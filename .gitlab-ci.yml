@@ -137,6 +137,7 @@ generate:
       tr181-dhcpv4client
       tr181-dhcpv6client
       tr181-dns
+      tr181-dnssd
       tr181-firewall
       tr181-logical
       tr181-neighbordiscovery

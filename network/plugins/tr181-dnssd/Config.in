@@ -1,0 +1,20 @@
+config PACKAGE_tr181-dnssd
+    tristate
+    select SAH_AMX_TR181_DNSSD
+
+if PACKAGE_tr181-dnssd
+
+menu "Select tr181-dnssd build options"
+    depends on PACKAGE_tr181-dnssd
+
+config SAH_AMX_TR181_DNSSD
+    bool "Build a tr181 compatible dns service discovery plugin"
+    default y
+
+config SAH_AMX_TR181_DNSSD_ORDER
+    int "Start up order for the tr181 dns service discovery plugin"
+    default 31
+
+endmenu
+
+endif
