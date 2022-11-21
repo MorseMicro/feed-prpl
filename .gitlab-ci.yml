@@ -73,6 +73,7 @@ generate:
       libipat
       libnetmodel
       libocispec
+      libqoscommon
       librlyeh
       libqosmod
       libradiotap
