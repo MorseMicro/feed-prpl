@@ -11,10 +11,6 @@ config SAH_SERVICES_NETDEV
     bool "Build NetDev"
     default y
 
-config WRITE_LINK_WITH_IOCTL
-    bool "Use IOCTL to write the links"
-    default n
-
 config 64_BITS_NETWORK_STATISTICS
     bool "Use 64 bit network statistics instead of 32 bit"
     default n
