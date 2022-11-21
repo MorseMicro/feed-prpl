@@ -102,6 +102,7 @@ generate:
       mod-vlan-ioctl
       mod-vlan-uci
       mod-whm-dummy
+      mod-xpon-prpl
       multisettings
       netdev-plugin
       netmodel
