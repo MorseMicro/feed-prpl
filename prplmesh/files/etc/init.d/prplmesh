@@ -11,7 +11,7 @@ NAME=prplmesh
 
 hostapd_ready()
 {
-        hostapd_cli -i$1 stat &>/dev/null
+        hostapd_cli -i$1 stat &>/dev/null || ubus call WiFi.Radio _get '{"depth":"0"}' &> /dev/null
 }
 
 wlan_reset()
