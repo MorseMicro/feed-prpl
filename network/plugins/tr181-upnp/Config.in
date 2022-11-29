@@ -1,0 +1,20 @@
+config PACKAGE_tr181-upnp
+    tristate
+    select SAH_AMX_TR181_UPNP
+
+if PACKAGE_tr181-upnp
+
+menu "Select tr181-upnp build options"
+    depends on PACKAGE_tr181-upnp
+
+config SAH_AMX_TR181_UPNP
+    bool "Build a tr181 compatible upnp manager"
+    default y
+
+config SAH_AMX_TR181_UPNP_ORDER
+    int "Start up order for the tr181 upnp manager"
+    default 80
+
+endmenu
+
+endif
