@@ -1,0 +1,20 @@
+config PACKAGE_tr181-httpaccess
+    tristate
+    select SAH_AMX_TR181_HTTPACCESS
+
+if PACKAGE_tr181-httpaccess
+
+menu "Select tr181-httpaccess build options"
+    depends on PACKAGE_tr181-httpaccess
+
+config SAH_AMX_TR181_HTTPACCESS
+    bool "Build HTTPAccess data model plug-in"
+    default y
+
+config SAH_AMX_TR181_HTTPACCESS_ORDER
+    int "TR-181 HTTPAccess plugin start order"
+    default 49
+
+endmenu
+
+endif
