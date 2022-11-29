@@ -1,0 +1,12 @@
+%populate {
+    object Users.User {
+        instance add(0, "http-user", Username="http", UserID=65536) {
+            parameter Enable=true;
+            parameter RemoteAccessCapable=false;
+            parameter Password="";
+            parameter GroupParticipation="Users.Group.www-data-group.";
+            parameter StaticUser=true;
+            parameter '${prefix_}HomeDirectory'="/var/run/http";
+        }
+    }
+}

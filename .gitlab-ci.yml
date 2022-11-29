@@ -93,6 +93,7 @@ generate:
       mod-dmproxy
       mod-dmstats
       mod-fw-amx
+      mod-httpaccess-lighttpd
       mod-netmodel
       mod-pcm-svc
       mod-qos-tc
