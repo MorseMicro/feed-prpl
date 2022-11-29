@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sed -i 's|Port = 80;|Port = 8080;|' /etc/amx/tr181-httpaccess/defaults.d/00_lan_access_ui.odl
+
+exit 0

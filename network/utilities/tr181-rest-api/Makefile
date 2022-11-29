@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-rest-api
-PKG_VERSION:=v0.0.3
+PKG_VERSION:=v0.1.0
 PKG_RELEASE:=1
 PKG_LICENSE:=BSD-2-Clause-Patent
 
