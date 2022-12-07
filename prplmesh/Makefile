@@ -10,6 +10,7 @@ PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/archive/$
 PKG_HASH:=d4e16dc123b595a90219830b4b04e015205321583be5a673979464bd3233c936
 PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 
+PKG_BUILD_PARALLEL:=1
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_WIRELESS_STA \
 	CONFIG_TARGET_intel_mips \
