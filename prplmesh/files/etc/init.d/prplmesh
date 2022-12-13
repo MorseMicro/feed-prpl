@@ -5,6 +5,12 @@
 START=99
 NAME=prplmesh
 
+#use the value of CONFIG_CONTROLLER_ROOT_DM if set to bind prplmesh datamodel with external proxy (tr181-device plugin)
+#the value is not empty if it is something else than the default one : Device.WiFi.DataElements.
+
+DEFAULT_CONTROLLER_ROOT_DM="Device.WiFi.DataElements"
+CONFIG_CONTROLLER_ROOT_DM="Device.WiFi.DataElements"
+
 #####################################
 # Helper functions for wlan ready
 #####################################
@@ -82,6 +88,13 @@ show_wireless_radio_disabled()
         fi
 }
 
+setup_proxy_binding(){
+        local proxypath="$1""."
+        local realpath="$2""."
+        ubus call ProxyManager register "{'proxy' : '$proxypath','real' : '$realpath'}"
+        return $?
+}
+
 ####################
 # main
 ####################
@@ -110,6 +123,10 @@ start_function() {
                 else
                         logger -t "${NAME}" -p daemon.info "Start prplMesh agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start -m A
+                fi
+                if [ "$DEFAULT_CONTROLLER_ROOT_DM" != "$CONFIG_CONTROLLER_ROOT_DM" ]; then
+                        setup_proxy_binding $DEFAULT_CONTROLLER_ROOT_DM $CONFIG_CONTROLLER_ROOT_DM || \
+                                logger -t "${NAME}" -p daemon.warn "Can't create a proxy binding for $DEFAULT_CONTROLLER_ROOT_DM using $CONFIG_CONTROLLER_ROOT_DM."
                 fi
         else
                 logger -t "${NAME}" -p daemon.warn "prplMesh is disabled (prplmesh.config.enable=0), skipping..."

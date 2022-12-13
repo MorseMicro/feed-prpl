@@ -13,3 +13,12 @@ config USE_PRPLMESH_WHM
     depends on PACKAGE_libamxb
     default y if PACKAGE_pwhm
     default n
+
+config PRPL_CONTROLLER_ROOT_PATH
+    string "Default prplmesh Datamodel path"
+    default "Device.WiFi.DataElements"
+    depends on PACKAGE_prplmesh
+    help
+        Set the root datamodel to be used, by default will be set to Device.WiFi.DataElements, unless if any project changes 
+        it to something else.
+        This may be helpful when several third-party packages have something in Device.WiFi.

@@ -80,8 +80,11 @@ ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
 endif
 
+CONTROLLER_ROOT_DM:=$(CONFIG_PRPL_CONTROLLER_ROOT_PATH)
+
 ifeq ($(CONFIG_PACKAGE_libamxb),y)
 	CMAKE_OPTIONS += -DENABLE_NBAPI=ON
+	CMAKE_OPTIONS += -DCONTROLLER_ROOT_DM="$(CONTROLLER_ROOT_DM)"
 ifeq ($(CONFIG_PACKAGE_mod-amxb-ubus),y)
 	CMAKE_OPTIONS += -DUBUS_SOCK="-DAMBIORIX_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_BUS_URI=\\\"ubus:/var/run/ubus.sock\\\""
 ifeq ($(CONFIG_USE_PRPLMESH_WHM),y)
@@ -115,6 +118,7 @@ define Package/prplmesh/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) ./files/etc/init.d/* $(1)/etc/init.d/
 	$(INSTALL_BIN) ./files/etc/uci-defaults/* $(1)/etc/uci-defaults/
+	$(SED) '/CONFIG_CONTROLLER_ROOT_DM=/ c\CONFIG_CONTROLLER_ROOT_DM=$(CONTROLLER_ROOT_DM)' $(1)/etc/init.d/prplmesh
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/bin $(1)/opt/prplmesh/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/scripts $(1)/opt/prplmesh/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/lib/*.so* $(1)/usr/lib/
