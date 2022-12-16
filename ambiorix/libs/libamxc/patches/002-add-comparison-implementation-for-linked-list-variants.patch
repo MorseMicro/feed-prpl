@@ -1,0 +1,173 @@
+From 24f44a5d8a6947cae15793742fcd3bba0c593e94 Mon Sep 17 00:00:00 2001
+From: Alexander VAN PARYS <alexander.vanparys@softathome.com>
+Date: Wed, 5 Oct 2022 08:38:04 +0200
+Subject: [PATCH]  Add comparison implementation for linked list
+ variants [new]
+
+---
+ src/variants/variant_list.c           | 27 +++++++++-
+ test/variant_list/test_main.c         |  1 +
+ test/variant_list/test_variant_list.c | 71 +++++++++++++++++++++++++++
+ test/variant_list/test_variant_list.h |  3 +-
+ 4 files changed, 100 insertions(+), 2 deletions(-)
+
+diff --git a/src/variants/variant_list.c b/src/variants/variant_list.c
+index ec67b16..08b45eb 100644
+--- a/src/variants/variant_list.c
++++ b/src/variants/variant_list.c
+@@ -337,6 +337,31 @@ static int variant_list_set_key(amxc_var_t* const dest,
+     }
+ }
+ 
++static int variant_list_compare(const amxc_var_t* const lval,
++                                const amxc_var_t* const rval,
++                                int* const result) {
++    int ret = 0;
++    amxc_llist_it_t* r_it = amxc_llist_get_first(amxc_var_constcast(amxc_llist_t, rval));
++
++    amxc_llist_iterate(l_it, amxc_var_constcast(amxc_llist_t, lval)) {
++        when_null_status(r_it, exit, *result = 1);
++
++        ret = amxc_var_compare(amxc_llist_it_get_data(l_it, amxc_var_t, lit),
++                               amxc_llist_it_get_data(r_it, amxc_var_t, lit),
++                               result);
++        when_false((ret == 0) && (*result == 0), exit);
++
++        r_it = amxc_llist_it_get_next(r_it);
++    }
++
++    if(r_it != NULL) {
++        *result = -1;
++    }
++
++exit:
++    return ret;
++}
++
+ static amxc_var_type_t amxc_variant_list = {
+     .init = variant_list_init,
+     .del = variant_list_delete,
+@@ -344,7 +369,7 @@ static amxc_var_type_t amxc_variant_list = {
+     .move = variant_list_move,
+     .convert_from = NULL,
+     .convert_to = variant_list_convert_to,
+-    .compare = NULL,
++    .compare = variant_list_compare,
+     .get_key = variant_list_get_key,
+     .set_key = variant_list_set_key,
+     .get_index = variant_list_get_index,
+diff --git a/test/variant_list/test_main.c b/test/variant_list/test_main.c
+index 1d6909d..3278680 100644
+--- a/test/variant_list/test_main.c
++++ b/test/variant_list/test_main.c
+@@ -74,6 +74,7 @@ int main(void) {
+         cmocka_unit_test(test_variant_list_convert_to_htable),
+         cmocka_unit_test(test_variant_list_convert_to_string),
+         cmocka_unit_test(test_variant_llist_set_get),
++        cmocka_unit_test(test_variant_llist_compare),
+         cmocka_unit_test(test_variant_llist_get_index),
+         cmocka_unit_test(test_variant_llist_set_index),
+         cmocka_unit_test(test_variant_llist_set_key),
+diff --git a/test/variant_list/test_variant_list.c b/test/variant_list/test_variant_list.c
+index 1c87175..7d9197a 100644
+--- a/test/variant_list/test_variant_list.c
++++ b/test/variant_list/test_variant_list.c
+@@ -301,6 +301,77 @@ void test_variant_llist_set_get(UNUSED void** state) {
+     amxc_var_clean(&var);
+ }
+ 
++void test_variant_llist_compare(UNUSED void** state) {
++    amxc_var_t var1;
++    amxc_var_t var2;
++    amxc_var_t* list1;
++    amxc_var_t* list2;
++    int result = 0;
++
++    assert_int_equal(amxc_var_init(&var1), 0);
++    assert_int_equal(amxc_var_init(&var2), 0);
++    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(var1.type_id, AMXC_VAR_ID_LIST);
++    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(var2.type_id, AMXC_VAR_ID_LIST);
++
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    assert_non_null(amxc_var_add(cstring_t, &var1, "my_value"));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result > 0);
++    assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
++    assert_true(result < 0);
++
++    assert_non_null(amxc_var_add(cstring_t, &var2, "my_value"));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    assert_non_null(amxc_var_add(uint32_t, &var1, 1));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result > 0);
++
++    assert_non_null(amxc_var_add(uint32_t, &var2, 2));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result < 0);
++
++    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    assert_non_null(amxc_var_add(cstring_t, &var1, "my_value"));
++    assert_non_null(amxc_var_add(uint32_t, &var1, 1));
++    assert_non_null(amxc_var_add(uint32_t, &var2, 1));
++    assert_non_null(amxc_var_add(cstring_t, &var2, "my_value"));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result != 0);
++
++    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    list1 = amxc_var_add(amxc_llist_t, &var1, NULL);
++    assert_non_null(list1);
++    list2 = amxc_var_add(amxc_llist_t, &var2, NULL);
++    assert_non_null(list2);
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    assert_non_null(amxc_var_add(cstring_t, list1, "my_value"));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result > 0);
++
++    assert_non_null(amxc_var_add(cstring_t, list2, "my_value"));
++    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
++    assert_true(result == 0);
++
++    amxc_var_clean(&var1);
++    amxc_var_clean(&var2);
++}
++
+ void test_variant_llist_add_new(UNUSED void** state) {
+     amxc_var_t var;
+     amxc_var_t* item = NULL;
+diff --git a/test/variant_list/test_variant_list.h b/test/variant_list/test_variant_list.h
+index 75ed6ba..72061a3 100644
+--- a/test/variant_list/test_variant_list.h
++++ b/test/variant_list/test_variant_list.h
+@@ -68,6 +68,7 @@ void test_variant_list_convert_to_integer(void** state);
+ void test_variant_list_convert_to_htable(void** state);
+ void test_variant_list_convert_to_string(void** state);
+ void test_variant_llist_set_get(void** state);
++void test_variant_llist_compare(void** state);
+ 
+ void test_variant_llist_get_index(void** state);
+ void test_variant_llist_set_index(void** state);
+@@ -77,4 +78,4 @@ void test_variant_llist_add_new_key(void** state);
+ 
+ void test_variant_llist_get_path(void** state);
+ 
+-#endif // __TEST_VARIANT_LIST_H__
+\ No newline at end of file
++#endif // __TEST_VARIANT_LIST_H__
+-- 
+GitLab
