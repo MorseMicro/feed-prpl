@@ -1,0 +1,56 @@
+From c86cffc5f78b97c074afa306319fc804a1a34115 Mon Sep 17 00:00:00 2001
+From: Vincent HARLE <vincent.harle@softathome.com>
+Date: Wed, 14 Dec 2022 09:25:36 +0100
+Subject: [PATCH] [prplOs compatibility] Don't change path and
+ use ip utility according to installed packages [fix]
+
+---
+ scripts/debug_network.sh | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+ mode change 100755 => 100644 scripts/debug_network.sh
+
+diff --git a/scripts/debug_network.sh b/scripts/debug_network.sh
+old mode 100755
+new mode 100644
+index 68e4b2d..fe7c166
+--- a/scripts/debug_network.sh
++++ b/scripts/debug_network.sh
+@@ -1,7 +1,5 @@
+ #!/bin/sh
+ 
+-# fix path to avoid using ip tool of busybox
+-PATH=/bin:/usr/bin
+ LIBDEBUG=/usr/lib/debuginfo/debug_functions.sh
+ 
+ if [ ! -f "$LIBDEBUG" ]; then
+@@ -11,9 +9,16 @@ fi
+ 
+ . $LIBDEBUG
+ 
++#Detect if ip is busybox limited implementation 
++IS_BUSYBOX_IP=$(ip -help 2>&1 | grep "BusyBox")
++
+ show_title "show ip addres/link information"
+ show_cmd ip address show
+-show_cmd ip -s link
++if [ -z "$IS_BUSYBOX_IP" ] ; then
++	show_cmd ip -s link
++else
++	show_cmd ip link
++fi
+ show_cmd tc -s qdisc
+ show_cmd netstat -lan
+ 
+@@ -22,6 +27,9 @@ show_cmd ip -4 route
+ show_cmd ip -6 route
+ 
+ show_title "show ip neighbours"
+-show_cmd ip -B n
++
++if [ -z "$IS_BUSYBOX_IP" ] ; then
++	show_cmd ip -B n
++fi
+ show_cmd ip -4 n
+ show_cmd ip -6 n
+-- 
+GitLab
