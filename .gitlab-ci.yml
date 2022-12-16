@@ -43,6 +43,7 @@ generate:
       bbfd
       cthulhu
       cthulhu-lxc
+      debug-information
       deviceinfo-manager
       dhcpv4-manager
       dhcpv6s-manager
