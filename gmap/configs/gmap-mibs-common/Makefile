@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mibs-common
-PKG_VERSION:=v0.2.3
+PKG_VERSION:=v0.4.1
 SHORT_DESCRIPTION:=Generic mib files for the gmap service
 
-PKG_SOURCE:=gmap-mibs-common-v0.2.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common/-/archive/v0.2.3
-PKG_HASH:=d350eac8b25841093149a8fe3313dfa567b024084091c2f6f9355fba0374c50c
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mibs-common-v0.2.3
+PKG_SOURCE:=gmap-mibs-common-v0.4.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common/-/archive/v0.4.1
+PKG_HASH:=285ac434e374e5782a3f382023010b081f3cbdea1fc4d07bfe924b50f09afec3
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mibs-common-v0.4.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -53,6 +53,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

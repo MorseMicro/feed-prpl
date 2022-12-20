@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-name-selector
-PKG_VERSION:=v0.1.2
+PKG_VERSION:=v1.0.1
 SHORT_DESCRIPTION:=Name selection module for gmap
 
-PKG_SOURCE:=gmap-mod-name-selector-v0.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-name-selector/-/archive/v0.1.2
-PKG_HASH:=4e6ffc69f79ac440b974b2d403da56a2974a1f3a536a2fba11aaa1ad15eb2fd6
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-name-selector-v0.1.2
+PKG_SOURCE:=gmap-mod-name-selector-v1.0.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-name-selector/-/archive/v1.0.1
+PKG_HASH:=cac734389d94a198f980ec4c39956655d0f12a1177fcb0d204a186df2becc206
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-name-selector-v1.0.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=gmap
   SUBMENU:=Applications
   TITLE:=$(SHORT_DESCRIPTION)
-  URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common
+  URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-name-selector
   DEPENDS += +gmap-server
   DEPENDS += +libamxc
   DEPENDS += +libamxp
@@ -52,8 +52,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
-

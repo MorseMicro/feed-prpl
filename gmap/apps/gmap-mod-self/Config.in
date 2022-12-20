@@ -1,0 +1,20 @@
+config PACKAGE_gmap-mod-self
+    tristate
+    select SAH_SERVICES_GMAP-SELF
+
+if PACKAGE_gmap-mod-self
+
+menu "Select gmap-mod-self build options"
+    depends on PACKAGE_gmap-mod-self
+
+config SAH_SERVICES_GMAP-SELF
+    bool "Application for filling in the device's and it's interfaces information"
+    default y
+
+config SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER
+    bool "gmap-self runs on a wifi repeater"
+    default n
+
+endmenu
+
+endif
