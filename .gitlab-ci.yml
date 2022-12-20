@@ -125,6 +125,7 @@ generate:
       obuspa
       odl-generator
       owsd
+      packet-interception
       pcm-manager
       pwhm
       rlyeh
