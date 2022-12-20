@@ -1,0 +1,20 @@
+config PACKAGE_libnetlink-utils
+    tristate
+    select SAH_LIB_NETLINK_UTILS
+
+if PACKAGE_libnetlink-utils
+
+menu "Select libnetlink-utils build options"
+    depends on PACKAGE_libnetlink-utils
+
+config SAH_LIB_NETLINK_UTILS
+    bool "Build netlink utility library"
+    default y
+
+config SAH_LIB_NETLINK_NF_QUEUE_PRPL_OS_PATH
+    bool "Enable linking and setting rpath to /opt/prplos"
+    default y
+
+endmenu
+
+endif

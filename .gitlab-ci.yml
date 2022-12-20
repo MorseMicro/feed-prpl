@@ -73,6 +73,7 @@ generate:
       libgmap-client
       libimtp
       libipat
+      libnetlink-utils
       libnetmodel
       libocispec
       libqoscommon
