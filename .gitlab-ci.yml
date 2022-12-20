@@ -71,6 +71,7 @@ generate:
       libfwinterface
       libfwrules
       libgmap-client
+      libimtp
       libipat
       libnetmodel
       libocispec
