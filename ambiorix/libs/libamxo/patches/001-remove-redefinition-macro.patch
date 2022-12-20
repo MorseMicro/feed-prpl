@@ -1,0 +1,24 @@
+From 80306586c6bf7d9c0a4bc39437f31b0972569e8b Mon Sep 17 00:00:00 2001
+From: Alexander Van Parys <alexander.vanparys@softathome.com>
+Date: Tue, 20 Dec 2022 09:49:00 +0100
+Subject: [PATCH] Remove when_true_status macro, this is defined in amxc now
+
+---
+ include_priv/amxo_parser_priv.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/include_priv/amxo_parser_priv.h b/include_priv/amxo_parser_priv.h
+index d2b343a..142380b 100644
+--- a/include_priv/amxo_parser_priv.h
++++ b/include_priv/amxo_parser_priv.h
+@@ -68,8 +68,6 @@ extern "C"
+ 
+ #include <amxc/amxc_macros.h>
+ 
+-#define when_true_status(x, l, c) if(x) { c; goto l; }
+-
+ enum amxo_parser_tokens_t
+ {
+     token_include,
+-- 
+GitLab
