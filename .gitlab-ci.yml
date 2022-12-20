@@ -144,6 +144,7 @@ generate:
       tr181-dhcpv6client
       tr181-dns
       tr181-dnssd
+      tr181-dslite
       tr181-firewall
       tr181-httpaccess
       tr181-logical

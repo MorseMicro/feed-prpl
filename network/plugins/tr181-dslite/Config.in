@@ -1,0 +1,24 @@
+config PACKAGE_tr181-dslite
+    tristate
+    select SAH_AMX_TR181_DSLITE
+
+if PACKAGE_tr181-dslite
+
+menu "Select tr181-dslite build options"
+    depends on PACKAGE_tr181-dslite
+
+config SAH_AMX_TR181_DSLITE
+    bool "Build tr181 compatible dslite plugin"
+    default y
+
+config SAH_AMX_TR181_DSLITE_ORDER
+    int "Start up order for the tr181 dslite plugin"
+    default 42
+
+config SAH_AMX_TR181_DSLITE_CARES_RPATH
+    bool "Enable linking and setting rpath to /opt/prplos"
+    default y
+
+endmenu
+
+endif

@@ -1,0 +1,22 @@
+diff --git a/odl/tr181-dslite_definition.odl b/odl/tr181-dslite_definition.odl
+index a7a8152..3ce12d5 100644
+--- a/odl/tr181-dslite_definition.odl
++++ b/odl/tr181-dslite_definition.odl
+@@ -181,7 +181,7 @@
+             * Note: In DS-Lite, IPv4 packets arriving over one or more device LAN IP interfaces are logically fed into this TunnelInterface. Likewise, DS-Lite traffic from the WAN gets logically sent from this TunnelInterface to LAN IP interfaces.
+             * @version 1.0
+             **/
+-            %read-only string TunnelInterface = "IP.Interface.7." {
++            %read-only string TunnelInterface = "IP.Interface.6." {
+                 on action validate call check_maximum 256;
+             }
+ 
+@@ -193,7 +193,7 @@
+             * Note: In DS-Lite, TunneledInterface traffic originating from the LAN logically feeds into a WAN-side IPv6 capable IP interface that the "DSLite IPv4-in-IPv6 tunnel" goes over. DS-Lite traffic that enters over this IPv6 WAN interface gets logically sent to this TunneledInterface.
+             * @version 1.0
+             **/
+-            %read-only string TunneledInterface = "IP.Interface.8." {
++            %read-only string TunneledInterface = "IP.Interface.7." {
+                 on action validate call check_maximum 256;
+             }
+ 

@@ -1,0 +1,37 @@
+%populate {
+    object IP.Interface {
+        instance add("DSLite-entry") {
+            parameter Enable = false;
+            parameter IPv4Enable = true;
+            parameter IPv6Enable = false;
+            parameter ULAEnable = false;
+            parameter UCISectionNameIPv4 = "";
+            parameter UCISectionNameIPv6 = "";
+            parameter Type = "Tunnel";
+            parameter Loopback = false;
+            parameter LowerLayers = "Device.IP.Interface.8.";
+        }
+    }
+
+    object IP.Interface.DSLite-entry.IPv4Address {
+        instance add("DSLite-entry") {
+            parameter Enable = true;
+            parameter IPAddress = "192.0.0.2";
+            parameter SubnetMask = "255.255.255.0";
+        }       
+    }
+
+    object IP.Interface {
+        instance add("DSLite-exit") {
+            parameter Enable = false;
+            parameter IPv4Enable = false;
+            parameter IPv6Enable = true;
+            parameter ULAEnable = false;
+            parameter UCISectionNameIPv4 = "";
+            parameter UCISectionNameIPv6 = "";
+            parameter Type = "Tunneled";
+            parameter Loopback = false;
+            parameter LowerLayers = "";
+        }
+    }  
+}
