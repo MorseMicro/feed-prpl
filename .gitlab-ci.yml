@@ -145,6 +145,7 @@ generate:
       tr181-dns
       tr181-dnssd
       tr181-dslite
+      tr181-dynamicdns
       tr181-firewall
       tr181-httpaccess
       tr181-logical
