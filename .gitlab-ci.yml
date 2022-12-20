@@ -76,6 +76,7 @@ generate:
       libnetlink-utils
       libnetmodel
       libocispec
+      libpacket-interception
       libqoscommon
       librlyeh
       libqosmod
