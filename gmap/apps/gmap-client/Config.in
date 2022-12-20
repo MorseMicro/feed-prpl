@@ -1,0 +1,24 @@
+config PACKAGE_gmap-client
+    tristate
+    select SAH_AMX_GMAP_CLIENT
+
+if PACKAGE_gmap-client
+
+menu "Select gmap-client build options"
+    depends on PACKAGE_gmap-client
+
+config SAH_AMX_GMAP_CLIENT
+    bool "Build the gMap client plugin"
+    default y
+
+config SAH_AMX_GMAP_CLIENT_ORDER
+    int "gMap client plugin startup order"
+    default 82
+
+config SAH_AMX_GMAP_CLIENT_ONE_PROCESS
+    bool "All gMap client modules run in same process"
+    default y
+
+endmenu
+
+endif

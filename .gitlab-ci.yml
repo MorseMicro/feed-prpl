@@ -49,6 +49,7 @@ generate:
       dhcpv6s-manager
       ethernet-manager
       fcgi
+      gmap-client
       gmap-mibs-common
       gmap-mod-ethernet-dev
       gmap-mod-name-selector
