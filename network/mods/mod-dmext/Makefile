@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dmext
-PKG_VERSION:=v0.3.4
+PKG_VERSION:=v0.4.0
 SHORT_DESCRIPTION:=Data model extension module
 
-PKG_SOURCE:=mod-dmext-v0.3.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmext/-/archive/v0.3.4
-PKG_HASH:=65864addbee3e24404e19b1737161c45a6bb903f68714c00b685205d815e147b
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmext-v0.3.4
+PKG_SOURCE:=mod-dmext-v0.4.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmext/-/archive/v0.4.0
+PKG_HASH:=09520b3ccd4b7043b186705189a7233c2bd28c425fbcda3e0896810a10151aa2
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmext-v0.4.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -49,6 +49,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
