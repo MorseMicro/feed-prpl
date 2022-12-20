@@ -54,6 +54,7 @@ generate:
       gmap-mod-name-selector
       gmap-mod-self
       gmap-server
+      hosts-manager
       ip-manager
       libamxa
       libamxb
