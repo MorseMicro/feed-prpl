@@ -115,6 +115,7 @@ generate:
       netmodel-clients
       netmodel-dhcpv4
       netmodel-dhcpv6
+      netmodel-dslite
       netmodel-ethernet
       netmodel-ip
       netmodel-iprouter
