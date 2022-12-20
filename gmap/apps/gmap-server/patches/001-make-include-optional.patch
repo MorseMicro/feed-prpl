@@ -1,0 +1,24 @@
+From d11ea00801e8035f81495797a5ef01ef759d69af Mon Sep 17 00:00:00 2001
+From: Matthias FRANCK <matthias.franck_ext@softathome.com>
+Date: Tue, 20 Dec 2022 14:18:24 +0100
+Subject: [PATCH] Update gmap_conf_global.odl.m4
+
+---
+ config/gmap_conf_global.odl.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config/gmap_conf_global.odl.m4 b/config/gmap_conf_global.odl.m4
+index 0c8fd0f..eb2c3fc 100644
+--- a/config/gmap_conf_global.odl.m4
++++ b/config/gmap_conf_global.odl.m4
+@@ -2,7 +2,7 @@ dnl
+ dnl Include the build system config symbols, they will be
+ dnl available as CONFIG_*.
+ dnl
+-include(STAGINGDIR/components.config.m4)dnl
++#include(STAGINGDIR/components.config.m4)dnl
+ 
+ %config {
+     populate-behavior = {unknown-parameter = "add"};
+-- 
+GitLab
