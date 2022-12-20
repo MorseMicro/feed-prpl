@@ -1,0 +1,32 @@
+From d9e6dc366ed94a172eca9c7866d686034061fac5 Mon Sep 17 00:00:00 2001
+From: Jeroen POLFLIET <jeroen.polfliet_ext@softathome.com>
+Date: Tue, 15 Nov 2022 15:34:44 +0100
+Subject: [PATCH] [Hosts] AccessControl block hosts directly in
+ ip6tables [change]
+
+---
+ config/firewall_ipv6.defaults | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/config/firewall_ipv6.defaults b/config/firewall_ipv6.defaults
+index efd0307..182e847 100644
+--- a/config/firewall_ipv6.defaults
++++ b/config/firewall_ipv6.defaults
+@@ -4,6 +4,7 @@
+ :FORWARD DROP [0:0]
+ :OUTPUT ACCEPT [0:0]
+ :FORWARD6_Firewall - [0:0]
++:FORWARD6_Hosts_Block - [0:0]
+ :FORWARD6_First - [0:0]
+ :FORWARD6_L_High - [0:0]
+ :FORWARD6_L_Low - [0:0]
+@@ -20,6 +21,7 @@
+ -A FORWARD -j FORWARD6_First
+ -A FORWARD -j FORWARD6_Pinhole
+ -A FORWARD -j MINIUPNPD
++-A FORWARD -j FORWARD6_Hosts_Block
+ -A FORWARD -j FORWARD6_Firewall
+ -A FORWARD6_First -i br-lan -o br-lan -j ACCEPT
+ -A INPUT6_First -i lo -j ACCEPT
+-- 
+GitLab

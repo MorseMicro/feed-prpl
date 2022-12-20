@@ -1,0 +1,32 @@
+From 68d2eb9c157c1a117eb4002e0773ed5b92045193 Mon Sep 17 00:00:00 2001
+From: Jeroen POLFLIET <jeroen.polfliet_ext@softathome.com>
+Date: Wed, 9 Nov 2022 10:42:40 +0100
+Subject: [PATCH] [Hosts] AccessControl block hosts directly in
+ iptables [change]
+
+---
+ config/firewall.defaults | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/config/firewall.defaults b/config/firewall.defaults
+index 2381e21..a4dff9b 100644
+--- a/config/firewall.defaults
++++ b/config/firewall.defaults
+@@ -30,6 +30,7 @@ COMMIT
+ :FORWARD DROP [0:0]
+ :OUTPUT ACCEPT [0:0]
+ :FORWARD_Firewall - [0:0]
++:FORWARD_Hosts_Block - [0:0]
+ :FORWARD_First - [0:0]
+ :FORWARD_L_High - [0:0]
+ :FORWARD_L_Low - [0:0]
+@@ -52,6 +53,7 @@ COMMIT
+ -A FORWARD -j FORWARD_Pinhole
+ -A FORWARD -j FORWARD_PortTrigger
+ -A FORWARD -j FORWARD_DMZ
++-A FORWARD -j FORWARD_Hosts_Block
+ -A FORWARD -j FORWARD_Firewall
+ -A FORWARD_First -i br-lan -o br-lan -j ACCEPT
+ -A FORWARD_First -p tcp -m tcp --tcp-flags SYN,RST SYN -o ppp+ -j TCPMSS --clamp-mss-to-pmtu
+-- 
+GitLab
