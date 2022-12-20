@@ -1,0 +1,24 @@
+config PACKAGE_tr181-pcp
+    tristate
+    select SAH_AMX_TR181_PCP
+
+if PACKAGE_tr181-pcp
+
+menu "Select tr181-pcp build options"
+    depends on PACKAGE_tr181-pcp
+
+config SAH_AMX_TR181_PCP
+    bool "Build tr181 pcp plug-in"
+    default y
+
+config SAH_AMX_TR181_PCP_ORDER
+    int "Start up order for the tr181 pcp plugin"
+    default 70
+
+config SAH_AMX_TR181_PCP_CARES_RPATH
+    bool "Enable linking and setting rpath to /opt/prplos"
+    default y
+
+endmenu
+
+endif

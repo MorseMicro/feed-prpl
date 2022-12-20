@@ -150,6 +150,7 @@ generate:
       tr181-httpaccess
       tr181-logical
       tr181-neighbordiscovery
+      tr181-pcp
       tr181-ppp
       tr181-qos
       tr181-routeradvertisement
