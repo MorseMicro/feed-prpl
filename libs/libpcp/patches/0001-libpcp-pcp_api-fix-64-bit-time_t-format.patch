@@ -1,0 +1,43 @@
+From 920a631a407612d5879245b9d966fc7d3383fb96 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Thu, 12 Jan 2023 11:43:25 +0100
+Subject: [PATCH] libpcp: pcp_api: fix 64-bit time_t format
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On newer systems `time_t` becomes 64-bit to allow handling of dates
+beyond Y2038, which yields to following compiler warning/error:
+
+ src/pcp_api.c: In function 'pcp_wait':
+ src/pcp_api.c:264:17: error: format '%ld' expects argument of type 'long int', but argument 4 has type 'time_t' {aka 'long long int'} [-Werror=format=]
+   264 |                 "Executing select with fdmax=%d, timeout = %ld s; %ld us",
+       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   265 |                 fdmax, tout_select.tv_sec, (long int)tout_select.tv_usec);
+       |                        ~~~~~~~~~~~~~~~~~~
+       |                                   |
+       |                                   time_t {aka long long int}
+
+So lets fix it by casting the older 32-bit `time_t` to 64-bit and
+use `%lld` format tag.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ libpcp/src/pcp_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libpcp/src/pcp_api.c b/libpcp/src/pcp_api.c
+index aaf72ef60331..d79ef16cdcce 100644
+--- a/libpcp/src/pcp_api.c
++++ b/libpcp/src/pcp_api.c
+@@ -261,8 +261,8 @@ pcp_fstate_e pcp_wait(pcp_flow_t *flow, int timeout, int exit_on_partial_res)
+         FD_SET(fd, &read_fds);
+ 
+         PCP_LOG(PCP_LOGLVL_DEBUG,
+-                "Executing select with fdmax=%d, timeout = %ld s; %ld us",
+-                fdmax, tout_select.tv_sec, (long int)tout_select.tv_usec);
++                "Executing select with fdmax=%d, timeout = %lld s; %ld us",
++                fdmax, (long long) tout_select.tv_sec, (long int)tout_select.tv_usec);
+ 
+         ret_count=select(fdmax, &read_fds, NULL, NULL, &tout_select);
+ 
