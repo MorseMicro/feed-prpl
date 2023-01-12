@@ -79,6 +79,7 @@ generate:
       libnetmodel
       libocispec
       libpacket-interception
+      libpcp
       libqoscommon
       librlyeh
       libqosmod
