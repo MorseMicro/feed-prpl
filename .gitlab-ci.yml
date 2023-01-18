@@ -37,8 +37,6 @@ generate:
       amx-cli
       amxo-cg
       amxrt
-      bbf
-      bbfd
       cthulhu
       cthulhu-lxc
       debug-information
@@ -86,10 +84,7 @@ generate:
       libswla
       libswlc
       libtr69-engine
-      libtrace
       libwebsockets4
-      luci-mod-simple
-      luci-theme-prpl
       moca-manager
       mod-amxb-ubus
       mod-ba-cli
@@ -123,9 +118,7 @@ generate:
       netmodel-netdev
       netmodel-ppp
       netmodel-vlan
-      obuspa
       odl-generator
-      owsd
       packet-interception
       pcm-manager
       pwhm
@@ -157,8 +150,6 @@ generate:
       tr181-upnp
       tr181-usermanagement
       tr181-xpon
-      ucwmp
-      udrone
       uriparser
       wan-autosensing
       wan-manager
