@@ -49,6 +49,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-netmodel
   DEPENDS += +mod-dmext
   DEPENDS += +mod-fw-amx
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

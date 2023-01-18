@@ -36,6 +36,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

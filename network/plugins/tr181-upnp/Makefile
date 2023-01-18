@@ -39,6 +39,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +mod-fw-amx
   DEPENDS += +miniupnpd
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

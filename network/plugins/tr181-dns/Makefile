@@ -39,6 +39,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +mod-dmext
   DEPENDS += +mod-fw-amx
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

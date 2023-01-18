@@ -64,6 +64,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +ddns-scripts_godaddy.com-v1
   DEPENDS += +ddns-scripts_freedns_42_pl
   DEPENDS += +ddns-scripts_route53-v1
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

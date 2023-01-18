@@ -49,6 +49,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-netmodel
   DEPENDS += +libnetmodel
   DEPENDS += +libipat
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

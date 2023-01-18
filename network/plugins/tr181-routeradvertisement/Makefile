@@ -46,6 +46,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +mod-dmext
   DEPENDS += +libnetmodel
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

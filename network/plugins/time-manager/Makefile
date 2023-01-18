@@ -38,6 +38,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libnetmodel
   DEPENDS += +mod-dmext
   DEPENDS += +libamxm
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

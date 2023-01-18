@@ -50,6 +50,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-netmodel
   DEPENDS += +libnetmodel
   DEPENDS += +libdhcpoptions
+  DEPENDS += +rpcd
   MENU:=1
 endef
 
