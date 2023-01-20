@@ -23,13 +23,17 @@ CMAKE_BINARY_SUBDIR:=build
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/prplmesh
+define Package/prplmesh/default
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=PrplMesh
 	TITLE:=prplmesh
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/blob/master/README.md
 	MAINTAINER:=prplfoundation
+endef
+
+define Package/prplmesh
+	$(Package/prplmesh/default)
 	DEPENDS:= \
 		+libstdcpp \
 		+libpthread \
@@ -62,6 +66,12 @@ define Package/prplmesh
 		+PACKAGE_libamxb:mod-amxb-ubus
 #	pwhm dependency:
 	DEPENDS+= +USE_PRPLMESH_WHM:pwhm
+endef
+
+define Package/prplmesh-unit-tests
+	$(Package/prplmesh/default)
+	TITLE+= - unit tests
+	DEPENDS:=+prplmesh
 endef
 
 define Package/prplmesh/config
@@ -126,4 +136,10 @@ define Package/prplmesh/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/config $(1)/opt/prplmesh/
 endef
 
+define Package/prplmesh-unit-tests/install
+	$(INSTALL_DIR) $(1)/opt/prplmesh/tests
+	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/tests $(1)/opt/prplmesh/
+endef
+
 $(eval $(call BuildPackage,prplmesh))
+$(eval $(call BuildPackage,prplmesh-unit-tests))
