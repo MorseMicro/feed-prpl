@@ -227,6 +227,7 @@ build full:
   extends: .build feed with SDK
   variables:
     CI_SDK_BUILD_PACKAGES: prplmesh
+    CI_SDK_INSTALL_FEEDS: base packages
     CI_SDK_BUILD_CONFIG: >
       +BUILD_LOG -AUTOREMOVE -ALL -ALL_NONSHARED -ALL_KMODS -SIGNED_PACKAGES +PACKAGE_wpad-basic +PACKAGE_kmod-mac80211-hwsim +USE_PRPLMESH_WHM +PACKAGE_prplmesh +PACKAGE_prplmesh-unit-tests
 
@@ -255,6 +256,7 @@ build prplmesh with x86-64 OpenWrt 22.03.2 SDK:
     - firmware-builder
   variables:
     CI_SDK_BUILD_PACKAGES: prplmesh
+    CI_SDK_INSTALL_FEEDS: base packages
     CI_SDK_BUILD_CONFIG: >
       +BUILD_LOG -AUTOREMOVE -ALL -ALL_NONSHARED -ALL_KMODS -SIGNED_PACKAGES +PACKAGE_wpad-basic +PACKAGE_kmod-mac80211-hwsim +USE_PRPLMESH_WHM +PACKAGE_prplmesh +PACKAGE_prplmesh-unit-tests
 
