@@ -1,0 +1,60 @@
+From 00ba3ccaeed5c426799fe7029427452ee5ec19bc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Mon, 23 Jan 2023 19:24:32 +0100
+Subject: [PATCH] agent: fix struct msghdr portability
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Current struct msghdr initialization is glibc centric, it fails to
+compile on x86/64 with gcc version 7.5.0 and musl libc 1.1.24:
+
+ wan_monitor.cpp:113:45: sorry, unimplemented: non-trivial designated initializers not supported
+                           .msg_flags      = 0};
+                                             ^
+
+Thats because musl libc contains additional __pad1 and __pad2 struct
+members introduced in commit "workaround broken msghdr struct on 64bit
+linux":
+
+ POSIX clearly specifies the type of msg_iovlen and msg_controllen, and
+ Linux ignores it and makes them both size_t instead. to work around this
+ we add padding (instead of just using the wrong types like glibc does),
+ but we also need to patch-up the struct before passing it to the kernel
+ in case the caller did not zero-fill it.
+
+So lets fix it by initializing portable struct members.
+
+Fixes: PPM-2443
+References: http://git.musl-libc.org/cgit/musl/commit/arch/x86_64/bits/socket.h?id=7168790763cdeb794df52be6e3b39fbb021c5a64
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ .../slave/backhaul_manager/wan_monitor.cpp        | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/agent/src/beerocks/slave/backhaul_manager/wan_monitor.cpp b/agent/src/beerocks/slave/backhaul_manager/wan_monitor.cpp
+index 5257ef66efe1..fe3cfaf87abc 100644
+--- a/agent/src/beerocks/slave/backhaul_manager/wan_monitor.cpp
++++ b/agent/src/beerocks/slave/backhaul_manager/wan_monitor.cpp
+@@ -104,13 +104,14 @@ wan_monitor::ELinkState wan_monitor::process()
+     struct sockaddr_nl addr = {0};
+     struct iovec iov        = {m_arrNLBuff, sizeof m_arrNLBuff};
+ 
+-    struct msghdr msg = {.msg_name       = (void *)&addr,
+-                         .msg_namelen    = sizeof(addr),
+-                         .msg_iov        = &iov,
+-                         .msg_iovlen     = 1,
+-                         .msg_control    = nullptr,
+-                         .msg_controllen = 0,
+-                         .msg_flags      = 0};
++    struct msghdr msg  = {0};
++    msg.msg_name       = (void *)&addr;
++    msg.msg_namelen    = sizeof(addr);
++    msg.msg_iov        = &iov;
++    msg.msg_iovlen     = 1;
++    msg.msg_control    = nullptr;
++    msg.msg_controllen = 0;
++    msg.msg_flags      = 0;
+ 
+     // Read a message from the netlink socket
+     ssize_t len = recvmsg(m_iNetlinkFD, &msg, 0);
