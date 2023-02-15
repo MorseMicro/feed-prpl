@@ -121,6 +121,7 @@ generate:
       netmodel-netdev
       netmodel-ppp
       netmodel-radio
+      netmodel-ssid
       netmodel-vlan
       odl-generator
       packet-interception
