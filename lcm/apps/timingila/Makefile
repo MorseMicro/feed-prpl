@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=timingila
-PKG_VERSION:=v0.3.1
+PKG_VERSION:=proj_prpl_v0.4.5
 SHORT_DESCRIPTION:=High level LCM component
 
-PKG_SOURCE:=timingila-v0.3.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/timingila/-/archive/v0.3.1
-PKG_HASH:=145235f50301ba3feae597800f350c5f45c6248f6502e61a20f2f81e9a713268
-PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-v0.3.1
+PKG_SOURCE:=timingila-v0.4.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/timingila/-/archive/v0.4.5
+PKG_HASH:=4f6803eca28101843954fa93255bef39d9179d2c496efb73f1ff97f5653b3f63
+PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-v0.4.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -34,6 +34,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxd
   DEPENDS += +libamxm
   DEPENDS += +libamxo
+  DEPENDS += +mod-dmproxy
   MENU:=1
 endef
 
@@ -60,6 +61,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=timingila-cthulhu
-PKG_VERSION:=v0.3.0
+PKG_VERSION:=proj_prpl_v0.4.3
 SHORT_DESCRIPTION:=The module timingila-cthulhu provides cthulhu support as a container backend to timingila
 
-PKG_SOURCE:=timingila-cthulhu-v0.3.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-cthulhu/-/archive/v0.3.0
-PKG_HASH:=4147a93d54f2f445866bdd465859ca1abaddec5191a6517f1ad3858e47de6d0f
-PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-cthulhu-v0.3.0
+PKG_SOURCE:=timingila-cthulhu-v0.4.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-cthulhu/-/archive/v0.4.3
+PKG_HASH:=74ca5282333ec795d76afca7af91ce7f15483338903d5e34e0792ff261e67017
+PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-cthulhu-v0.4.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -53,6 +53,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

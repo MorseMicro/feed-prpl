@@ -11,10 +11,6 @@ config SAH_LIB_CTHULHU-LXC
     bool "Build Cthulhu OCI module"
     default y
 
-config SAH_LIB_CTHULHU-LXC_LXC_TOOLS_PREFIX
-    string "Add a prefix to the binary of lxc"
-    default "/opt/prplos/usr/bin/"
-
 config SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH
     bool "Enable linking and setting rpath to /opt/prplos"
     default y

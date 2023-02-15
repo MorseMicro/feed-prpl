@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cthulhu
-PKG_VERSION:=v0.13.8
+PKG_VERSION:=proj_prpl_v0.18.12
 SHORT_DESCRIPTION:=Cthulhu manages the lifecycle of containers
 
-PKG_SOURCE:=cthulhu-v0.13.8.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/cthulhu/-/archive/v0.13.8
-PKG_HASH:=8f23896a19c7240a5d50f5329a8964f2fbd73447917bdfbb8653b8f79b31f7d6
-PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-v0.13.8
+PKG_SOURCE:=cthulhu-v0.18.12.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/cthulhu/-/archive/v0.18.12
+PKG_HASH:=869f89af35af27bf154160b329790b71474f54c07a5f8891fd65f0b8fbbcb997
+PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-v0.18.12
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -72,6 +72,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rlyeh
-PKG_VERSION:=v0.1.21
+PKG_VERSION:=proj_prpl_v0.1.27
 SHORT_DESCRIPTION:=Rlyeh is the local LCM repository
 
-PKG_SOURCE:=rlyeh-v0.1.21.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/rlyeh/-/archive/v0.1.21
-PKG_HASH:=ff714e802b5f9e33ee73b6e8e8abd6ffa1c9a5c2fcfe8ae0c4759e2dc951fcef
-PKG_BUILD_DIR:=$(BUILD_DIR)/rlyeh-v0.1.21
+PKG_SOURCE:=rlyeh-v0.1.27.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/applications/rlyeh/-/archive/v0.1.27
+PKG_HASH:=44d18841901358f1f64996b50b6d27df3f44f7fbc7c67e4b292679593e97cf0f
+PKG_BUILD_DIR:=$(BUILD_DIR)/rlyeh-v0.1.27
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -61,6 +61,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

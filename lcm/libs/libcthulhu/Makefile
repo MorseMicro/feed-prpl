@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libcthulhu
-PKG_VERSION:=v0.9.5
+PKG_VERSION:=proj_prpl_v0.14.6
 SHORT_DESCRIPTION:=The module libcthulhu provides functions and datastructures that are shared between Cthulhu and its backends
 
-PKG_SOURCE:=libcthulhu-v0.9.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/libcthulhu/-/archive/v0.9.5
-PKG_HASH:=bb1fcf3e3240dce5d9489bc12c2a4a87e8e0d9c1245ec72f8de261b366e55113
-PKG_BUILD_DIR:=$(BUILD_DIR)/libcthulhu-v0.9.5
+PKG_SOURCE:=libcthulhu-v0.14.6.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/libcthulhu/-/archive/v0.14.6
+PKG_HASH:=e7165f1c1722323fe2da48488c0b8b5446774bdd5ee786b0b95d488ba718ff2c
+PKG_BUILD_DIR:=$(BUILD_DIR)/libcthulhu-v0.14.6
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,6 +22,8 @@ define Package/$(PKG_NAME)
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/lcm/libraries/libcthulhu
   DEPENDS += +libamxc
+  DEPENDS += +libamxj
+  DEPENDS += +libocispec
   MENU:=1
 endef
 
@@ -46,6 +48,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

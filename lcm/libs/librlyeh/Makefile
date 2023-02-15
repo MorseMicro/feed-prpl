@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=librlyeh
-PKG_VERSION:=v0.4.16
+PKG_VERSION:=proj_prpl_v0.4.22
 SHORT_DESCRIPTION:=The module librlyeh provides functions and datastructures to interact with OCI registries
 
-PKG_SOURCE:=librlyeh-v0.4.16.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/librlyeh/-/archive/v0.4.16
-PKG_HASH:=341a55844c83d1bf65cb9c9809df953992ecf1be085f7d95485bc3a2ab875b32
-PKG_BUILD_DIR:=$(BUILD_DIR)/librlyeh-v0.4.16
+PKG_SOURCE:=librlyeh-v0.4.22.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/librlyeh/-/archive/v0.4.22
+PKG_HASH:=e8ad57f164d980257e5ac60783d7e90aef3da467ff77aa55f59ae347eb8dae71
+PKG_BUILD_DIR:=$(BUILD_DIR)/librlyeh-v0.4.22
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -53,6 +53,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
