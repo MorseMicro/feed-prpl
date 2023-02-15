@@ -1,0 +1,20 @@
+config PACKAGE_mod-lua-amx
+    tristate
+    select SAH_MOD-LUA-AMX
+
+if PACKAGE_mod-lua-amx
+
+menu "Select mod-lua-amx build options"
+    depends on PACKAGE_mod-lua-amx
+
+config SAH_MOD-LUA-AMX
+    bool "Build Ambiorix LUA extension"
+    default n
+
+config SAH_LUA_AMX_LUA_VERSION
+    string "Lua version that will be used"
+    default "NONE"
+
+endmenu
+
+endif

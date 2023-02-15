@@ -94,6 +94,7 @@ generate:
       mod-dmstats
       mod-fw-amx
       mod-httpaccess-lighttpd
+      mod-lua-amx
       mod-netmodel
       mod-pcm-svc
       mod-qos-tc
