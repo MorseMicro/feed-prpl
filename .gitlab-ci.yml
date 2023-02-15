@@ -85,6 +85,7 @@ generate:
       libswlc
       libtr69-engine
       libwebsockets4
+      lua-amx
       moca-manager
       mod-amxb-ubus
       mod-ba-cli

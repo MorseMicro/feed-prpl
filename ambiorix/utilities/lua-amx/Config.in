@@ -1,0 +1,25 @@
+config PACKAGE_lua-amx
+    tristate
+    select SAH_LUA_AMX
+
+if PACKAGE_lua-amx
+
+menu "Select lua-amx build options"
+    depends on PACKAGE_lua-amx
+
+config SAH_LUA_AMX
+    bool "Build LUA AMX Bindings"
+    default y
+
+config SAH_LUA_AMX_LUA_VERSION_OVERRIDE
+    bool "Override default lua version"
+    default y
+
+config SAH_LUA_AMX_LUA_VERSION
+    string "Lua version that will be used"
+    default "5.1"
+    depends on SAH_LUA_AMX_LUA_VERSION_OVERRIDE
+
+endmenu
+
+endif
