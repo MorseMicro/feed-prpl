@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel-ip
-PKG_VERSION:=v1.1.1
+PKG_VERSION:=v1.1.2
 SHORT_DESCRIPTION:=Network Model IP client
 
-PKG_SOURCE:=netmodel-ip-v1.1.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-ip/-/archive/v1.1.1
-PKG_HASH:=322bb08adf3a8033ea7aaf57c3e0a7c41fb2fc4ca3ec2adc016ef47d45556372
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-ip-v1.1.1
+PKG_SOURCE:=netmodel-ip-v1.1.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-ip/-/archive/v1.1.2
+PKG_HASH:=b68167e1c8604c8fe48df3e97a6b04bf1698ca7e5aad109d4b50179d175d7ce0
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-ip-v1.1.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -54,6 +54,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
