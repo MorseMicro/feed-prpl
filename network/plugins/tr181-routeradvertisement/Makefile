@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-routeradvertisement
-PKG_VERSION:=v0.7.2
+PKG_VERSION:=v0.8.1
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-routeradvertisement-v0.7.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-routeradvertisement/-/archive/v0.7.2
-PKG_HASH:=bf67cad2f8b1b2c4f6736036597b5e48360d2c782a450b3e67b24292d54233a9
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-routeradvertisement-v0.7.2
+PKG_SOURCE:=tr181-routeradvertisement-v0.8.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-routeradvertisement/-/archive/v0.8.1
+PKG_HASH:=0d99ec71cd63a7a0552370b727e7eba8ddd23ff3a5453625d9014061c068e30f
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-routeradvertisement-v0.8.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,7 +46,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +mod-dmext
   DEPENDS += +libnetmodel
-  DEPENDS += +rpcd
   MENU:=1
 endef
 
@@ -74,6 +73,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

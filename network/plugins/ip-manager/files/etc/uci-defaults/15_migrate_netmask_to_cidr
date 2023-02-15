@@ -1,0 +1,30 @@
+#!/bin/sh
+
+. /lib/functions.sh
+
+CONFIG_CHANGED=0
+
+migrate_ipaddr_netmask_to_cidr()
+{
+        local cfg="$1"
+        local ipaddr
+        local netmask
+
+        config_get netmask "$cfg" netmask
+        [ -z "$netmask" ] && return
+
+        config_get ipaddr "$cfg" ipaddr
+        [ -z "$ipaddr" ] && return  
+                                    
+        eval "$(ipcalc.sh "$ipaddr" "$netmask")"
+        [ -z "$PREFIX" ] && return              
+                                  
+        uci del network.${cfg}.netmask
+        uci set network.${cfg}.ipaddr="$ipaddr/$PREFIX"
+        CONFIG_CHANGED=1                               
+}                                                      
+                        
+config_load network
+config_foreach migrate_ipaddr_netmask_to_cidr
+                                             
+[ "$CONFIG_CHANGED" = "1" ] && uci commit network

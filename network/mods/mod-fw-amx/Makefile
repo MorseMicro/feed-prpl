@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-fw-amx
-PKG_VERSION:=v0.2.0
+PKG_VERSION:=v0.3.0
 SHORT_DESCRIPTION:=Ambiorix module to configure the tr181-firewall
 
-PKG_SOURCE:=mod-fw-amx-v0.2.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-fw-amx/-/archive/v0.2.0
-PKG_HASH:=bea74b960e5b3d514a81bd05f644c5bafeb0ac9b6fa1110d96195b363ce4e522
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-fw-amx-v0.2.0
+PKG_SOURCE:=mod-fw-amx-v0.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-fw-amx/-/archive/v0.3.0
+PKG_HASH:=dbf7d1df42e59be673de9842a2cfe8f64f9bcb7c3811347a31dd8f71de0ae448
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-fw-amx-v0.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -52,6 +52,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

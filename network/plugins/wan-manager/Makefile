@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wan-manager
-PKG_VERSION:=v0.3.4
+PKG_VERSION:=v0.7.1
 SHORT_DESCRIPTION:=TR-181 compatible plugin for advanced WAN mode configuration
 
-PKG_SOURCE:=wan-manager-v0.3.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-manager/-/archive/v0.3.4
-PKG_HASH:=10b1ac8343a833fc8729114e797009947e65a968947f065ac327519997bd59d5
-PKG_BUILD_DIR:=$(BUILD_DIR)/wan-manager-v0.3.4
+PKG_SOURCE:=wan-manager-v0.7.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-manager/-/archive/v0.7.1
+PKG_HASH:=26a10b6e458de4761dce87abb84fbcbf44807b91a71d6c42b13f5cb29e99993a
+PKG_BUILD_DIR:=$(BUILD_DIR)/wan-manager-v0.7.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,7 +36,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
-  DEPENDS += +rpcd
   MENU:=1
 endef
 
@@ -63,6 +62,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

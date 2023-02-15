@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wan-autosensing
-PKG_VERSION:=v0.2.7
+PKG_VERSION:=v0.2.9
 SHORT_DESCRIPTION:=WAN Autosensing
 
-PKG_SOURCE:=wan-autosensing-v0.2.7.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-autosensing/-/archive/v0.2.7
-PKG_HASH:=f59b4828be8faa43b8490c4df97c459f65a1b4202178c7b98cbe24bdb6aed019
-PKG_BUILD_DIR:=$(BUILD_DIR)/wan-autosensing-v0.2.7
+PKG_SOURCE:=wan-autosensing-v0.2.9.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-autosensing/-/archive/v0.2.9
+PKG_HASH:=eb228c8884d7e2defd826ee3081655c0da7014da9b0688c2774e50ad9c83753e
+PKG_BUILD_DIR:=$(BUILD_DIR)/wan-autosensing-v0.2.9
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -62,6 +62,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

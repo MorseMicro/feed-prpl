@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dmproxy
-PKG_VERSION:=v0.1.4
+PKG_VERSION:=v1.2.5
 SHORT_DESCRIPTION:=Data model object proxy
 
-PKG_SOURCE:=mod-dmproxy-v0.1.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmproxy/-/archive/v0.1.4
-PKG_HASH:=45ca2348580184a1c1ce44c4940d6fec12bebbbc718658be7ab8c91a44066f9d
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmproxy-v0.1.4
+PKG_SOURCE:=mod-dmproxy-v1.2.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmproxy/-/archive/v1.2.5
+PKG_HASH:=7f3f34c27df6c698ff097f6767a9c89bbb775e660ba7aa2de9e92f3e319e50b4
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmproxy-v1.2.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -50,6 +50,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

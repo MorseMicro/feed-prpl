@@ -67,4 +67,3 @@ index 6051aab0c454..0f22c1b9bfff 100755
 +                fixup_nec_wx3000hp_wan_netmodel "$1"
          ;;
  esac
- 

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-dnssd
-PKG_VERSION:=v0.3.3
+PKG_VERSION:=v0.3.7
 SHORT_DESCRIPTION:=dns service discovery plugin
 
-PKG_SOURCE:=tr181-dnssd-v0.3.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dnssd/-/archive/v0.3.3
-PKG_HASH:=2a48f37a395259209d75261df2725852f78f7251f9ccbdd2465e1374525550d5
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dnssd-v0.3.3
+PKG_SOURCE:=tr181-dnssd-v0.3.7.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dnssd/-/archive/v0.3.7
+PKG_HASH:=ea23f5944ba18b2d13dd285f864e6509c3ad8e33ffd779528a748745508a7f38
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dnssd-v0.3.7
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -34,10 +34,10 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +libamxp
   DEPENDS += +libamxm
+  DEPENDS += +libamxj
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
   DEPENDS += +umdns
-  DEPENDS += +rpcd
   MENU:=1
 endef
 

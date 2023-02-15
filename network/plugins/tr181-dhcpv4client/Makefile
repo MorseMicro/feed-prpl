@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-dhcpv4client
-PKG_VERSION:=v1.7.8
+PKG_VERSION:=v1.8.2
 SHORT_DESCRIPTION:=TR-181 compatible DHCPv4 client
 
-PKG_SOURCE:=tr181-dhcpv4client-v1.7.8.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4client/-/archive/v1.7.8
-PKG_HASH:=8ae5ecdced2222368b711609622603d85ce20091aaa29447db4a1929801f52da
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4client-v1.7.8
+PKG_SOURCE:=tr181-dhcpv4client-v1.8.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4client/-/archive/v1.8.2
+PKG_HASH:=49dc10d56ee4952a07b429d34bd6ebc89a347e416f223b9105800393b00a5d99
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4client-v1.8.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -50,7 +50,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libnetmodel
   DEPENDS += +mod-netmodel
   DEPENDS += +mod-dmext
-  DEPENDS += +rpcd
   MENU:=1
 endef
 
@@ -78,6 +77,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

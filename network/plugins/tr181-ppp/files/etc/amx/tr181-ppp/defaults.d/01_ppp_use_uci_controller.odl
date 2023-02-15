@@ -1,0 +1,5 @@
+%populate {
+    object PPP.Interface.wan {
+        parameter Controller = "mod-ppp-uci";
+    }
+}

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-usermanagement
-PKG_VERSION:=v0.6.9
+PKG_VERSION:=v0.6.13
 SHORT_DESCRIPTION:=tr181 user management plugin
 
-PKG_SOURCE:=tr181-usermanagement-v0.6.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.6.9
-PKG_HASH:=8d9b8e7ff5405d0d79bb9240ed7cf89bb6d82931a33ab3c59d4764735d354f4b
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.6.9
+PKG_SOURCE:=tr181-usermanagement-v0.6.13.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.6.13
+PKG_HASH:=4544f575484b293ccaa7954d0fa98c665062ee6e0f267f65e7098f1076c8415e
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.6.13
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -33,6 +33,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +libamxb
   DEPENDS += +libsahtrace
+  DEPENDS += +lua-amx
   MENU:=1
 endef
 
@@ -58,10 +59,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 define Package/$(PKG_NAME)/config

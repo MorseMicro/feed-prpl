@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-device
-PKG_VERSION:=v0.4.5
+PKG_VERSION:=v0.7.1
 SHORT_DESCRIPTION:=TR-181 compatible Device plugin
 
-PKG_SOURCE:=tr181-device-v0.4.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-device/-/archive/v0.4.5
-PKG_HASH:=5b52f7c5d59d6e0d479616a5eb4eba3c4e83e6365a903c690c51c30cf109b5fe
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-device-v0.4.5
+PKG_SOURCE:=tr181-device-v0.7.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-device/-/archive/v0.7.1
+PKG_HASH:=e56767a6c6b7bb8924372a0e7622d234e74579f60449d7c21ad091970f9d264f
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-device-v0.7.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -62,6 +62,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

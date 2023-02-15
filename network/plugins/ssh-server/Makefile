@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ssh-server
-PKG_VERSION:=v0.3.14
+PKG_VERSION:=v0.3.16
 SHORT_DESCRIPTION:=Process Controller Data Model - dropbear
 
-PKG_SOURCE:=ssh-server-v0.3.14.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/ssh-server/-/archive/v0.3.14
-PKG_HASH:=ea8e701c1df1b34800913a1481d3c737653e3577b6cff97d64f5638986e2bda2
-PKG_BUILD_DIR:=$(BUILD_DIR)/ssh-server-v0.3.14
+PKG_SOURCE:=ssh-server-v0.3.16.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/ssh-server/-/archive/v0.3.16
+PKG_HASH:=b8f48674d5b77442feb7b89d16cdf1cb534f1ca78df0ac043fdf3658aabd5d60
+PKG_BUILD_DIR:=$(BUILD_DIR)/ssh-server-v0.3.16
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -64,10 +64,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 define Package/$(PKG_NAME)/config

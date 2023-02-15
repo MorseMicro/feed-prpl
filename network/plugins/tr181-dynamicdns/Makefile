@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-dynamicdns
-PKG_VERSION:=v0.1.5
+PKG_VERSION:=v0.1.8
 SHORT_DESCRIPTION:=DynamicDNS plugin
 
-PKG_SOURCE:=tr181-dynamicdns-v0.1.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dynamicdns/-/archive/v0.1.5
-PKG_HASH:=21e2d30fc34d2c6db71bebb7b9b9e87c7bfaae582655b73f6ef8c495a917c43f
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dynamicdns-v0.1.5
+PKG_SOURCE:=tr181-dynamicdns-v0.1.8.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dynamicdns/-/archive/v0.1.8
+PKG_HASH:=3f4131ab7ebfd96178d0d29737dc914cf70fcfa9d7dfa2a255345c970d06ca5e
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dynamicdns-v0.1.8
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -64,7 +64,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +ddns-scripts_godaddy.com-v1
   DEPENDS += +ddns-scripts_freedns_42_pl
   DEPENDS += +ddns-scripts_route53-v1
-  DEPENDS += +rpcd
   MENU:=1
 endef
 

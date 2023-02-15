@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=moca-manager
-PKG_VERSION:=v0.2.1
-SHORT_DESCRIPTION:=moca plugin
+PKG_VERSION:=v0.2.3
+SHORT_DESCRIPTION:=MoCA plugin
 
-PKG_SOURCE:=tr181-moca-v0.2.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-moca/-/archive/v0.2.1
-PKG_HASH:=0f9030ad0932459e66c17b7922efbb0d07f0a06089442f96c5ddd0c9b26454f2
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-moca-v0.2.1
+PKG_SOURCE:=tr181-moca-v0.2.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-moca/-/archive/v0.2.3
+PKG_HASH:=e5b94b240c1b1cc5edb046b54f68c06aa5255804d83c5650384a56053768bdbd
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-moca-v0.2.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -35,12 +35,15 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +libamxp
   DEPENDS += +libsahtrace
+  DEPENDS += +libnetmodel
   DEPENDS += +amxrt
+  DEPENDS += +mod-dmstats
+  DEPENDS += +mod-netmodel
   MENU:=1
 endef
 
 define Package/$(PKG_NAME)/description
-	moca plugin
+	MoCA plugin
 endef
 
 define Build/Compile
@@ -62,6 +65,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

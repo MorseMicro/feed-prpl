@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=multisettings
-PKG_VERSION:=v0.5.4
+PKG_VERSION:=v0.7.0
 SHORT_DESCRIPTION:=multisettings plugin
 
-PKG_SOURCE:=multisettings-v0.5.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/multisettings/-/archive/v0.5.4
-PKG_HASH:=92c58848e45fb88888315fbe5d8504300aeb6621cfe1f18103a4a89553d5d92a
-PKG_BUILD_DIR:=$(BUILD_DIR)/multisettings-v0.5.4
+PKG_SOURCE:=multisettings-v0.7.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/multisettings/-/archive/v0.7.0
+PKG_HASH:=cac4f4500d5c69f116be4b6f70fe1e504169f10af4f7c3446f561c037bd48ec6
+PKG_BUILD_DIR:=$(BUILD_DIR)/multisettings-v0.7.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -61,6 +61,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-httpaccess
-PKG_VERSION:=v0.2.3
+PKG_VERSION:=v0.2.5
 SHORT_DESCRIPTION:=TR-181 HTTPAccess model plugin
 
-PKG_SOURCE:=tr181-httpaccess-v0.2.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-httpaccess/-/archive/v0.2.3
-PKG_HASH:=973a97c582219ae1f9bf4be792c920dc6fd6e3f740f9ffa2e26b7b44c60bd00f
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-httpaccess-v0.2.3
+PKG_SOURCE:=tr181-httpaccess-v0.2.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-httpaccess/-/archive/v0.2.5
+PKG_HASH:=eb9a6352119b352fa1aeefd8d40f91e03b7e0b21c84823e532fcde98e70cb41b
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-httpaccess-v0.2.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -36,6 +36,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxm
   DEPENDS += +amxrt
   DEPENDS += +libnetmodel
+  DEPENDS += +libsahtrace
   MENU:=1
 endef
 

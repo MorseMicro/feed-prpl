@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv6s-manager
-PKG_VERSION:=v0.9.6
+PKG_VERSION:=v0.9.14
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv6s-v0.9.6.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s/-/archive/v0.9.6
-PKG_HASH:=7f67c4559f1b0a9937022a00ccb4679f7b2a9e2f4c7c564977d4581dfa4ce9d6
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.9.6
+PKG_SOURCE:=tr181-dhcpv6s-v0.9.14.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv6s/-/archive/v0.9.14
+PKG_HASH:=11edef390fe02aef3de74aa446fe73fbf1ed739b72f843818b3eab4f67da920b
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv6s-v0.9.14
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -49,7 +49,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-netmodel
   DEPENDS += +mod-dmext
   DEPENDS += +mod-fw-amx
-  DEPENDS += +rpcd
   MENU:=1
 endef
 
@@ -77,6 +76,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

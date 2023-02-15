@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pcm-manager
-PKG_VERSION:=v0.6.0
+PKG_VERSION:=v0.6.2
 SHORT_DESCRIPTION:=Upgrade Persistent Configuration Manager
 
-PKG_SOURCE:=tr181-pcm-v0.6.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.6.0
-PKG_HASH:=cc01d6c39381b046ad92fd7afb6eef1a30d8e098e1caaf44b7640c8f0bc6ba3e
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.6.0
+PKG_SOURCE:=tr181-pcm-v0.6.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.6.2
+PKG_HASH:=92555f0e2cf0634d62068782e9982e3ee4493fbe61879c3cf1b11fd80e18c3d7
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.6.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -65,6 +65,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config

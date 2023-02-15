@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-bridging
-PKG_VERSION:=v1.10.8
+PKG_VERSION:=v1.12.4
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-bridging-v1.10.8.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-bridging/-/archive/v1.10.8
-PKG_HASH:=2bf208ac8b7ed26a88dcacb02935c089de35ff1d3b923438a55d2893390c30e7
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.10.8
+PKG_SOURCE:=tr181-bridging-v1.12.4.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-bridging/-/archive/v1.12.4
+PKG_HASH:=8c6d6c85fbb7db6367c51c2bbbc8eb5c0b7095e4136230a77baba976d2afda2a
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-bridging-v1.12.4
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -39,7 +39,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libnetmodel
   DEPENDS += +mod-dmstats
   DEPENDS += +mod-netmodel
-  DEPENDS += +rpcd
   MENU:=1
 endef
 
@@ -66,6 +65,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

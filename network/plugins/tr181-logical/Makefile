@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-logical
-PKG_VERSION:=v0.1.4
+PKG_VERSION:=v0.2.2
 SHORT_DESCRIPTION:=logical interface plugin
 
-PKG_SOURCE:=tr181-logical-v0.1.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-logical/-/archive/v0.1.4
-PKG_HASH:=7717d2109f33cdf64ecdb9e83dea6ad7b6494264f6eb1f5dd7f127ed510fb467
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-logical-v0.1.4
+PKG_SOURCE:=tr181-logical-v0.2.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-logical/-/archive/v0.2.2
+PKG_HASH:=f99abc2169d9b309b6571c8fa1fb110d0346ca9a4cb6d4fb4fb2fa2bdb94775c
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-logical-v0.2.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -63,6 +63,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 define Package/$(PKG_NAME)/config
