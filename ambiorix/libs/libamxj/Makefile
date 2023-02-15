@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxj
-PKG_VERSION:=v0.3.43
+PKG_VERSION:=v0.3.52
 SHORT_DESCRIPTION:=JSON parser & generator using yajl and libamxc variants
 
-PKG_SOURCE:=libamxj-v0.3.43.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxj/-/archive/v0.3.43
-PKG_HASH:=6dec5bb0c9723051ddb5b961ecf0047c055ad851d524e51827a815cc29ae6c06
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxj-v0.3.43
+PKG_SOURCE:=libamxj-v0.3.52.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxj/-/archive/v0.3.52
+PKG_HASH:=c0148d86c9b975c837b587702f7a4650b32145176b0f3617f35728203944794a
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxj-v0.3.52
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,10 +46,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

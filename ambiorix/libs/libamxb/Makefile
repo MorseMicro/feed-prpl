@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxb
-PKG_VERSION:=v4.2.18
+PKG_VERSION:=v4.3.11
 SHORT_DESCRIPTION:=Bus agnostic C API (mediator)
 
-PKG_SOURCE:=libamxb-v4.2.18.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxb/-/archive/v4.2.18
-PKG_HASH:=3a14eb313f93bfc9e16de21869980bb4b4c4dc7c78413824f990c4ffd74badaa
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxb-v4.2.18
+PKG_SOURCE:=libamxb-v4.3.11.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxb/-/archive/v4.3.11
+PKG_HASH:=8bde532276a9eb373f6dcc3038b701d79c7df4e63bda808e500d6d75e2c7ed1f
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxb-v4.3.11
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -48,10 +48,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

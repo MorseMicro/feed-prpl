@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxt
-PKG_VERSION:=v0.1.51
+PKG_VERSION:=v0.1.64
 SHORT_DESCRIPTION:=Common patterns implementation
 
-PKG_SOURCE:=libamxt-v0.1.51.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxt/-/archive/v0.1.51
-PKG_HASH:=d3b48757f16acf1bd3407d08c6ab97e1ffa22aad9f7b835669e073aff93505bb
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxt-v0.1.51
+PKG_SOURCE:=libamxt-v0.1.64.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxt/-/archive/v0.1.64
+PKG_HASH:=22d6206551e876414a18fbad42eaa0de7eb815773d39809a19a86bf97b89e725
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxt-v0.1.64
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,10 +46,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

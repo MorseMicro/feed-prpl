@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxo
-PKG_VERSION:=v2.0.26
+PKG_VERSION:=v2.0.41
 SHORT_DESCRIPTION:=Ambiorix Object Definition Language library
 
-PKG_SOURCE:=libamxo-v2.0.26.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxo/-/archive/v2.0.26
-PKG_HASH:=62a953fe12fdf348d6fd717b50462f1e5578408b907c3be7cf443ea4771df92c
-PKG_BUILD_DIR:=$(BUILD_DIR)/libamxo-v2.0.26
+PKG_SOURCE:=libamxo-v2.0.41.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxo/-/archive/v2.0.41
+PKG_HASH:=6bd2445ecd75f647b75860f5df092fd137a251a9e9dc8717f877497264050cb5
+PKG_BUILD_DIR:=$(BUILD_DIR)/libamxo-v2.0.41
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -49,10 +49,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
