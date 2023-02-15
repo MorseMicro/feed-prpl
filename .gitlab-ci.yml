@@ -66,6 +66,7 @@ generate:
       libarchive
       libcthulhu
       libdhcpoptions
+      libfiletransfer
       libfwinterface
       libfwrules
       libgmap-client
