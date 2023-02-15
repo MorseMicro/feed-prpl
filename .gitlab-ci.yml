@@ -120,6 +120,7 @@ generate:
       netmodel-logical
       netmodel-netdev
       netmodel-ppp
+      netmodel-radio
       netmodel-vlan
       odl-generator
       packet-interception
