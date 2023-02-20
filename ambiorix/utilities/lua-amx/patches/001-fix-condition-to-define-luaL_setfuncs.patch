@@ -1,0 +1,29 @@
+From 9920be17a46a4078a18e8daf0b5a46eeb95bfbcc Mon Sep 17 00:00:00 2001
+From: Matthias FRANCK <matthias.franck_ext@softathome.com>
+Date: Mon, 20 Feb 2023 10:23:52 +0100
+Subject: [PATCH] Fix conditions when `luaL_setfuncs` should be set [fix]
+
+Fixes the following runtime error:
+root@prplOS:/# lua -llamx
+lua: error loading module 'lamx' from file '/usr/lib/lua/lamx.so':
+    Error relocating /usr/lib/lua/lamx.so: luaL_setfuncs: symbol not found
+---
+ src/lamx_lua5.1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/lamx_lua5.1.c b/src/lamx_lua5.1.c
+index bfc70a7..65ff064 100644
+--- a/src/lamx_lua5.1.c
++++ b/src/lamx_lua5.1.c
+@@ -60,7 +60,7 @@
+ 
+ #include "lua_amx.h"
+ 
+-#ifdef LUA_VERSION_5_1
++#if defined(LUA_VERSION_5_1) || (defined(LUA_VERSION_NONE) && LUA_VERSION_NUM == 501)
+ LUALIB_API void luaL_setfuncs (lua_State* L, const luaL_Reg* l, int nup) {
+     luaL_checkstack(L, nup, "too many upvalues");
+     for(; l->name != NULL; l++) { /* fill the table with given functions */
+-- 
+GitLab
+

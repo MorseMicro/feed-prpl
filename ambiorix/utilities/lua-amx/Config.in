@@ -17,7 +17,7 @@ config SAH_LUA_AMX_LUA_VERSION_OVERRIDE
 
 config SAH_LUA_AMX_LUA_VERSION
     string "Lua version that will be used"
-    default "5.1"
+    default "NONE"
     depends on SAH_LUA_AMX_LUA_VERSION_OVERRIDE
 
 endmenu
