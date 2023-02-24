@@ -14,17 +14,17 @@ migrate_ipaddr_netmask_to_cidr()
         [ -z "$netmask" ] && return
 
         config_get ipaddr "$cfg" ipaddr
-        [ -z "$ipaddr" ] && return  
-                                    
+        [ -z "$ipaddr" ] && return
+
         eval "$(ipcalc.sh "$ipaddr" "$netmask")"
-        [ -z "$PREFIX" ] && return              
-                                  
+        [ -z "$PREFIX" ] && return
+
         uci del network.${cfg}.netmask
         uci set network.${cfg}.ipaddr="$ipaddr/$PREFIX"
-        CONFIG_CHANGED=1                               
-}                                                      
-                        
+        CONFIG_CHANGED=1
+}
+
 config_load network
 config_foreach migrate_ipaddr_netmask_to_cidr
-                                             
+
 [ "$CONFIG_CHANGED" = "1" ] && uci commit network
