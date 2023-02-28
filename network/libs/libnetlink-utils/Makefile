@@ -27,7 +27,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +libamxb
   DEPENDS += +libsahtrace
-  DEPENDS += +libnetfilter-queue1.0.5
+  DEPENDS += +libnetfilter-queue
   DEPENDS += +libnetfilter-conntrack
   DEPENDS += +libmnl
   MENU:=1
