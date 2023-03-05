@@ -1,6 +1,6 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 5da042c98cd1f8327113ad7816cb7c12e66013bd Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
-Date: Fri, 5 Aug 2022 20:13:44 +0200
+Date: Wed, 1 Mar 2023 08:18:57 +0100
 Subject: [PATCH] Fix clashing installation of udhcpc.user script with netifd
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -19,16 +19,16 @@ Signed-off-by: Petr Štetiar <ynezz@true.cz>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/makefile b/makefile
-index bfbe2cf3e498..99d1b41c6d55 100644
+index 4a2ff35d087b..cbeb693bef87 100644
 --- a/makefile
 +++ b/makefile
-@@ -42,7 +42,8 @@ install: all
- 	$(INSTALL) -d -m 0755 $(DEST)//etc/amx/tr181-dhcpv4/defaults.d
- 	$(INSTALL) -D -p -m 0644 odl/defaults.d/*.odl $(DEST)/etc/amx/tr181-dhcpv4/defaults.d/
+@@ -45,7 +45,8 @@ install: all
+ 	$(foreach odl,$(wildcard odl/defaults.d/*.odl), $(INSTALL) -D -p -m 0644 $(odl) $(DEST)/etc/amx/tr181-dhcpv4/defaults.d/;)
  	$(INSTALL) -d -m 0755 $(DEST)$(BINDIR)
+ 	ln -sfr $(DEST)$(BINDIR)/amxrt $(DEST)$(BINDIR)/$(COMPONENT)
 -	$(INSTALL) -D -p -m 0755 scripts/udhcpc.user $(DEST)/etc/udhcpc.user
 +	$(INSTALL) -d -m 0755 $(DEST)/etc/udhcpc.user.d
 +	$(INSTALL) -D -p -m 0755 scripts/udhcpc.user $(DEST)/etc/udhcpc.user.d/tr181-dhcpv4client
  	$(INSTALL) -D -p -m 0755 scripts/udhcpc-script.sh $(DEST)/etc/amx/$(COMPONENT)/udhcpc-script.sh
  	$(INSTALL) -D -p -m 0755 scripts/$(COMPONENT).sh $(DEST)$(INITDIR)/$(COMPONENT)
- 	ln -sfr $(DEST)$(BINDIR)/amxrt $(DEST)$(BINDIR)/$(COMPONENT)
+ 
