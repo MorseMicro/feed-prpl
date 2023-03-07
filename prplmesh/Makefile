@@ -96,10 +96,10 @@ ifeq ($(CONFIG_PACKAGE_libamxb),y)
 	CMAKE_OPTIONS += -DENABLE_NBAPI=ON
 	CMAKE_OPTIONS += -DCONTROLLER_ROOT_DM="$(CONTROLLER_ROOT_DM)"
 ifeq ($(CONFIG_PACKAGE_mod-amxb-ubus),y)
-	CMAKE_OPTIONS += -DUBUS_SOCK="-DAMBIORIX_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_BUS_URI=\\\"ubus:/var/run/ubus.sock\\\""
+	CMAKE_OPTIONS += -DUBUS_SOCK="-DAMBIORIX_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_BUS_URI=\\\"ubus:/var/run/ubus/ubus.sock\\\""
 ifeq ($(CONFIG_USE_PRPLMESH_WHM),y)
 	CMAKE_OPTIONS += -DUSE_PRPLMESH_WHM=ON
-	CMAKE_OPTIONS += -DWBAPI_SOCK="-DAMBIORIX_WBAPI_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_WBAPI_BUS_URI=\\\"ubus:/var/run/ubus.sock\\\""
+	CMAKE_OPTIONS += -DWBAPI_SOCK="-DAMBIORIX_WBAPI_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_WBAPI_BUS_URI=\\\"ubus:/var/run/ubus/ubus.sock\\\""
 endif
 endif
 endif
