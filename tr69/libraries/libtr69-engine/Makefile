@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libtr69-engine
-PKG_VERSION:=v0.7.9
+PKG_VERSION:=v0.7.10
 SHORT_DESCRIPTION:=libraries to define and implement the ACS RPCs methods and data parser
 
-PKG_SOURCE:=libtr69-engine-v0.7.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libtr69-engine/-/archive/v0.7.9
-PKG_HASH:=3fb4ea85362acbd96e7c49e5c4a87554f79876745b02e03e90efcf490d92543b
-PKG_BUILD_DIR:=$(BUILD_DIR)/libtr69-engine-v0.7.9
+PKG_SOURCE:=libtr69-engine-v0.7.10.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libtr69-engine/-/archive/v0.7.10
+PKG_HASH:=64aae71042e258d37c77f8e6579d39ca4fb691699b424802ac7c0c07e9c45f0e
+PKG_BUILD_DIR:=$(BUILD_DIR)/libtr69-engine-v0.7.10
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
@@ -35,7 +35,7 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_TR069_DISABLE_XML_PROLOG=$(CONFIG_SAH_SERVICES_TR069_DISABLE_XML_PROLOG))
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_TR069_DISABLE_XML_PROLOG=$(CONFIG_SAH_SERVICES_TR069_DISABLE_XML_PROLOG))
 endef
 
 define Build/Install
