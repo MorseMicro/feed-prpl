@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfwinterface
-PKG_VERSION:=v1.3.11
+PKG_VERSION:=v1.3.12
 SHORT_DESCRIPTION:=A library providing interfaces between lib_fwrules and netfilter
 
-PKG_SOURCE:=libfwinterface-v1.3.11.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.11
-PKG_HASH:=58c8873a22e46b3d03d57484f766c1e5f3f6bb86c47a6eb2f16d9d408ff9b581
-PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.11
+PKG_SOURCE:=libfwinterface-v1.3.12.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.12
+PKG_HASH:=dca16fca2acc80083fd6d03211d634d4557440346a6be985d4332c73aa425576
+PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.12
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -56,6 +56,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +kmod-nf-nathelper
   DEPENDS += +kmod-nf-nathelper-extra
   DEPENDS += +ip6tables-extra
+  DEPENDS += +iptables-mod-conntrack-extra
   MENU:=1
 endef
 

@@ -23,6 +23,14 @@ config SAH_AMX_TR181_DEVICEINFO_DEVELOPMENT
     bool "Configure service for development, enable debug features"
     default n
 
+config SAH_AMX_TR181_DEVICEINFO_HARDWARE_VERSION
+    string "Configure the hardware version"
+    default "XX"
+
+config SAH_AMX_TR181_DEVICEINFO_SOFTWARE_VERSION
+    string "Configure the software version"
+    default "XX"
+
 endmenu
 
 endif

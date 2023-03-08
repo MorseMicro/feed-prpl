@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-usermanagement
-PKG_VERSION:=v0.6.13
+PKG_VERSION:=v0.7.3
 SHORT_DESCRIPTION:=tr181 user management plugin
 
-PKG_SOURCE:=tr181-usermanagement-v0.6.13.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.6.13
-PKG_HASH:=4544f575484b293ccaa7954d0fa98c665062ee6e0f267f65e7098f1076c8415e
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.6.13
+PKG_SOURCE:=tr181-usermanagement-v0.7.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-usermanagement/-/archive/v0.7.3
+PKG_HASH:=d226180140161754b74ff86f041ee4351bf2d718222456fa51d763eab4edd767
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-usermanagement-v0.7.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

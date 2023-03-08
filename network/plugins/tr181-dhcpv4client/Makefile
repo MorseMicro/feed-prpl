@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-dhcpv4client
-PKG_VERSION:=v1.8.2
+PKG_VERSION:=v1.9.6
 SHORT_DESCRIPTION:=TR-181 compatible DHCPv4 client
 
-PKG_SOURCE:=tr181-dhcpv4client-v1.8.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4client/-/archive/v1.8.2
-PKG_HASH:=49dc10d56ee4952a07b429d34bd6ebc89a347e416f223b9105800393b00a5d99
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4client-v1.8.2
+PKG_SOURCE:=tr181-dhcpv4client-v1.9.6.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4client/-/archive/v1.9.6
+PKG_HASH:=77c3eab67c8f2b8bd3b1bc36450ecdb46c8dc2c57b81850c10076a198f4b9ad3
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4client-v1.9.6
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,12 +22,12 @@ define SAHInit/Install
 endef
 
 define SAHBackupRestore/Install
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B25$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R25$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R25$(COMPONENT)
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup 
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore 
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B25$(COMPONENT) 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R25$(COMPONENT) 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R25$(COMPONENT) 
 endef
 
 include $(INCLUDE_DIR)/package.mk

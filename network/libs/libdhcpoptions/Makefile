@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libdhcpoptions
-PKG_VERSION:=v0.4.0
+PKG_VERSION:=v0.5.0
 SHORT_DESCRIPTION:=Library to parse and evaluate the binary data of DHCP options
 
-PKG_SOURCE:=libdhcpoptions-v0.4.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libdhcpoptions/-/archive/v0.4.0
-PKG_HASH:=35107bbd825d6522cb2e9399873fbb45e19b8d2713cc707e0a1bc7eb794fd477
-PKG_BUILD_DIR:=$(BUILD_DIR)/libdhcpoptions-v0.4.0
+PKG_SOURCE:=libdhcpoptions-v0.5.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libdhcpoptions/-/archive/v0.5.0
+PKG_HASH:=d42d7e9ec3d1e3471df9685cab9d7af99ca358882eefb2f7b053f5641545a68d
+PKG_BUILD_DIR:=$(BUILD_DIR)/libdhcpoptions-v0.5.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -45,10 +45,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

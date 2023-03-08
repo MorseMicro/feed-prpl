@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-firewall
-PKG_VERSION:=v4.8.1
+PKG_VERSION:=v4.10.1
 SHORT_DESCRIPTION:=TR181 firewall manager
 
-PKG_SOURCE:=tr181-firewall-v4.8.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-firewall/-/archive/v4.8.1
-PKG_HASH:=231e4ac5bb378dbe71c47b7566a6cf007c99cff25643ece8d5451d7078d81f7b
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-firewall-v4.8.1
+PKG_SOURCE:=tr181-firewall-v4.10.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-firewall/-/archive/v4.10.1
+PKG_HASH:=491f9cbe2ed6eb9c8fe2376c25ad08a7def3ad52aa1cfb2867dfc3852566412e
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-firewall-v4.10.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

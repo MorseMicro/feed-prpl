@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=hosts-manager
-PKG_VERSION:=v0.1.14
+PKG_VERSION:=v0.1.16
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-hosts-v0.1.14.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-hosts/-/archive/v0.1.14
-PKG_HASH:=805a294e0c083a42d46919296f0c4547744a0b2e5ee8837a328d49f3d77f6248
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-hosts-v0.1.14
+PKG_SOURCE:=tr181-hosts-v0.1.16.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-hosts/-/archive/v0.1.16
+PKG_HASH:=f4304f817ff5e396909d534307a1986b70bd04e54bf5502b318100ab5553a434
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-hosts-v0.1.16
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -47,6 +47,11 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +libnetmodel
   DEPENDS += +mod-dmext
+  DEPENDS += +gmap-client
+  DEPENDS += +gmap-mod-ethernet-dev
+  DEPENDS += +gmap-mod-name-selector
+  DEPENDS += +gmap-mod-self
+  DEPENDS += +gmap-server
   MENU:=1
 endef
 

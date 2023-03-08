@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-neighbordiscovery
-PKG_VERSION:=v0.6.0
+PKG_VERSION:=v0.6.3
 SHORT_DESCRIPTION:=TR-181 compatible neighbordiscovery plugin
 
-PKG_SOURCE:=tr181-neighbordiscovery-v0.6.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-neighbordiscovery/-/archive/v0.6.0
-PKG_HASH:=479fd9b6c9f6773826de7f554dc66bf9493c74c4466d2b54cd0b83e4af5328fa
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-neighbordiscovery-v0.6.0
+PKG_SOURCE:=tr181-neighbordiscovery-v0.6.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-neighbordiscovery/-/archive/v0.6.3
+PKG_HASH:=4e79143f093ca3f4b18b8a907a522c63f6d4aa5103b566d9a54151fec4990614
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-neighbordiscovery-v0.6.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -46,7 +46,7 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER=$(CONFIG_SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER))
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER=$(CONFIG_SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER))
 endef
 
 define Build/Install

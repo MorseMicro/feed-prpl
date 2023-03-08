@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-logical
-PKG_VERSION:=v0.2.2
+PKG_VERSION:=v0.3.2
 SHORT_DESCRIPTION:=logical interface plugin
 
-PKG_SOURCE:=tr181-logical-v0.2.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-logical/-/archive/v0.2.2
-PKG_HASH:=f99abc2169d9b309b6571c8fa1fb110d0346ca9a4cb6d4fb4fb2fa2bdb94775c
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-logical-v0.2.2
+PKG_SOURCE:=tr181-logical-v0.3.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-logical/-/archive/v0.3.2
+PKG_HASH:=999ee13f1a3a3c821194ca8ddd70c302210c724b8f7cdd957b447dcb23243320
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-logical-v0.3.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

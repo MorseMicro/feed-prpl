@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-vlan-uci
-PKG_VERSION:=v0.1.1
+PKG_VERSION:=v0.1.2
 SHORT_DESCRIPTION:=SoC module to help handling vlans
 
-PKG_SOURCE:=mod-vlan-uci-v0.1.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-vlan-uci/-/archive/v0.1.1
-PKG_HASH:=4eeebf616020f977a76d6c8c5c4a0cc9e58977028c4ca3b434994de3a2239245
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-vlan-uci-v0.1.1
+PKG_SOURCE:=mod-vlan-uci-v0.1.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-vlan-uci/-/archive/v0.1.2
+PKG_HASH:=3338914bfc2efe6ade6068569217f814589406c2dac07ccdc436e61d8ab206bd
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-vlan-uci-v0.1.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -54,6 +54,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

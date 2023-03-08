@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=multisettings
-PKG_VERSION:=v0.7.0
+PKG_VERSION:=v0.7.2
 SHORT_DESCRIPTION:=multisettings plugin
 
-PKG_SOURCE:=multisettings-v0.7.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/multisettings/-/archive/v0.7.0
-PKG_HASH:=cac4f4500d5c69f116be4b6f70fe1e504169f10af4f7c3446f561c037bd48ec6
-PKG_BUILD_DIR:=$(BUILD_DIR)/multisettings-v0.7.0
+PKG_SOURCE:=multisettings-v0.7.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/multisettings/-/archive/v0.7.2
+PKG_HASH:=4b9b68568759ccc0bfac5f1cdc83fd9cceb02009c175014373e2258af5639f4d
+PKG_BUILD_DIR:=$(BUILD_DIR)/multisettings-v0.7.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -43,7 +43,7 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_MULTISETTINGS_ORDER=$(CONFIG_SAH_AMX_MULTISETTINGS_ORDER))
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_MULTISETTINGS_ORDER=$(CONFIG_SAH_AMX_MULTISETTINGS_ORDER))
 endef
 
 define Build/Install

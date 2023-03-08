@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dhcpv4-manager
-PKG_VERSION:=v1.8.4
+PKG_VERSION:=v1.9.2
 SHORT_DESCRIPTION:=Implementation of Device
 
-PKG_SOURCE:=tr181-dhcpv4-v1.8.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4/-/archive/v1.8.4
-PKG_HASH:=997a83e5895f7328534714e0a2a74d528231a2194c9ed0ead51dfe56c7c455b9
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.8.4
+PKG_SOURCE:=tr181-dhcpv4-v1.9.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-dhcpv4/-/archive/v1.9.2
+PKG_HASH:=6f5d42a62b908e674452b13810928bff0508ab13edaca3875cc71f2fbf7bd97a
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-dhcpv4-v1.9.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,12 +22,12 @@ define SAHInit/Install
 endef
 
 define SAHBackupRestore/Install
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore
-	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B40$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R40$(COMPONENT)
-	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R40$(COMPONENT)
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup 
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore 
+	install -d ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/backup/B40$(COMPONENT) 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/restore/R40$(COMPONENT) 
+	ln -sfr ${PKG_INSTALL_DIR}/etc/init.d/$(COMPONENT) ${PKG_INSTALL_DIR}/usr/lib/hgwcfg/import/R40$(COMPONENT) 
 endef
 
 include $(INCLUDE_DIR)/package.mk
@@ -50,6 +50,8 @@ define Package/$(PKG_NAME)
   DEPENDS += +libnetmodel
   DEPENDS += +mod-dmext
   DEPENDS += +mod-fw-amx
+  DEPENDS += +libdhcpoptions
+  DEPENDS += +rpcd
   MENU:=1
 endef
 

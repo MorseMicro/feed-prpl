@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-qos-tc
-PKG_VERSION:=v2.1.2
+PKG_VERSION:=v2.3.0
 SHORT_DESCRIPTION:=Linux tc QoS Implementation
 
-PKG_SOURCE:=mod-qos-tc-v2.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc/-/archive/v2.1.2
-PKG_HASH:=28ee5a3a6044dd8ae3924b2e779ea551d92967e6ff464fdb812f0539ef2b2b3f
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-qos-tc-v2.1.2
+PKG_SOURCE:=mod-qos-tc-v2.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc/-/archive/v2.3.0
+PKG_HASH:=9bedd2134c4ebbc0625057027f09a88b870f36c69ff517cdbdeb80e54774a310
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-qos-tc-v2.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -22,7 +22,7 @@ define Package/$(PKG_NAME)
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-qos-tc
   DEPENDS += +libamxc
-  DEPENDS += +libamxm
+  DEPENDS += +libqosmodule
   DEPENDS += +libnl-core
   DEPENDS += +libnl-route
   DEPENDS += +libsahtrace
