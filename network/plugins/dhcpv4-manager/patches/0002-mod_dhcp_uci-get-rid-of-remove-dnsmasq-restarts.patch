@@ -1,0 +1,73 @@
+From 5e57b796d04534f0d8ed3696958c34e387495727 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+Date: Wed, 8 Mar 2023 21:53:26 +0100
+Subject: [PATCH] mod_dhcp_uci: get rid of remove dnsmasq restarts
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+dnsmasq config reloading is being handled by procd config changes
+triggers already, so additional dnsmasq restarts are causing lock
+contentions, unresponsive service etc. so lets remove those.
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+---
+ mod-dhcp-uci/src/mod_dhcp_uci.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
+
+diff --git a/mod-dhcp-uci/src/mod_dhcp_uci.c b/mod-dhcp-uci/src/mod_dhcp_uci.c
+index a64c31dd17e2..a6ef0ca3b624 100644
+--- a/mod-dhcp-uci/src/mod_dhcp_uci.c
++++ b/mod-dhcp-uci/src/mod_dhcp_uci.c
+@@ -127,14 +127,6 @@ static int dnsmasq_cmd(const char* cmd) {
+     return rc;
+ }
+ 
+-static int dnsmasq_loadconfig(void) {
+-    int rc = -1;
+-    rc = dnsmasq_cmd("restart");
+-    when_failed_trace(rc, exit, ERROR, "Unable to restart dnsmasq");
+-exit:
+-    return rc;
+-}
+-
+ /**
+  * @brief
+  * Config lease time for the uci config with the tr181 parameters.
+@@ -343,8 +335,7 @@ int enable_dhcp_pool_uci(UNUSED const char* function_name,
+     }
+     retval = uci_call("commit", "dhcp", NULL, NULL, NULL, &ret_val);
+     when_failed_trace(retval, exit, ERROR, "Unable to commit change to uci.");
+-    retval = dnsmasq_loadconfig();
+-    when_failed_trace(retval, exit, ERROR, "Unable to reload dnsmasq config.");
++
+     retval = dnsmasq_add_all_leases(uci_alias);
+     when_failed_trace(retval, exit, ERROR, "Unable to get already present leases.");
+ exit:
+@@ -402,8 +393,6 @@ int disable_dhcp_pool_uci(UNUSED const char* function_name,
+     retval = uci_call("commit", "dhcp", NULL, NULL, NULL, &ret_val);
+     when_failed_trace(retval, exit, ERROR, "Unable to commit change to uci.");
+ 
+-    retval = dnsmasq_loadconfig();
+-    when_failed_trace(retval, exit, ERROR, "Unable to reload dnsmasq config.");
+ exit:
+     free(uci_alias);
+     amxc_var_clean(&ret_val);
+@@ -506,8 +495,6 @@ int enable_dhcp_static_ip_uci(UNUSED const char* function_name,
+     retval = uci_call("commit", "dhcp", NULL, NULL, NULL, &ret_val);
+     when_failed_trace(retval, exit, ERROR, "Unable to commit change to uci.");
+ 
+-    retval = dnsmasq_loadconfig();
+-    when_failed_trace(retval, exit, ERROR, "Unable to reload dnsmasq config.");
+ exit:
+     amxc_var_clean(&ret_val);
+     amxc_var_clean(&uci_args);
+@@ -549,8 +536,6 @@ int disable_dhcp_static_ip_uci(UNUSED const char* function_name,
+     retval = uci_call("commit", "dhcp", NULL, NULL, NULL, &ret_val);
+     when_failed_trace(retval, exit, ERROR, "Unable to commit change to uci.");
+ 
+-    retval = dnsmasq_loadconfig();
+-    when_failed_trace(retval, exit, ERROR, "Unable to reload dnsmasq config.");
+ exit:
+     amxc_var_clean(&ret_val);
+     amxc_var_clean(&uci_args);
