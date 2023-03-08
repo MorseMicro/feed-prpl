@@ -97,6 +97,7 @@ generate:
       mod-dmproxy
       mod-dmstats
       mod-fw-amx
+      mod-fw-host
       mod-httpaccess-lighttpd
       mod-lua-amx
       mod-netmodel
