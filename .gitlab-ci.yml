@@ -80,6 +80,7 @@ generate:
       libqoscommon
       librlyeh
       libqosmod
+      libqosmodule
       libqosnode
       libsahtrace
       libswla
