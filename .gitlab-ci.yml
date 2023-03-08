@@ -90,6 +90,7 @@ generate:
       lua-amx
       moca-manager
       mod-amxb-ubus
+      mod-autosensing
       mod-ba-cli
       mod-dm-cli
       mod-dmext
