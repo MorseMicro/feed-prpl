@@ -37,8 +37,11 @@ define Package/station-sniffer/description
 endef
 
 define Package/station-sniffer/install
+	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/$(PKG_NAME) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/etc/init.d/* $(1)/etc/init.d/
+	$(INSTALL_BIN) ./files/usr/bin/* $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

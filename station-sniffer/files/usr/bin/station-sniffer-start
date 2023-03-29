@@ -1,0 +1,43 @@
+#!/bin/sh
+
+. /lib/functions/system.sh
+. /lib/functions.sh
+
+# find_phy:
+. /lib/netifd/wireless/mac80211.sh
+
+# station-sniffer currently only supports one interface, use the 5Ghz
+# one:
+find_5ghz()
+{
+    if [ "$(uci get "wireless.${1}.hwmode")" = "11a" ] ; then
+        radio="${1}"
+
+        # find_phy needs the macaddr:
+        macaddr="$(uci get "wireless.${1}.macaddr")"
+        find_phy || {
+            echo "Unable to find phy for radio ${1}"
+            return 1
+        }
+        ifname="mon_${radio}"
+        return 0
+    fi
+}
+
+setup_mon_if()
+{
+    iw phy "$phy" interface add "$ifname" type monitor 2>/dev/null
+    ip link set "$ifname" up
+}
+
+start()
+{
+    setup_mon_if
+    packet_wait_time=500
+    logger Starting station-sniffer for radio "$radio" phy "$phy"
+    /usr/bin/station-sniffer "$ifname" "$packet_wait_time"
+}
+
+config_load wireless
+config_foreach find_5ghz wifi-device
+start
