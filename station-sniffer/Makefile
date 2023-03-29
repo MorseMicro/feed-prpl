@@ -5,13 +5,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=station-sniffer
-PKG_VERSION:=2022-11-08
+PKG_VERSION:=2023-04-11
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/stationsniffer.git
-PKG_SOURCE_VERSION:=bf9a4c1f05b9c03d5a0735cf3d4c926afd479591
-PKG_MIRROR_HASH:=b428eb95775d7f4a2cedfe80bd8022d7c5ef6986a373d1e6cf0a9ed1dfe8cfdf
+PKG_SOURCE_VERSION:=fa582e973e68c5826be6d4ca61e164169afb59ca
+PKG_MIRROR_HASH:=26efdd4409bf7ed363fd85887b456613c4bcc6c87a294d9399f43614e26d56b3
 
 PKG_MAINTAINER:=Tucker Polomik <t.polomik@cablelabs.com tuckerpo@buffalo.edu>
 PKG_LICENSE:=BSD-2-Clause
@@ -27,7 +27,8 @@ define Package/station-sniffer
 		+libpcap \
 		+libradiotap \
 		+libstdcpp \
-		+libpthread
+		+libpthread \
+		+libnl
 endef
 
 define Package/station-sniffer/description
