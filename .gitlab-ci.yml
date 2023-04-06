@@ -13,6 +13,11 @@ generate full:
   rules:
     - !reference [.expensive_job_rules, rules]
   extends: .generate
+  variables:
+    CI_SDK_TARGETS: |
+      x86-64
+      ipq40xx-generic
+      mvebu-cortexa9
 
 generate:
   rules:
@@ -23,13 +28,11 @@ generate:
   extends: .generate
   variables:
     CI_SDK_TARGETS: |
-      x86-64-22.03.2
+      x86-64
 
 .generate:
   extends: .generate SDK package build jobs
   variables:
-    CI_SDK_TARGETS: |
-      x86-64-22.03.2
     CI_SDK_BUILD_PACKAGES: |
       acl-manager
       amx-fcgi
@@ -247,16 +250,10 @@ build prplmesh with mvebu-cortexa9 SDK:
   variables:
     CI_SDK_IMAGE: prpl.registry.true.cz/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
 
-build prplmesh with x86-64 OpenWrt 22.03.2 SDK:
+build prplmesh with x86-64 SDK:
   rules:
     - !reference [generate, rules]
     - !reference [.expensive_job_rules, rules]
-  extends: .build feed with x86-64-22.03.2 SDK
-  tags:
-    - firmware-builder
+  extends: .build prplmesh with SDK
   variables:
-    CI_SDK_BUILD_PACKAGES: prplmesh
-    CI_SDK_INSTALL_FEEDS: base packages
-    CI_SDK_BUILD_CONFIG: >
-      +BUILD_LOG -AUTOREMOVE -ALL -ALL_NONSHARED -ALL_KMODS -SIGNED_PACKAGES +PACKAGE_wpad-basic +PACKAGE_kmod-mac80211-hwsim +USE_PRPLMESH_WHM +PACKAGE_pwhm +PACKAGE_prplmesh +PACKAGE_prplmesh-unit-tests
-
+    CI_SDK_IMAGE: prpl.registry.true.cz/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-x86-64:latest
