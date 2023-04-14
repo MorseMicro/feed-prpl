@@ -14,7 +14,7 @@ PKG_LICENSE_FILES:=LICENSE
 
 COMPONENT:=tr181-firewall
 
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/

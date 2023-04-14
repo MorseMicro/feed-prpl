@@ -1,0 +1,25 @@
+From 87e2d7157325aa012ef49b579476103001290cf0 Mon Sep 17 00:00:00 2001
+From: sahbot <support.opensource@softathome.com>
+Date: Wed, 22 Feb 2023 13:17:44 +0100
+Subject: [PATCH] Issue: NET-4341 Allow loopback
+
+GitOrigin-RevId: db78f37d3bf501a4a7218b870e2c3af5c2ca0350
+---
+ config/firewall.defaults | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/config/firewall.defaults b/config/firewall.defaults
+index 9a70b1e..37b77db 100644
+--- a/config/firewall.defaults
++++ b/config/firewall.defaults
+@@ -6,6 +6,7 @@
+ :PREROUTING_Spoofing - [0:0]
+ -A PREROUTING -j PREROUTING_First
+ -A PREROUTING -j PREROUTING_Spoofing
++-A PREROUTING_First -i lo -j ACCEPT
+ -A PREROUTING_First -i br-lan -p tcp --dport 21 -j CT --helper ftp
+ -A PREROUTING_First -i br-lan -p udp --dport 69 -j CT --helper tftp
+ -A PREROUTING_First -i br-lan -p tcp --dport 1723 -j CT --helper pptp
+-- 
+GitLab
+
