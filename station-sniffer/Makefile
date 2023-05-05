@@ -1,17 +1,17 @@
 #
-# Copyright (C) 2022 Tucker Polomik (tpolomik@cablelabs.com tuckerpo@buffalo.edu)
+# Copyright (C) 2022, 2023 Tucker Polomik (tpolomik@cablelabs.com tuckerpo@buffalo.edu)
 #
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=station-sniffer
-PKG_VERSION:=2023-04-11
+PKG_VERSION:=2023-10-26
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/stationsniffer.git
-PKG_SOURCE_VERSION:=fa582e973e68c5826be6d4ca61e164169afb59ca
-PKG_MIRROR_HASH:=26efdd4409bf7ed363fd85887b456613c4bcc6c87a294d9399f43614e26d56b3
+PKG_SOURCE_VERSION:=a1139ea609129ed75557a6be8de4d6fc1099f3a8
+PKG_MIRROR_HASH:=1ee803d870e74d8ec53127137d24730dda148f6760be94c0316358d5506dd3cd
 
 PKG_MAINTAINER:=Tucker Polomik <t.polomik@cablelabs.com tuckerpo@buffalo.edu>
 PKG_LICENSE:=BSD-2-Clause
