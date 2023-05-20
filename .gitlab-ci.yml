@@ -243,12 +243,12 @@ build full:
 build prplmesh with ipq40xx-generic SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: prpl.registry.true.cz/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-ipq40xx-generic:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-ipq40xx-generic:latest
 
 build prplmesh with mvebu-cortexa9 SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: prpl.registry.true.cz/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
 
 build prplmesh with x86-64 SDK:
   rules:
@@ -256,4 +256,4 @@ build prplmesh with x86-64 SDK:
     - !reference [.expensive_job_rules, rules]
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: prpl.registry.true.cz/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-x86-64:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-x86-64:latest
