@@ -17,7 +17,7 @@ CONFIG_CONTROLLER_ROOT_DM="Device.WiFi.DataElements"
 
 hostapd_ready()
 {
-        hostapd_cli -i$1 stat &>/dev/null || ubus call WiFi.Radio _get '{"depth":"0"}' &> /dev/null
+        hostapd_cli_s1g -i$1 stat &>/dev/null
 }
 
 wlan_reset()

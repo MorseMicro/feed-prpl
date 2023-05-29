@@ -1,24 +1,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prplmesh
-PKG_VERSION:=4.2.3
+PKG_VERSION:=1.12.4
 PKG_RELEASE:=1
 PKG_REV:=$(PKG_VERSION)
 
-PKG_SOURCE:=prplMesh-$(PKG_REV).tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/archive/$(PKG_REV)
-PKG_HASH:=f403e044c681cf2e1f28c916e55bbcc5d47bfde4dc9d474a0ed91cd1582c3eb1
-PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
+PKG_SOURCE_VERSION:=v1.12.4
+PKG_SOURCE_URL:=https://github.com/MorseMicro/prplmesh
+PKG_SOURCE_PROTO:=git
+PKG_MIRROR_HASH:=97f4b6843a60174a0bc4b81d977dc4d1b501c724e691ac2c69a34aeabb268deb
 
-PKG_BUILD_PARALLEL:=1
-PKG_CONFIG_DEPENDS:= \
-	CONFIG_WIRELESS_STA \
-	CONFIG_TARGET_intel_x86 \
-	CONFIG_TARGET_intel_mips \
-	CONFIG_TARGET_brcmbca \
-	CONFIG_USE_PRPLMESH_WHM \
-	CONFIG_PRPLMESH_ENABLE_UNIT_TESTS \
-	CONFIG_PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND
+PKG_BUILD_DEPENDS+=wpa_supplicant_s1g python-yaml/host python3/host
+
+# PKG_BUILD_PARALLEL:=1
+# PKG_CONFIG_DEPENDS:= \
+# 	CONFIG_WIRELESS_STA \
+# 	CONFIG_PACKAGE_libamxb
 
 CMAKE_BINARY_SUBDIR:=build
 
@@ -46,26 +43,32 @@ define Package/prplmesh
 		+uci \
 		+ubus \
 		+ubox \
-		+ebtables
-#	intel_mips and intel_x86 specific dependencies:
+		+ebtables \
+		+wpa_supplicant_s1g \
+		+hostapd_s1g \
+		+@MORSE_HOSTAPD_S1G_EAP \
+		+@MORSE_HOSTAPD_S1G_ACS \
+		+@BUSYBOX_CONFIG_GETOPT \
+		+@BUSYBOX_CONFIG_FEATURE_GETOPT_LONG \
+		+libwpa_client \
+		+@MORSE_WPA_SUPPLICANT_S1G_MESH_NETWORKING \
+		+@MORSE_WPA_SUPPLICANT_S1G_EAP
+
+		# prplmesh has more dependency on hostapd_s1g and wpa_supplicant_s1g configs,
+		# but since we already had them enabled by default in the make file and we don't
+		# have a config for them, I don't add them to DEPENDS. these configs include:
+		# MORSE_WPA_SUPPLICANT_S1G_WPS  MORSE_WPA_SUPPLICANT_S1G_CLI
+		# MORSE_WPA_SUPPLICANT_S1G_AP_SUPPORT MORSE_HOSTAPD_S1G_WPS
+
+#	The ambiorix library is optional, select it if libamxb is selected:
 	DEPENDS+= \
-		+TARGET_intel_mips:dwpal_6x-uci \
-		+TARGET_intel_mips:iwlwav-hostap-uci \
-		+TARGET_intel_mips:libsafec3 \
-		+TARGET_intel_mips:bridge-ugw \
-		+(TARGET_intel_x86&&PACKAGE_mod-whm):dwpal_6x-uci-osp \
-		+(TARGET_intel_x86&&PACKAGE_mod-whm):iwlwav-hostap-ng-uci \
-		+(TARGET_intel_x86&&PACKAGE_mod-whm-debug):dwpal_6x-uci-osp-debug \
-		+(TARGET_intel_x86&&PACKAGE_mod-whm-debug):iwlwav-hostap-ng-uci-debug \
-		+TARGET_intel_x86:libsafec3 \
-		+TARGET_intel_x86:bridge
-#	non-intel_x86 neither non-intel_mips neither broadcom dependencies:
-	DEPENDS+= \
-		+!(TARGET_intel_x86||TARGET_intel_mips||TARGET_brcmbca||TARGET_ipq95xx):hostapd-openssl \
-		+!(TARGET_intel_x86||TARGET_intel_mips||TARGET_brcmbca||TARGET_ipq95xx):wpa-supplicant-openssl
-	DEPENDS+= \
-		+TARGET_ipq95xx:hostapd-qca-openssl \
-		+TARGET_ipq95xx:wpa-supplicant-qca-openssl
+		+libamxb \
+		+libamxc \
+		+libamxd \
+		+libamxo \
+		+libamxp \
+		+mod-amxb-ubus
+
 	DEPENDS+= \
 		+PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND:libamxb \
 		+PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND:libamxrt \
@@ -86,12 +89,16 @@ define Package/prplmesh/config
 	source "$(SOURCE)/Config.in"
 endef
 
-CMAKE_OPTIONS+= \
-	-DTARGET_PLATFORM=openwrt \
+CMAKE_OPTIONS += \
 	-DCMAKE_INSTALL_PREFIX=/opt/prplmesh \
 	-DPLATFORM_BUILD_DIR=$(BUILD_DIR) \
 	-DPLATFORM_STAGING_DIR=$(STAGING_DIR) \
-	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include
+	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
+	-DTARGET_PLATFORM="MorseMicro" \
+	-DTARGET_PLATFORM_TYPE="EHK01" \
+	-DBEEROCKS_BRIDGE_IFACE="br-prpl" \
+	-DBWL_TYPE="NL80211"
+
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
@@ -113,6 +120,10 @@ ifeq ($(CONFIG_USE_PRPLMESH_WHM),y)
 	CMAKE_OPTIONS += -DUSE_PRPLMESH_WHM=ON
 	CMAKE_OPTIONS += -DWBAPI_SOCK="-DAMBIORIX_WBAPI_BACKEND_PATH=\\\"/usr/bin/mods/amxb/mod-amxb-ubus.so\\\" -DAMBIORIX_WBAPI_BUS_URI=\\\"ubus:/var/run/ubus/ubus.sock\\\""
 endif
+endif
+ifeq ($(CONFIG_PRPLMESH_NBAPI),y)
+	CMAKE_OPTIONS += -DENABLE_NBAPI=ON
+	PKG_BUILD_DEPENDS += libamxc libamxp libamxd libamxb libamxo
 endif
 
 ifeq ($(CONFIG_TARGET_intel_mips),y)
