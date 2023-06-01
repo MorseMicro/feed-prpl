@@ -164,6 +164,7 @@ define Package/prplmesh/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/lib/*.so* $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/share $(1)/opt/prplmesh/
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/config $(1)/opt/prplmesh/
+	$(INSTALL_BIN) ./files/opt/prplmesh/scripts/* $(1)/opt/prplmesh/scripts/
 endef
 
 define Package/prplmesh-unit-tests/install
