@@ -119,9 +119,13 @@ start_function() {
 stop_function() {
         logger -t "${NAME}" -p daemon.info "Stop prplMesh"
         /opt/prplmesh/scripts/prplmesh_utils.sh stop
-        # since prplmesh changes the wifi runtime configuration,
-        # restart wifi when stopping prplmesh
-        wlan_reset
+        # The network service stop happens after prplmesh service stop. 
+        # So, we don't need to restart wlan here when prplmesh is disabled. 
+        if [ "$(uci get prplmesh.config.enable 2>/dev/null)" = "1" ]; then
+                # since prplmesh changes the wifi runtime configuration,
+                # restart wifi when stopping prplmesh
+                wlan_reset
+        fi
 }
 
 enable_function() {
