@@ -13,6 +13,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/prplMesh-$(PKG_REV)
 PKG_BUILD_PARALLEL:=1
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_WIRELESS_STA \
+	CONFIG_TARGET_intel_x86 \
 	CONFIG_TARGET_intel_mips \
 	CONFIG_TARGET_brcmbca \
 	CONFIG_USE_PRPLMESH_WHM \
@@ -46,16 +47,20 @@ define Package/prplmesh
 		+ubus \
 		+ubox \
 		+ebtables
-#	intel_mips specific dependencies:
+#	intel_mips and intel_x86 specific dependencies:
 	DEPENDS+= \
 		+TARGET_intel_mips:dwpal_6x-uci \
 		+TARGET_intel_mips:iwlwav-hostap-uci \
 		+TARGET_intel_mips:libsafec3 \
-		+TARGET_intel_mips:bridge-ugw
-#	non-intel_mips neither broadcom dependencies:
+		+TARGET_intel_mips:bridge-ugw \
+		+TARGET_intel_x86:dwpal_6x-uci-osp \
+		+TARGET_intel_x86:iwlwav-hostap-ng-uci \
+		+TARGET_intel_x86:libsafec3 \
+		+TARGET_intel_x86:bridge
+#	non-intel_x86 neither non-intel_mips neither broadcom dependencies:
 	DEPENDS+= \
-		+!(TARGET_intel_mips||TARGET_brcmbca):hostapd-openssl \
-		+!(TARGET_intel_mips||TARGET_brcmbca):wpa-supplicant-openssl
+		+!(TARGET_intel_x86||TARGET_intel_mips||TARGET_brcmbca):hostapd-openssl \
+		+!(TARGET_intel_x86||TARGET_intel_mips||TARGET_brcmbca):wpa-supplicant-openssl
 	DEPENDS+= \
 		+PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND:libamxb \
 		+PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND:libamxc \
@@ -103,6 +108,10 @@ endif
 
 ifeq ($(CONFIG_TARGET_intel_mips),y)
 	CMAKE_OPTIONS+= -DBWL_TYPE=DWPAL \
+		-DTARGET_PLATFORM_TYPE=ugw \
+		-DCMAKE_FIND_ROOT_PATH="${STAGING_DIR}/opt/intel;${CMAKE_FIND_ROOT_PATH}"
+else ifeq ($(CONFIG_TARGET_intel_x86),y)
+	CMAKE_OPTIONS+= -DBWL_TYPE=WHM \
 		-DTARGET_PLATFORM_TYPE=ugw \
 		-DCMAKE_FIND_ROOT_PATH="${STAGING_DIR}/opt/intel;${CMAKE_FIND_ROOT_PATH}"
 else
