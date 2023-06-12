@@ -12,6 +12,10 @@ config USE_PRPLMESH_WHM
     bool "Use prplMesh Wireless Hardware Manager"
     default n
 
+config PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND
+    bool "Enable usage of Ambiorix ubus backend"
+    default y
+
 config PRPL_CONTROLLER_ROOT_PATH
     string "Default prplmesh Datamodel path"
     default "Device.WiFi.DataElements"
