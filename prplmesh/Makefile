@@ -55,7 +55,6 @@ define Package/prplmesh
 #	non-intel_mips neither broadcom dependencies:
 	DEPENDS+= \
 		+!(TARGET_intel_mips||TARGET_brcmbca):hostapd-openssl \
-		+!(TARGET_intel_mips||TARGET_brcmbca):hostapd-utils \
 		+!(TARGET_intel_mips||TARGET_brcmbca):wpa-supplicant-openssl
 	DEPENDS+= \
 		+PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND:libamxb \
