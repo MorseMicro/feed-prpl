@@ -1,0 +1,24 @@
+diff --git a/common/beerocks/scripts/prplmesh_utils.sh.in b/common/beerocks/scripts/prplmesh_utils.sh.in
+index e8d1f5d24..d7a2215df 100755
+--- a/common/beerocks/scripts/prplmesh_utils.sh.in
++++ b/common/beerocks/scripts/prplmesh_utils.sh.in
+@@ -56,19 +56,6 @@ killall_program() {
+ }
+ 
+ prplmesh_platform_db_init() {
+-    management_mode=${1-Multi-AP-Controller-and-Agent}
+-    operating_mode=${2-Gateway}
+-
+-    uci set prplmesh.config.management_mode=$management_mode
+-    uci set prplmesh.config.operating_mode=$operating_mode
+-
+-    if [ "$management_mode" != "Multi-AP-Agent" ]; then
+-        uci set prplmesh.config.wired_backhaul=1
+-    else
+-        uci set prplmesh.config.wired_backhaul=0
+-    fi
+-
+-    uci commit
+ 
+     # Workaround in case an old version of /morse/configs/morse_init.sh is used.
+     # Remove this eventaully!
