@@ -1,0 +1,30 @@
+From ea6fe2c2e650b44813e840ccba15462ec40f9a5b Mon Sep 17 00:00:00 2001
+From: Bhavesh Bharadiya <bnbharadiya@maxlinear.com>
+Date: Mon, 26 Jun 2023 14:30:49 +0530
+Subject: [PATCH] pwhm:compilation failure with GCC11
+
+pwhm 3.14 version with GCC11 compilation breaks.
+
+https://prplfoundationcloud.atlassian.net/browse/PPM-2581
+
+Signed-off-by: Bhavesh Bharadiya <bnbharadiya@maxlinear.com>
+---
+ src/wld_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/wld_util.c b/src/wld_util.c
+index d087364..4491e42 100644
+--- a/src/wld_util.c
++++ b/src/wld_util.c
+@@ -1980,7 +1980,7 @@ bool wldu_strStartsWith(const char* msg, const char* prefix) {
+     return strncmp(msg, prefix, strlen(prefix)) == 0;
+ }
+ 
+-int makeUUID_fromrandom(uint8_t* uuid) {
++int makeUUID_fromrandom(uint8_t uuid[UUID_LEN]) {
+     if(!get_random(uuid, UUID_LEN)) {
+         return -1;
+     }
+-- 
+2.17.1
+
