@@ -1,0 +1,27 @@
+diff --git a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+index 677eb5627..0de992643 100644
+--- a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
++++ b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+@@ -1054,6 +1054,22 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
+                     break;
+                 }
+ 
++#if defined(MORSE_MICRO)
++                /*The Following changes are done as a part of APP-1464 to re-configure the AP if the
++                Agent comes up with an existing Backhaul connection, otherwise the Agent is constantly
++                stuck in a WAIT_FOR_WPS loop and recovers only at PBC button push*/
++                if (radio_info->sta_wlan_hal->is_connected()) {
++                    LOG(ERROR) << "MorseMicro:There is an existing backhaul connection";
++                    db->backhaul.selected_iface_name = radio_info->sta_iface;
++                    db->backhaul.connection_type = AgentDB::sBackhaul::eConnectionType::Wireless;
++                    // Send slave enable the AP's
++                    send_slaves_enable();
++                    FSM_MOVE_STATE(CONNECTED);
++                    break;
++                } else
++                    LOG(ERROR) << "MorseMicro: There is no backhaul move to WAIT FOR WPS STATE";
++#endif
++
+                 /**
+                  * This code was disabled as part of the effort to pass certification flow
+                  * (PR #1469), and broke wireless backhaul flow.

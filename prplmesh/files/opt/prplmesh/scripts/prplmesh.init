@@ -109,6 +109,8 @@ start_function() {
                 else
                         logger -t "${NAME}" -p daemon.info "Start prplMesh agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start -m A
+                        logger -t "${NAME}" -p daemon.info "Starting the WPA Action Script"
+                        wpa_cli_s1g -a /opt/prplmesh/scripts/morse_bh_cred_update.sh -B
                 fi
         else
                 logger -t "${NAME}" -p daemon.warn "prplMesh is disabled (prplmesh.config.enable=0), skipping..."
