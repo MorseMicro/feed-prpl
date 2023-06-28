@@ -1,0 +1,15 @@
+--- a/miniupnpd.c
++++ b/miniupnpd.c
+@@ -1192,10 +1192,10 @@ init(int argc, char * * argv, struct run
+ 			debug_flag = 1;
+ 	}
+ 
+-	openlog_option = LOG_PID|LOG_CONS;
++	openlog_option = LOG_PID;
+ 	if(debug_flag)
+ 	{
+-		openlog_option |= LOG_PERROR;	/* also log on stderr */
++		openlog_option |= LOG_CONS | LOG_PERROR;	/* also log on console/stderr */
+ 	}
+ 
+ 	openlog("miniupnpd", openlog_option, LOG_MINIUPNPD);
