@@ -1,8 +1,19 @@
 diff --git a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
-index 677eb5627..0de992643 100644
+index 677eb5627..5717f8e41 100644
 --- a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
 +++ b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
-@@ -1054,6 +1054,22 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
+@@ -975,7 +975,9 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
+     case EState::WPA_ATTACH: {
+ 
+         bool success = true;
+-
++#if defined(MORSE_MICRO)
++        bool is_bh_connected = false;
++#endif
+         auto db = AgentDB::get();
+ 
+         for (auto &radio_info : m_radios_info) {
+@@ -1054,6 +1056,23 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
                      break;
                  }
  
@@ -15,6 +26,7 @@ index 677eb5627..0de992643 100644
 +                    db->backhaul.selected_iface_name = radio_info->sta_iface;
 +                    db->backhaul.connection_type = AgentDB::sBackhaul::eConnectionType::Wireless;
 +                    // Send slave enable the AP's
++                    is_bh_connected = true;
 +                    send_slaves_enable();
 +                    FSM_MOVE_STATE(CONNECTED);
 +                    break;
@@ -25,3 +37,16 @@ index 677eb5627..0de992643 100644
                  /**
                   * This code was disabled as part of the effort to pass certification flow
                   * (PR #1469), and broke wireless backhaul flow.
+@@ -1110,6 +1129,12 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
+ 
+         state_time_stamp_timeout =
+             std::chrono::steady_clock::now() + std::chrono::seconds(STATE_WAIT_WPS_TIMEOUT_SECONDS);
++
++#if defined(MORSE_MICRO)
++        if(is_bh_connected)
++            break;
++        else
++#endif
+         FSM_MOVE_STATE(WAIT_WPS);
+         break;
+     }
