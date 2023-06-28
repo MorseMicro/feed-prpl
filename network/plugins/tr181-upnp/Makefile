@@ -38,7 +38,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +amxrt
   DEPENDS += +mod-fw-amx
-  DEPENDS += +miniupnpd-iptables
+  DEPENDS += +miniupnpd2-iptables
   DEPENDS += +rpcd
   MENU:=1
 endef
