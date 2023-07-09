@@ -1,0 +1,40 @@
+diff --git a/controller/src/beerocks/master/tasks/client_steering_task.cpp b/controller/src/beerocks/master/tasks/client_steering_task.cpp
+index b048ad5bd..f2fe2744f 100644
+--- a/controller/src/beerocks/master/tasks/client_steering_task.cpp
++++ b/controller/src/beerocks/master/tasks/client_steering_task.cpp
+@@ -22,6 +22,8 @@ using namespace beerocks;
+ using namespace net;
+ using namespace son;
+ 
++static constexpr const char zero_mac_string[]   = "00:00:00:00:00:00";
++
+ client_steering_task::client_steering_task(db &database, ieee1905_1::CmduMessageTx &cmdu_tx,
+                                            task_pool &tasks, const std::string &sta_mac,
+                                            const std::string &target_bssid,
+@@ -48,6 +50,13 @@ void client_steering_task::work()
+             break;
+         }
+ 
++        auto target_agent = m_database.get_agent_by_bssid(tlvf::mac_from_string(m_target_bssid));
++        if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string)) {
++            LOG(ERROR) << "Target Agent " << m_target_bssid << "not found, exiting steering task";
++            finish();
++            break;
++        }
++
+         int prev_task_id = station->steering_task_id;
+         m_tasks.kill_task(prev_task_id);
+         station->steering_task_id = id;
+@@ -444,6 +453,12 @@ void client_steering_task::handle_task_end()
+         return;
+     }
+ 
++    auto target_agent = m_database.get_agent_by_bssid(tlvf::mac_from_string(m_target_bssid));
++    if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string)) {
++        LOG(ERROR) << "Target Agent " << m_target_bssid << "not found, exiting steering task";
++        return;
++    }
++
+     if (m_steer_try_performed && !m_btm_report_received) {
+         TASK_LOG(DEBUG) << "client didn't respond to 11v request, updating responsiveness";
+         m_database.update_node_11v_responsiveness(*client, false);
