@@ -1,0 +1,18 @@
+diff --git a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+index 677eb5627..62aa9e1a7 100644
+--- a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
++++ b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+@@ -1956,6 +1956,13 @@ bool BackhaulManager::hal_event_handler(bwl::base_wlan_hal::hal_event_ptr_t even
+ 
+             LOG(DEBUG) << "Sending BACKHAUL_STA_STEERING_RESPONSE_MESSAGE";
+             send_cmdu_to_broker(cmdu_tx, db->controller_info.bridge_mac, db->bridge.mac);
++#if defined(MORSE_MICRO)
++            LOG(DEBUG) << "Update the new Backhaul connection type as wireless and bssid: " << bssid;
++            if (FSM_IS_IN_STATE(CONNECTED) || FSM_IS_IN_STATE(OPERATIONAL)) {
++                db->backhaul.connection_type = AgentDB::sBackhaul::eConnectionType::Wireless;
++                db->backhaul.backhaul_bssid = bssid;
++            }
++#endif
+         }
+ 
+         // TODO: Need to unite WAIT_WPS and WIRELESS_ASSOCIATE_4ADDR_WAIT handling
