@@ -1,0 +1,18 @@
+diff --git a/controller/src/beerocks/master/controller.cpp b/controller/src/beerocks/master/controller.cpp
+index 0373baf65..97e1fc659 100644
+--- a/controller/src/beerocks/master/controller.cpp
++++ b/controller/src/beerocks/master/controller.cpp
+@@ -2233,6 +2233,13 @@ bool Controller::handle_intel_slave_join(
+         backhaul_mac.clear();
+     }
+ 
++#ifdef MORSE_MICRO
++    if(bridge_mac_str.compare(backhaul_mac) == 0) {
++        LOG(ERROR) << "Bridge Mac of the IRE_SLAVE is same as Backhaul Mac." <<
++                      "This will cause incorrect Multi-AP topology";
++    }
++#endif
++
+     //if the IRE connects via a different backhaul, mark previous backhaul as disconnected
+     std::string previous_backhaul = database.get_node_parent(bridge_mac_str);
+     if (!previous_backhaul.empty() && previous_backhaul != backhaul_mac &&
