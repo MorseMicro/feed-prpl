@@ -17,6 +17,7 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_TARGET_intel_mips \
 	CONFIG_TARGET_brcmbca \
 	CONFIG_USE_PRPLMESH_WHM \
+	CONFIG_PRPLMESH_ENABLE_UNIT_TESTS \
 	CONFIG_PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND
 
 CMAKE_BINARY_SUBDIR:=build
@@ -75,7 +76,7 @@ endef
 define Package/prplmesh-unit-tests
 	$(Package/prplmesh/default)
 	TITLE+= - unit tests
-	DEPENDS:=+prplmesh
+	DEPENDS:=+prplmesh +@PRPLMESH_ENABLE_UNIT_TESTS
 endef
 
 define Package/prplmesh/config
@@ -87,8 +88,7 @@ CMAKE_OPTIONS+= \
 	-DCMAKE_INSTALL_PREFIX=/opt/prplmesh \
 	-DPLATFORM_BUILD_DIR=$(BUILD_DIR) \
 	-DPLATFORM_STAGING_DIR=$(STAGING_DIR) \
-	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
-	-DBUILD_TESTS=ON
+	-DPLATFORM_INCLUDE_DIR=$(STAGING_DIR)/usr/include
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
@@ -117,6 +117,10 @@ else ifeq ($(CONFIG_TARGET_intel_x86),y)
 else
 	CMAKE_OPTIONS+= -DBWL_TYPE=NL80211 \
 		-DTARGET_PLATFORM_TYPE=turris-omnia
+endif
+
+ifeq ($(CONFIG_PRPLMESH_ENABLE_UNIT_TESTS),y)
+	CMAKE_OPTIONS += -DBUILD_TESTS=ON
 endif
 
 define Build/InstallDev

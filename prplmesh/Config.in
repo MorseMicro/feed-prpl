@@ -16,6 +16,9 @@ config PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND
     bool "Enable usage of Ambiorix ubus backend"
     default y
 
+config PRPLMESH_ENABLE_UNIT_TESTS
+    bool "Enable build of unit tests"
+
 config PRPL_CONTROLLER_ROOT_PATH
     string "Default prplmesh Datamodel path"
     default "Device.WiFi.DataElements"
