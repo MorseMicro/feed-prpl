@@ -1,0 +1,13 @@
+diff --git a/controller/src/beerocks/prplmesh-cli/prplmesh_cli.cpp b/controller/src/beerocks/prplmesh-cli/prplmesh_cli.cpp
+index a3b3957d2..989080522 100644
+--- a/controller/src/beerocks/prplmesh-cli/prplmesh_cli.cpp
++++ b/controller/src/beerocks/prplmesh-cli/prplmesh_cli.cpp
+@@ -304,7 +304,7 @@ bool prplmesh_cli::prpl_conn_map()
+ #if !defined(MORSE_MICRO)
+     if (!prplmesh_cli::get_ip_from_iface("br-lan", conn_map.bridge_ip_v4)) {
+ #else
+-    if (!prplmesh_cli::get_ip_from_iface("br0", conn_map.bridge_ip_v4)) {
++    if (!prplmesh_cli::get_ip_from_iface("br-prpl", conn_map.bridge_ip_v4)) {
+ #endif
+         LOG(ERROR) << "Can't get bridge ip.";
+     }
