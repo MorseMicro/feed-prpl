@@ -1,0 +1,37 @@
+diff --git a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+index b3cde6727..706f199f9 100644
+--- a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
++++ b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+@@ -1410,6 +1410,14 @@ void ApManager::handle_cmdu(ieee1905_1::CmduMessageRx &cmdu_rx)
+         if (perform_update && !bss_info_conf_list.empty()) {
+             ap_wlan_hal->update_vap_credentials(bss_info_conf_list, backhaul_wps_ssid,
+                                                 backhaul_wps_passphrase);
++#if defined(MORSE_MICRO)
++            //Update UCI wireless config
++            for (const auto &bss_it : bss_info_conf_list) {
++                if (!beerocks::bpl::bpl_cfg_set_wifi_credentials(m_iface, bss_it)) {
++                    LOG(ERROR) << "Could not set wireless credentials in UCI";
++                }
++            }
++#endif
+
+             // hostapd is enabled and started radio beaconing after autoconfiguration
+             // then radio tx power is updated, so to keep agent DB updated send CSA notification
+diff --git a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+index a1cb9dd8d..bb5305132 100644
+--- a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
++++ b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+@@ -379,6 +379,13 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+         } else if (authentication_type == WSC::eWscAuth::WSC_AUTH_SAE) {
+             encryption = "sae";
+         }
++#if defined(MORSE_MICRO)
++        //Handle Mixed Mode
++        else if (authentication_type ==
++                   WSC::eWscAuth(WSC::eWscAuth::WSC_AUTH_WPA2PSK | WSC::eWscAuth::WSC_AUTH_SAE)) {
++            encryption = "sae";
++        }
++#endif
+         return encryption;
+     };
+     options["encryption"] =
