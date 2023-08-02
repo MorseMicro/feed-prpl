@@ -132,6 +132,7 @@ generate:
       odl-generator
       packet-interception
       pcm-manager
+      prpl-webui
       pwhm
       rlyeh
       routing-manager
