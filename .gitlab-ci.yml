@@ -138,6 +138,7 @@ generate:
       routing-manager
       ssh-server
       station-sniffer
+      syslog-ng2
       time-manager
       timingila
       timingila-cthulhu
