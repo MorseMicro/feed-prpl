@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=syslog-ng
+PKG_NAME:=syslog-ng2
 PKG_VERSION:=4.1.1
 PKG_RELEASE:=$(AUTORELEASE)
 
@@ -9,12 +9,15 @@ PKG_LICENSE:=LGPL-2.1-or-later GPL-2.0-or-later
 PKG_LICENSE_FILES:=COPYING LGPL.txt GPL.txt
 PKG_CPE_ID:=cpe:/a:balabit:syslog-ng
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/syslog-ng/syslog-ng/releases/download/$(PKG_NAME)-$(PKG_VERSION)/
+PKG_SOURCE:=syslog-ng-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-$(PKG_VERSION)/
 PKG_HASH:=d7df3cfa32d1a750818d94b8ea582dea54c37226e7b55a88c3d2f3a543d8f20e
+PKG_UNPACK=$(HOST_TAR) -C $(PKG_BUILD_DIR) --strip-components=1 -xzf $(DL_DIR)/$(PKG_SOURCE)
 
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
+
+CONFLICTS:=syslog-ng
 
 PKG_BUILD_DEPENDS:= \
 	HOST_OS_MACOS:fakeuname/host \
@@ -28,7 +31,7 @@ ifeq ($(CONFIG_HOST_OS_MACOS),y)
     include ../../utils/fakeuname/fakeuname.mk
 endif
 
-define Package/syslog-ng
+define Package/syslog-ng2
   SECTION:=admin
   CATEGORY:=Administration
   TITLE:=A powerful syslog daemon
@@ -36,22 +39,22 @@ define Package/syslog-ng
   DEPENDS:=+libpcre +glib2 +libopenssl +libpthread +librt +zlib +libdbi +libjson-c +libcurl +libuuid +SYSLOGNG_LOGROTATE:logrotate
 endef
 
-define Package/syslog-ng/description
+define Package/syslog-ng2/description
   syslog-ng reads and logs messages to the system console, log
   files, other machines and/or users as specified by its
   configuration file.
 endef
 
-define Package/syslog-ng/conffiles
+define Package/syslog-ng2/conffiles
 /etc/syslog-ng.conf
 /etc/syslog-ng.d/
 /etc/scl.conf
 endef
 
-define Package/syslog-ng/config
+define Package/syslog-ng2/config
 config SYSLOGNG_LOGROTATE
 	bool "Logrotate support"
-	depends on PACKAGE_syslog-ng
+	depends on PACKAGE_syslog-ng2
 	default n
 	help
 	  It adds support for logrotate functionality.
@@ -106,7 +109,7 @@ CONFIGURE_VARS += \
 	$(if $(CONFIG_HOST_OS_MACOS),PATH=$(FAKEUNAME_PATH):$(PATH)) \
 	LIBDBI_CFLAGS="-I$(STAGING_DIR)/usr/include"
 
-define Package/syslog-ng/install
+define Package/syslog-ng2/install
 	cd $(PKG_BUILD_DIR); make DESTDIR=$(1) install
 
 	$(call libtool_remove_files,$(1)) # This removes .la files in folder (including subfolders) /usr/lib
@@ -136,7 +139,7 @@ ifneq ($(strip $(CONFIG_SYSLOGNG_LOGROTATE)),)
 endif
 endef
 
-define Package/syslog-ng/postinst
+define Package/syslog-ng2/postinst
 #!/bin/sh
 
 [ -n "$$IPKG_INSTROOT" ] || {
@@ -145,7 +148,7 @@ define Package/syslog-ng/postinst
 }
 endef
 
-define Package/syslog-ng/prerm
+define Package/syslog-ng2/prerm
 #!/bin/sh
 
 [ -n "$$IPKG_INSTROOT" ] || {
@@ -154,4 +157,4 @@ define Package/syslog-ng/prerm
 }
 endef
 
-$(eval $(call BuildPackage,syslog-ng))
+$(eval $(call BuildPackage,syslog-ng2))
