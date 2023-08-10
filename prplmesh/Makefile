@@ -94,6 +94,11 @@ ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
 endif
 
+CMAKE_OPTIONS+=-DPython3_EXECUTABLE=$(STAGING_DIR_HOST)/bin/python3
+$(eval $(call TestHostCommand,python3-yaml, \
+	Please install the Python3 YAML module, \
+	$(STAGING_DIR_HOST)/bin/python3 -c 'import yaml'))
+
 CONTROLLER_ROOT_DM:=$(CONFIG_PRPL_CONTROLLER_ROOT_PATH)
 
 ifeq ($(CONFIG_PRPLMESH_ENABLE_AMBIORIX_UBUS_BACKEND),y)
