@@ -139,7 +139,8 @@ stop_function() {
         /opt/prplmesh/scripts/prplmesh_utils.sh stop
         # since prplmesh changes the wifi runtime configuration,
         # restart wifi when stopping prplmesh
-        wlan_reset
+        # unless using prplmesh wireless hardware manager
+        ubus call WiFi.Radio _get '{"depth":"0"}' &> /dev/null || wlan_reset
 }
 
 enable_function() {
@@ -172,9 +173,14 @@ status() {
 }
 
 __uci_set_repeater_mode__() {
+        mode=${1-wired}
         uci set prplmesh.config.management_mode='Multi-AP-Agent'
         uci set prplmesh.config.operating_mode='WDS-Repeater'
-        uci set prplmesh.config.wired_backhaul=1
+        if [ "$mode" = "wireless" ]; then
+                uci set prplmesh.config.wired_backhaul=0
+        else
+                uci set prplmesh.config.wired_backhaul=1
+        fi
         uci set prplmesh.config.master=0
         uci set prplmesh.config.gateway=0
         uci commit prplmesh
@@ -182,7 +188,7 @@ __uci_set_repeater_mode__() {
 
 repeater_mode() {
         stop
-        __uci_set_repeater_mode__
+        __uci_set_repeater_mode__ $1
         start
         echo "prplmesh repeater mode set"
 }
@@ -229,8 +235,8 @@ certification_mode() {
 EXTRA_COMMANDS="status repeater_mode gateway_mode certification_mode"
 EXTRA_HELP='''
 	status                    show service status
-        certification_mode <mode> set certification controller mode
-	repeater_mode             set repeater mode
+	certification_mode <mode> set certification controller mode
+	repeater_mode [backhaul]  set repeater mode with backhaul wired (default) or wireless
 	gateway_mode              set gateway mode
 '''
 
