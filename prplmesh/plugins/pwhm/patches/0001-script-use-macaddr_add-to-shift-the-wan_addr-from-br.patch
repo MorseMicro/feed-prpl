@@ -1,0 +1,33 @@
+From 9f24d14f2d658c9f214f3338540c9551fd013e02 Mon Sep 17 00:00:00 2001
+From: Marouan MCHARFI <marouan.mcharfi_ext@softathome.com>
+Date: Tue, 18 Jul 2023 16:35:04 +0200
+Subject: [PATCH] script: use macaddr_add to shift the wan_addr from br-lan mac
+ addr
+
+---
+ scripts/Plugin/wld_gen.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/Plugin/wld_gen.sh b/scripts/Plugin/wld_gen.sh
+index 87eeccf..b98594f 100644
+--- a/scripts/Plugin/wld_gen.sh
++++ b/scripts/Plugin/wld_gen.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++. /lib/functions/system.sh
++
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ 
+@@ -26,7 +28,7 @@ get_base_wan_address()
+             return
+         fi
+     fi
+-    export WAN_ADDR=$(cat /sys/class/net/br-lan/address 2> /dev/null)
++    export WAN_ADDR=$(macaddr_add $(cat /sys/class/net/br-lan/address) +1)
+ }
+ 
+ kill_process()
+-- 
+2.25.1
+

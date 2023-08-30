@@ -47,6 +47,10 @@ config SAH_WLD_INIT_ORDER
     default 60
     depends on !SAH_WLD_INIT_LEGACY
 
+config SAH_WLD_ENABLE_USP_SERVER_SOCKET
+    bool "Enable direct USP server socket"
+    default n
+
 endmenu
 
 endif

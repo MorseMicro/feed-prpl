@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libswla
-PKG_VERSION:=v3.1.0
+PKG_VERSION:=v3.6.0
 SHORT_DESCRIPTION:=Shared Wifi Library using amx
 
-PKG_SOURCE:=libswla-v3.1.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/libraries/libswla/-/archive/v3.1.0
-PKG_HASH:=d15328c9a631a8c637fe83db9ff43afb78452cd4547e3c786309f1c13a4b9593
-PKG_BUILD_DIR:=$(BUILD_DIR)/libswla-v3.1.0
+PKG_SOURCE:=libswla-v3.6.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/libraries/libswla/-/archive/v3.6.0
+PKG_HASH:=f87ece0a8d365de1c853bebbd7f07368a17eb6e592bc77bd911aab4ec582ec9c
+PKG_BUILD_DIR:=$(BUILD_DIR)/libswla-v3.6.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -53,10 +53,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

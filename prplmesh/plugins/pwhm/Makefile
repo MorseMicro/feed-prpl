@@ -1,20 +1,20 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pwhm
-PKG_VERSION:=v3.14.0
+PKG_VERSION:=v4.18.4
 SHORT_DESCRIPTION:=PrplMesh WHM
 
-PKG_SOURCE:=pwhm-v3.14.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm/-/archive/v3.14.0
-PKG_HASH:=5fbe85f089122e6a235af4aeb891d91e5478d57271eaf7d247fccf2fe3dcf83d
-PKG_BUILD_DIR:=$(BUILD_DIR)/pwhm-v3.14.0
+PKG_SOURCE:=pwhm-v4.18.4.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm/-/archive/v4.18.4
+PKG_HASH:=32ae4ca8a546f00dc1c9ed4182fda5baaa94e70a060aa5d3b00000bef994b0b6
+PKG_BUILD_DIR:=$(BUILD_DIR)/pwhm-v4.18.4
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
 COMPONENT:=pwhm
 
-PKG_RELEASE:=2
+PKG_RELEASE:=1
 PKG_BUILD_DEPENDS += openssl/host
 
 define SAHInit/Install
@@ -69,10 +69,10 @@ define Build/InstallDev
 endef
 
 define Package/$(PKG_NAME)/install
+	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
 endef
 
 define Package/$(PKG_NAME)/config
