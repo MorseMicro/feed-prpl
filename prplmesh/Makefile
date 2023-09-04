@@ -54,8 +54,10 @@ define Package/prplmesh
 		+TARGET_intel_mips:iwlwav-hostap-uci \
 		+TARGET_intel_mips:libsafec3 \
 		+TARGET_intel_mips:bridge-ugw \
-		+TARGET_intel_x86:dwpal_6x-uci-osp \
-		+TARGET_intel_x86:iwlwav-hostap-ng-uci \
+		+(TARGET_intel_x86&&PACKAGE_mod-whm):dwpal_6x-uci-osp \
+		+(TARGET_intel_x86&&PACKAGE_mod-whm):iwlwav-hostap-ng-uci \
+		+(TARGET_intel_x86&&PACKAGE_mod-whm-debug):dwpal_6x-uci-osp-debug \
+		+(TARGET_intel_x86&&PACKAGE_mod-whm-debug):iwlwav-hostap-ng-uci-debug \
 		+TARGET_intel_x86:libsafec3 \
 		+TARGET_intel_x86:bridge
 #	non-intel_x86 neither non-intel_mips neither broadcom dependencies:
