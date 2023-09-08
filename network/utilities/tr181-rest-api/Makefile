@@ -10,7 +10,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/tr181-rest-api
   TITLE:=TR181 REST API
   CATEGORY:=Purple
-  DEPENDS:=+amx-fcgi +lighttpd +lighttpd-mod-fastcgi +lighttpd-mod-auth +lighttpd-mod-authn_file
+  DEPENDS:=+amx-fcgi +lighttpd +lighttpd-mod-fastcgi +lighttpd-mod-auth +lighttpd-mod-authn_file +lighttpd-mod-setenv
 endef
 
 define Package/tr181-rest-api/conffiles

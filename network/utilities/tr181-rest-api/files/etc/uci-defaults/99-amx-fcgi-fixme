@@ -1,8 +1,6 @@
 #!/bin/sh
 
 # fix amx-fcgi fcgi socket handling
-sed -i 's|export LIGHTTPD_USER=lighttpd|export LIGHTTPD_USER=http|' /etc/init.d/amx-fcgi
 sed -i 's|export LIGHTTPD_CHROOT=/webui|export LIGHTTPD_CHROOT=/|' /etc/init.d/amx-fcgi
-sed -i 's|chown lighttpd $LIGHTTPD_CHROOT$FCGI_SOCKET_DIR|chown http:www-data /var/run/http|' /etc/init.d/amx-fcgi
 
 exit 0
