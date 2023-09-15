@@ -1,0 +1,34 @@
+#Title:012-Add-ARP-scan-to-monitor-task.patch 
+#Issue: [APP-1809]Prplmesh ValueError: conn map does not have all devices
+#Description: The ARP scan was shifted from the monitor task to th eassociation task as a part of SW-9386.
+# The issue here is, in scenarios where the Controller and Agent restart, at times the Agent gets associated with its 
+# previously stored credentials and the monitor task kicks in immediately and the association handling task gets kicked in 
+# only when the local agent on the Controller gets into the operational state.
+# Although this could be a rare scenario, in this case there is no IP entry found for the STA causing the ARP to fail and in turn
+# the Agent monitor fails.
+#Linked Issue: [SW-10082] is reported in view of this and this patch must be reviewed after it is fixed.
+
+diff --git a/agent/src/beerocks/fronthaul_manager/monitor/monitor_rssi.cpp b/agent/src/beerocks/fronthaul_manager/monitor/monitor_rssi.cpp
+index 007e86526..78ad4130b 100644
+--- a/agent/src/beerocks/fronthaul_manager/monitor/monitor_rssi.cpp
++++ b/agent/src/beerocks/fronthaul_manager/monitor/monitor_rssi.cpp
+@@ -345,6 +345,19 @@ void monitor_rssi::process()
+                 }
+             }
+ 
++#if defined(MORSE_MICRO)
++            // Try arp-scan to get the ip of the station device in the network
++            sta_ipv4 = sta_node->get_ipv4();
++            if (sta_ipv4.empty() || sta_ipv4 == network_utils::ZERO_IP_STRING) {
++                LOG(DEBUG) << "Doing arp scan";
++                auto ip_after_arp_scan = network_utils::linux_arp_scan(arp_iface, sta_mac, arp_iface_ipv4);
++                LOG(DEBUG) << ip_after_arp_scan;
++                if (!ip_after_arp_scan.empty()) {
++                    sta_node->set_ipv4(ip_after_arp_scan);
++                }
++            }
++#endif
++
+             LOG(DEBUG) << "state: SEND_ARP -> "
+                        << (sta_node->get_arp_burst() ? "WAIT_FIRST_REPLY" : "WAIT_REPLY")
+                        << ", arp_iface = " << arp_iface << ", arp_iface_ipv4 = " << arp_iface_ipv4
