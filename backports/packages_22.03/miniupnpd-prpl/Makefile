@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=miniupnpd
+PKG_NAME:=miniupnpd-prpl
 PKG_VERSION:=2.3.3
 PKG_RELEASE:=1
 
@@ -26,29 +26,23 @@ PKG_BUILD_PARALLEL:=1
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/version.mk
 
-define Package/miniupnpd/Default
+define Package/miniupnpd-prpl
   SECTION:=net
   CATEGORY:=Network
   DEPENDS:= \
 	+libcap-ng \
 	+libmnl \
-	+libuuid
-  PROVIDES:=miniupnpd
-  TITLE:=Lightweight UPnP IGD, NAT-PMP & PCP daemon
-  SUBMENU:=Firewall
-  URL:=https://miniupnp.tuxfamily.org/
-endef
-
-define Package/miniupnpd-iptables
-  $(call Package/miniupnpd/Default)
-  DEPENDS+= \
+	+libuuid \
 	+IPV6:ip6tables \
 	+IPV6:libip6tc \
 	+iptables \
 	+libip4tc \
 	+libnetfilter-conntrack
-  TITLE+= (iptables)
-  VARIANT:=iptables
+  PROVIDES:=miniupnpd-iptables
+  CONFLICTS:=miniupnpd-iptables miniupnpd-nftables
+  TITLE:=Lightweight UPnP IGD, NAT-PMP & PCP daemon
+  SUBMENU:=Firewall
+  URL:=https://miniupnp.tuxfamily.org/
 endef
 
 define Package/miniupnpd-nftables
@@ -60,13 +54,6 @@ define Package/miniupnpd-nftables
   DEFAULT_VARIANT:=1
   CONFLICTS:=miniupnpd-iptables
 endef
-
-define Package/miniupnpd/conffiles/Default
-/etc/config/upnpd
-endef
-
-Package/miniupnpd-iptables/conffiles = $(Package/miniupnpd/conffiles/Default)
-Package/miniupnpd-nftables/conffiles = $(Package/miniupnpd/conffiles/Default)
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
@@ -81,41 +68,12 @@ CONFIGURE_ARGS = \
 	--firewall=$(BUILD_VARIANT) \
 	--disable-fork
 
-TARGET_CFLAGS += $(FPIC)
+TARGET_CFLAGS += $(FPIC) -flto
 TARGET_LDFLAGS += -Wl,--gc-sections,--as-needed
 
-ifeq ($(BUILD_VARIANT),iptables)
-	TARGET_CFLAGS += -flto
-endif
-
-define Package/miniupnpd/install/Default
+define Package/miniupnpd-prpl/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/miniupnpd $(1)/usr/sbin/miniupnpd
-	$(INSTALL_BIN) ./files/miniupnpd.init $(1)/etc/init.d/miniupnpd
-	$(INSTALL_CONF) ./files/upnpd.config $(1)/etc/config/upnpd
-	$(INSTALL_DATA) ./files/miniupnpd.hotplug $(1)/etc/hotplug.d/iface/50-miniupnpd
 endef
 
-define Package/miniupnpd-iptables/install
-	$(call Package/miniupnpd/install/Default,$1)
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DIR) $(1)/usr/share/miniupnpd
-	$(INSTALL_BIN) ./files/miniupnpd.defaults.iptables $(1)/etc/uci-defaults/99-miniupnpd
-	$(INSTALL_DATA) ./files/firewall3.include $(1)/usr/share/miniupnpd/firewall.include
-endef
-
-define Package/miniupnpd-nftables/install
-	$(call Package/miniupnpd/install/Default,$1)
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DIR) $(1)/usr/share/miniupnpd
-	$(INSTALL_BIN) ./files/miniupnpd.defaults.nftables $(1)/etc/uci-defaults/99-miniupnpd
-	$(INSTALL_DATA) ./files/firewall4.include $(1)/usr/share/miniupnpd/firewall.include
-	$(INSTALL_DIR) $(1)/usr/share/nftables.d
-	$(CP) ./files/nftables.d/* $(1)/usr/share/nftables.d/
-endef
-
-$(eval $(call BuildPackage,miniupnpd-iptables))
-$(eval $(call BuildPackage,miniupnpd-nftables))
+$(eval $(call BuildPackage,miniupnpd-prpl))
