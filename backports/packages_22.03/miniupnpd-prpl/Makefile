@@ -40,7 +40,13 @@ define Package/miniupnpd-prpl
 	+IPV6:libip6tc \
 	+iptables \
 	+libip4tc \
-	+libnetfilter-conntrack
+	+libnetfilter-conntrack \
+	+libamxb \
+	+libamxc \
+	+libamxd \
+	+libamxo \
+	+libamxp \
+	+tr181-firewall
   PROVIDES:=miniupnpd-iptables
   CONFLICTS:=miniupnpd-iptables miniupnpd-nftables
   TITLE:=Lightweight UPnP IGD, NAT-PMP & PCP daemon
@@ -68,7 +74,7 @@ CONFIGURE_ARGS = \
 	--igd2 \
 	--leasefile \
 	--portinuse \
-	--firewall=$(BUILD_VARIANT) \
+	--firewall=amx \
 	--disable-fork \
 	--strict
 
