@@ -7,13 +7,15 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=unbound-prpl
-PKG_VERSION:=1.17.0
+PKG_NAME:=unbound
 PKG_RELEASE:=$(AUTORELEASE)
 
+PKG_VERSION:=v0.2.0
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://nlnetlabs.nl/downloads/unbound
-PKG_HASH:=dcbc95d7891d9f910c66e4edc9f1f2fde4dea2eec18e3af9f75aed44a02f1341
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/mirrors/unbound/-/archive/$(PKG_VERSION)
+PKG_HASH:=4d259f96c4667215e3ce27b1e628cc04d4895c944d31abd5336db462ebf5beff
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
 
 PKG_MAINTAINER:=Eric Luehrsen <ericluehrsen@gmail.com>
 PKG_LICENSE:=BSD-3-Clause
