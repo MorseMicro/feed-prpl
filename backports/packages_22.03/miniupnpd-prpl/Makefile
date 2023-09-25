@@ -7,13 +7,16 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=miniupnpd-prpl
-PKG_VERSION:=2.3.3
+PKG_NAME:=miniupnpd
 PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=https://miniupnp.tuxfamily.org/files
+PKG_VERSION:=gen_miniupnpd_2_3_3_v0.1.1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_HASH:=6fd7019f936ff88c41e7c822f46f10b51bd72d665978f6586483de75b30c36bf
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/mirrors/miniupnpd/-/archive/$(PKG_VERSION)
+PKG_HASH:=7707e2500f8c2044442229e0319c61fe5125863df090eb0a6795035aa63e9216
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+UNPACK_CMD=tar -xf "$(DL_DIR)/$(PKG_SOURCE)" -C $(PKG_BUILD_DIR) --strip-components=2 $(shell tar -tzf "$(DL_DIR)/$(PKG_SOURCE)" --wildcards '*/' | head -n1)miniupnpd
 
 PKG_MAINTAINER:=
 PKG_LICENSE:=BSD-3-Clause
