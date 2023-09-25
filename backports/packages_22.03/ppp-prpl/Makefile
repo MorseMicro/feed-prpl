@@ -91,6 +91,7 @@ endef
 
 define Package/ppp-prpl/install
 	$(INSTALL_DIR) $(1)/usr/lib/pppd/$(PKG_RELEASE_VERSION)
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/lib/libpppd.so $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/sbin/pppd $(1)/usr/sbin/
 	$(INSTALL_DIR) $(1)/etc/ppp
