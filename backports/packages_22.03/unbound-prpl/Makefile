@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=unbound
+PKG_NAME:=unbound-prpl
 PKG_VERSION:=1.17.0
 PKG_RELEASE:=$(AUTORELEASE)
 
@@ -35,35 +35,37 @@ PKG_CONFIG_DEPENDS:=CONFIG_PACKAGE_libunbound_dnscrypt \
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/unbound/Default
+define Package/unbound-prpl/Default
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=IP Addresses and Names
   USERID:=unbound:unbound
   TITLE:=Recursive DNS Server
   URL:=https://nlnetlabs.nl/projects/unbound/about
-  DEPENDS:=+ca-bundle +libopenssl +@OPENSSL_WITH_EC
+  DEPENDS:=+ca-bundle +libopenssl +@OPENSSL_WITH_EC +libexpat
 endef
 
-define Package/unbound-daemon
-  $(call Package/unbound/Default)
+define Package/unbound-daemon-prpl
+  $(call Package/unbound-prpl/Default)
   TITLE+= (daemon)
-  DEPENDS+= +libunbound
+  CONFLICTS:=unbound-daemon
+  DEPENDS+= +libunbound-prpl
 endef
 
-define Package/unbound-daemon/description
+define Package/unbound-daemon-prpl/description
   This package contains the Unbound daemon including 'libevent', 'libmnl', and
   'libpthread' to better handle large networks with heavy query loads. Options
   are available under libraries/network/libunbound to custom trim Unbound for
   smaller targets.
 endef
 
-define Package/libunbound
-  $(call Package/unbound/Default)
+define Package/libunbound-prpl
+  $(call Package/unbound-prpl/Default)
   SECTION:=libs
   CATEGORY:=Libraries
   SUBMENU:=Networking
   TITLE+= (library)
+  CONFLICTS:=libunbound
   DEPENDS+=+PACKAGE_libunbound_dnscrypt:libsodium \
     +PACKAGE_libunbound_ipset:libmnl \
     +PACKAGE_libunbound_libevent:libevent2 \
@@ -73,63 +75,13 @@ define Package/libunbound
     +PACKAGE_libunbound_dnstap:libprotobuf-c
 endef
 
-define Package/libunbound/description
+define Package/libunbound-prpl/description
   This package contains the Unbound library including 'libevent', 'libmnl', and
   'libpthread' to better handle large networks with heavy query loads. Options
   are available to custom trim Unbound for smaller targets.
 endef
 
-define Package/unbound-anchor
-  $(call Package/unbound/Default)
-  TITLE+= (root DSKEY)
-  DEPENDS+= +unbound-daemon +libexpat
-endef
-
-define Package/unbound-anchor/description
-  This package contains the Unbound anchor utility.
-endef
-
-define Package/unbound-checkconf
-  $(call Package/unbound/Default)
-  TITLE+= (config checker)
-  DEPENDS+= +unbound-daemon
-endef
-
-define Package/unbound-checkconf/description
-  This package contains the Unbound DNS configuration checker utility.
-endef
-
-define Package/unbound-control
-  $(call Package/unbound/Default)
-  TITLE+= (remote control)
-  DEPENDS+= +unbound-daemon
-endef
-
-define Package/unbound-control/description
-  This package contains the Unbound control utility.
-endef
-
-define Package/unbound-control-setup
-  $(call Package/unbound/Default)
-  TITLE+= (control setup)
-  DEPENDS+= +unbound-control +openssl-util
-endef
-
-define Package/unbound-control-setup/description
-  This package contains the Unbound control setup utility.
-endef
-
-define Package/unbound-host
-  $(call Package/unbound/Default)
-  TITLE+= (DNS lookup)
-  DEPENDS+= +libunbound
-endef
-
-define Package/unbound-host/description
-  This package contains the Unbound DNS lookup utility.
-endef
-
-define Package/libunbound/config
+define Package/libunbound-prpl/config
 	if PACKAGE_libunbound
 	config PACKAGE_libunbound_dnscrypt
 		bool "Build with DNSCRYPT support."
@@ -187,7 +139,7 @@ CONFIGURE_ARGS += \
     $(if $(CONFIG_PACKAGE_libunbound_subnet),--enable-subnet,) \
     $(if $(CONFIG_PACKAGE_libunbound_dnstap),--enable-dnstap,) \
 
-define Package/unbound-daemon/conffiles
+define Package/unbound-daemon-prpl/conffiles
 /etc/config/unbound
 /etc/unbound/unbound.conf
 /etc/unbound/unbound_ext.conf
@@ -204,7 +156,7 @@ ifneq ($(CONFIG_PACKAGE_libunbound_libevent),)
 endif
 endef
 
-define Package/unbound-daemon/install
+define Package/unbound-daemon-prpl/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/usr/sbin/unbound $(1)/usr/sbin/
@@ -231,41 +183,10 @@ define Package/unbound-daemon/install
 	$(INSTALL_DATA) ./files/unbound.sh $(1)/usr/lib/unbound/unbound.sh
 endef
 
-define Package/libunbound/install
+define Package/libunbound-prpl/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libunbound.so.* $(1)/usr/lib/
 endef
 
-define Package/unbound-anchor/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/unbound-anchor $(1)/usr/sbin/
-endef
-
-define Package/unbound-checkconf/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/unbound-checkconf $(1)/usr/sbin/
-endef
-
-define Package/unbound-control/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/unbound-control $(1)/usr/sbin/
-endef
-
-define Package/unbound-control-setup/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/unbound-control-setup $(1)/usr/sbin/
-endef
-
-define Package/unbound-host/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/unbound-host $(1)/usr/sbin/
-endef
-
-$(eval $(call BuildPackage,unbound-daemon))
-$(eval $(call BuildPackage,libunbound))
-$(eval $(call BuildPackage,unbound-anchor))
-$(eval $(call BuildPackage,unbound-checkconf))
-$(eval $(call BuildPackage,unbound-control))
-$(eval $(call BuildPackage,unbound-control-setup))
-$(eval $(call BuildPackage,unbound-host))
-
+$(eval $(call BuildPackage,unbound-daemon-prpl))
+$(eval $(call BuildPackage,libunbound-prpl))
