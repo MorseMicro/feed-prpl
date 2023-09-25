@@ -42,7 +42,8 @@ define Package/unbound-prpl/Default
   USERID:=unbound:unbound
   TITLE:=Recursive DNS Server
   URL:=https://nlnetlabs.nl/projects/unbound/about
-  DEPENDS:=+ca-bundle +libopenssl +@OPENSSL_WITH_EC +libexpat
+  DEPENDS:=+ca-bundle +libopenssl +@OPENSSL_WITH_EC +libexpat \
+  			+libamxb +libamxc +libamxd +libamxo +libamxp
 endef
 
 define Package/unbound-daemon-prpl
