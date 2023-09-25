@@ -35,7 +35,7 @@ define Package/ppp-prpl
   SECTION:=net
   CATEGORY:=Network
   URL:=https://ppp.samba.org/
-  DEPENDS:=+kmod-ppp +kmod-pppoe
+  DEPENDS:=+kmod-ppp +kmod-pppoe +libopenssl
   TITLE:=PPP daemon
   CONFLICTS:=ppp
 endef
