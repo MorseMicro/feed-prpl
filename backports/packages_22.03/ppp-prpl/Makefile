@@ -106,6 +106,7 @@ define Package/ppp-prpl/install
 	$(INSTALL_BIN) ./files/lib/netifd/ppp-down $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/lib/pppd/$(PKG_RELEASE_VERSION)/pppoe.so \
 		$(1)/usr/lib/pppd/$(PKG_RELEASE_VERSION)/
+	$(LN) pppoe.so $(1)/usr/lib/pppd/$(PKG_RELEASE_VERSION)/rp-pppoe.so
 endef
 
 $(eval $(call BuildPackage,ppp-prpl))
