@@ -1,0 +1,20 @@
+config PACKAGE_libamxrt
+    tristate
+    select SAH_LIB_AMXRT
+
+if PACKAGE_libamxrt
+
+menu "Select libamxrt build options"
+    depends on PACKAGE_libamxrt
+
+config SAH_LIB_AMXRT
+    bool "Build libamxrt"
+    default y
+
+config SAH_AMXRT_RWDATAPATH
+    string "Persistent storage location"
+    default "/etc/config"
+
+endmenu
+
+endif
