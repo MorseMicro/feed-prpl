@@ -1,0 +1,20 @@
+config PACKAGE_amx-fcgi
+    tristate
+    select SAH_AMX_FCGI
+
+if PACKAGE_amx-fcgi
+
+menu "Select amx-fcgi build options"
+    depends on PACKAGE_amx-fcgi
+
+config SAH_AMX_FCGI
+    bool "Build Ambiorix Fast CGI"
+    default y
+
+config REST_API_WEBUI_DEMO
+    bool "Install a demo webui"
+    default n
+
+endmenu
+
+endif

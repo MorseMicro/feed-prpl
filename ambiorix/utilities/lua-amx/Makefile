@@ -1,16 +1,17 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lua-amx
-PKG_VERSION:=v0.3.9
+PKG_VERSION:=v0.3.14
 SHORT_DESCRIPTION:=LUA AMX Bindings 
 
-PKG_SOURCE:=lua-amx-v0.3.9.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/bindings/lua/lua-amx/-/archive/v0.3.9
-PKG_HASH:=6644c2b57bf67f3d00fbf7714b87a767f80728dd3cc32bb3edcb01851bafc6cf
-PKG_BUILD_DIR:=$(BUILD_DIR)/lua-amx-v0.3.9
+PKG_SOURCE:=lua-amx-v0.3.14.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/bindings/lua/lua-amx/-/archive/v0.3.14
+PKG_HASH:=9356f1c5aa9aa4a57270edaad5236385941304306e4b8ed9e6ccabfe4e64bfee
+PKG_BUILD_DIR:=$(BUILD_DIR)/lua-amx-v0.3.14
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
+
 
 PKG_RELEASE:=1
 

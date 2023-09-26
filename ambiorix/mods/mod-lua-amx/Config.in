@@ -9,11 +9,11 @@ menu "Select mod-lua-amx build options"
 
 config SAH_MOD-LUA-AMX
     bool "Build Ambiorix LUA extension"
-    default n
+    default y
 
 config SAH_LUA_AMX_LUA_VERSION
     string "Lua version that will be used"
-    default "NONE"
+    default ""
 
 endmenu
 
