@@ -13,7 +13,7 @@ config SAH_LIB_CTHULHU-LXC
 
 config SAH_LIB_CTHULHU-LXC_PRPL_OS_RPATH
     bool "Enable linking and setting rpath to /opt/prplos"
-    default y
+    default n
 
 endmenu
 
