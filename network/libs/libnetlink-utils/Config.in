@@ -13,7 +13,7 @@ config SAH_LIB_NETLINK_UTILS
 
 config SAH_LIB_NETLINK_NF_QUEUE_PRPL_OS_PATH
     bool "Enable linking and setting rpath to /opt/prplos"
-    default y
+    default n
 
 endmenu
 

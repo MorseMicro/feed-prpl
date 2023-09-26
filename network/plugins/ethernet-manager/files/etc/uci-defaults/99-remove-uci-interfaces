@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while uci -q delete network.@device[0]; do :; done
+uci commit
+
+exit 0

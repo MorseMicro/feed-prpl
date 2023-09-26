@@ -1,0 +1,130 @@
+//! [default_configuration]
+%populate {
+    object QoS {
+        object Classification {
+            instance add (0, "icmp_dscp_cs6") {
+                parameter Enable = true;
+                parameter Interface = "Postrouting";
+                parameter DSCPMark = 48;
+                parameter Protocol = 1;
+                parameter IPVersion = 4;
+            }
+            instance add (0, "icmp6_dscp_cs6") {
+                parameter Enable = false;
+                parameter Interface = "Postrouting";
+                parameter DSCPMark = 48;
+                parameter Protocol = 58;
+                parameter IPVersion = 6;
+            }
+            instance add (0, "lansubnet1") {
+                parameter Enable = true;
+                parameter Interface = "Forward";
+                parameter DestIP = "192.168.25.0";
+                parameter DestMask = "255.255.255.0";
+                parameter TrafficClass = 3;
+                parameter IPVersion = 4;
+            }
+            instance add (0, "icmp_to_voip_queue") {
+                parameter Enable = true;
+                parameter Protocol = 1;
+                parameter Interface = "Prerouting";
+                parameter IPVersion = 4;
+                parameter TrafficClass = 5;
+            }
+        }
+        object QueueStats {
+            instance add(0, "stats-guest") {
+                parameter Enable = true;
+                parameter Queue = "QoS.Queue.queue-guest";
+            }
+            instance add(0, "stats-home-data") {
+                parameter Enable = true;
+                parameter Queue = "QoS.Queue.queue-home-data";
+            }
+            instance add(0, "stats-home-voip") {
+                parameter Enable = true;
+                parameter Queue = "QoS.Queue.queue-home-voip";
+            }
+            instance add(0, "stats-home-iptv") {
+                parameter Enable = true;
+                parameter Queue = "QoS.Queue.queue-home-iptv";
+            }
+        }
+        object Queue {
+            instance add(0, "queue-guest") {
+                parameter Interface = "${wan}";
+                parameter Enable = true;
+                parameter HardwareAssisted = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Precedence = 5;
+                parameter ShapingRate = 25000000;
+                parameter TrafficClasses = "1";
+                parameter QueueKey = 1;
+                parameter Children = "QoS.QueueStats.stats-guest";
+            }
+            instance add(0, "queue-home") {
+                parameter Interface = "${wan}";
+                parameter Enable = true;
+                parameter HardwareAssisted = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Precedence = 4;
+                parameter ShapingRate = 300000000;
+                //No QueueKey, parent of data, voip and iptv queues. (See Nodes).
+                parameter Children = "QoS.Queue.queue-home-data,QoS.Queue.queue-home-voip,QoS.Queue.queue-home-iptv";
+            }
+            instance add (0, "queue-home-data") {
+                parameter Interface = "${wan}";
+                parameter Enable = true;
+                parameter HardwareAssisted = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Precedence = 3;
+                parameter ShapingRate = 250000000;
+                //No QueueKey, default queue set by scheduler.
+                parameter Children = "QoS.QueueStats.stats-home-data";
+            }
+            instance add (0, "queue-home-voip") {
+                parameter Interface = "${wan}";
+                parameter Enable = true;
+                parameter HardwareAssisted = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Precedence = 1;
+                parameter TrafficClasses = "5, 6, 7";
+                parameter QueueKey = 4;
+                parameter ShapingRate = 10000000;
+                parameter Children = "QoS.QueueStats.stats-home-voip";
+            }
+            instance add (0, "queue-home-iptv") {
+                parameter Interface = "${wan}";
+                parameter Enable = true;
+                parameter HardwareAssisted = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Precedence = 2;
+                parameter ShapingRate = 40000000;
+                parameter TrafficClasses = "3";
+                parameter QueueKey = 5;
+                parameter Children = "QoS.QueueStats.stats-home-iptv";
+            }
+        }
+
+        object Shaper {
+            instance add (0, "shaper-wan") {
+                parameter Interface = "${wan}";
+                parameter ShapingRate = 325000000;
+                parameter Enable = true;
+                parameter Children = "QoS.Queue.queue-home,QoS.Queue.queue-guest";
+
+            }
+        }
+
+        object Scheduler {
+            instance add (0, "scheduler-wan") {
+                parameter Enable = true;
+                parameter SchedulerAlgorithm = "HTB";
+                parameter Interface = "${wan}";
+                parameter DefaultQueue="QoS.Queue.queue-home-data.";
+                parameter Children = "QoS.Shaper.shaper-wan";
+            }
+        }
+    }
+}
+//! [default_configuration]

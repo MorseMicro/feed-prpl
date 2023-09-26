@@ -1,0 +1,5 @@
+%populate {
+    object DNS {
+        parameter DNSController = "mod-dns-unbound";
+    }
+}

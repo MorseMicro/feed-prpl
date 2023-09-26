@@ -1,0 +1,22 @@
+%populate {
+    object DNS {
+        parameter DNSController = "mod-dns-unbound";
+
+        object Relay {
+            object Forwarding {
+                instance add("recovery-1") {
+                    parameter DNSServer = "8.8.8.8";
+                    parameter Interface = "Device.Logical.Interface.1.";
+                    parameter Enable = true;
+                    parameter Tag = "Failover";
+                }
+                instance add("recovery-2") {
+                    parameter DNSServer = "8.8.4.4";
+                    parameter Interface = "Device.Logical.Interface.1.";
+                    parameter Enable = true;
+                    parameter Tag = "Failover";
+                }
+            }
+        }
+    }
+}

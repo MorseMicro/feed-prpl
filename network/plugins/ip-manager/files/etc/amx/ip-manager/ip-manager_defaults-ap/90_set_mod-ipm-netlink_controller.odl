@@ -1,0 +1,31 @@
+%populate {
+    object 'IP' {
+        parameter 'DefaultController' = "mod-ipm-netlink";
+        object 'Interface' {
+            object 'loopback' {
+                parameter 'UCISectionNameIPv4' = "";
+                parameter 'UCISectionNameIPv6' = "";
+            }
+            object 'lan' {
+                parameter 'UCISectionNameIPv4' = "";
+                parameter 'UCISectionNameIPv6' = "";
+                object 'IPv4Address.lan-dhcp' {
+                    parameter 'Controller' = "mod-ipm-netlink";
+                }
+                object 'IPv4Address.lan-static' {
+                    parameter 'Controller' = "mod-ipm-netlink";
+                }
+                object 'IPv4Address.public-lan' {
+                    parameter 'Controller' = "mod-ipm-netlink";
+                }
+            }
+            object 'guest' {
+                parameter 'UCISectionNameIPv4' = "";
+                parameter 'UCISectionNameIPv6' = "";
+                object 'IPv4Address.guest-dhcp' {
+                    parameter Controller = "mod-ipm-netlink";
+                }
+            }
+        }
+    }
+}

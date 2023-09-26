@@ -17,7 +17,7 @@ config SAH_AMX_TR181_DSLITE_ORDER
 
 config SAH_AMX_TR181_DSLITE_CARES_RPATH
     bool "Enable linking and setting rpath to /opt/prplos"
-    default y
+    default n
 
 endmenu
 

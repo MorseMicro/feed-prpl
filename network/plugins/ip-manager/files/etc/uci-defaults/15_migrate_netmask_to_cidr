@@ -4,7 +4,6 @@
 
 CONFIG_CHANGED=0
 
-# shellcheck disable=SC3043
 migrate_ipaddr_netmask_to_cidr()
 {
         local cfg="$1"
@@ -15,19 +14,17 @@ migrate_ipaddr_netmask_to_cidr()
         [ -z "$netmask" ] && return
 
         config_get ipaddr "$cfg" ipaddr
-        [ -z "$ipaddr" ] && return
-        [ -z "${ipaddr##*/*}" ] && return
-
+        [ -z "$ipaddr" ] && return  
+                                    
         eval "$(ipcalc.sh "$ipaddr" "$netmask")"
-        [ -z "$PREFIX" ] && return
-
-        uci del "network.${cfg}.netmask"
-        uci del "network.${cfg}.ipaddr"
-        uci add_list "network.${cfg}.ipaddr=$IP/$PREFIX"
-        CONFIG_CHANGED=1
-}
-
+        [ -z "$PREFIX" ] && return              
+                                  
+        uci del network.${cfg}.netmask
+        uci set network.${cfg}.ipaddr="$ipaddr/$PREFIX"
+        CONFIG_CHANGED=1                               
+}                                                      
+                        
 config_load network
 config_foreach migrate_ipaddr_netmask_to_cidr
-
+                                             
 [ "$CONFIG_CHANGED" = "1" ] && uci commit network

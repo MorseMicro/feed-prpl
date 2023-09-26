@@ -1,0 +1,11 @@
+%populate {
+    object 'RouterAdvertisement.InterfaceSetting.lan' {
+        parameter 'Controller' = "mod-ra-radvd";
+    }
+    object 'RouterAdvertisement.InterfaceSetting.guest' {
+        parameter 'Controller' = "mod-ra-radvd";
+    }
+    object 'RouterAdvertisement.InterfaceSetting.lcm' {
+        parameter 'Controller' = "mod-ra-radvd";
+    }
+}

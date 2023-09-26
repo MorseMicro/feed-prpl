@@ -15,8 +15,16 @@ config SAH_AMX_TR181_DEVICEINFO_ORDER
     int "tr181 deviceinfo Plugin start up order"
     default 25
 
+config SAH_AMX_TR181_ENVIRONMENT_ORDER
+    int "Configure env variables order"
+    default 15
+
 config SAH_AMX_ADD_SYSINIT_DONE_SCRIPT
     bool "Add sysinit_done script"
+    default n
+
+config SAH_AMX_ADD_DBREADY_SCRIPT
+    bool "Add dbready script"
     default n
 
 config SAH_AMX_TR181_DEVICEINFO_DEVELOPMENT

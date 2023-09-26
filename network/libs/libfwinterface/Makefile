@@ -1,29 +1,32 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfwinterface
-PKG_VERSION:=v1.3.12
+PKG_VERSION:=v1.3.14
 SHORT_DESCRIPTION:=A library providing interfaces between lib_fwrules and netfilter
 
-PKG_SOURCE:=libfwinterface-v1.3.12.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.12
-PKG_HASH:=dca16fca2acc80083fd6d03211d634d4557440346a6be985d4332c73aa425576
-PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.12
+PKG_SOURCE:=libfwinterface-v1.3.14.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.14
+PKG_HASH:=cf616b15498be046bf2ba3c5154eacd1b626772d11ee82f724a9bacbea6f2b14
+PKG_BUILD_DIR:=$(BUILD_DIR)/libfwinterface-v1.3.14
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
+
 
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
+  CATEGORY:=amx
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface
   DEPENDS += +libamxc
   DEPENDS += +libsahtrace
   DEPENDS += +libfwrules
+  DEPENDS += +!DEFAULT_firewall4:libiptc
+  DEPENDS += +iptables
   DEPENDS += +kmod-ifb
   DEPENDS += +kmod-ip6tables
   DEPENDS += +kmod-ipt-conntrack
@@ -65,7 +68,7 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_LIB_FWINTERFACE_INTERFACE=$(CONFIG_SAH_LIB_FWINTERFACE_INTERFACE))
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_LIB_FWINTERFACE_INTERFACE=$(CONFIG_SAH_LIB_FWINTERFACE_INTERFACE))
 endef
 
 define Build/Install

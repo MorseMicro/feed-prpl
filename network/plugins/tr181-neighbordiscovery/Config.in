@@ -13,7 +13,7 @@ config SAH_AMX_TR181_NEIGHBORDISCOVERY
 
 config SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER
     int "Start up order for the tr181 NEIGHBORDISCOVERY plugin"
-    default 50
+    default 23
 
 endmenu
 

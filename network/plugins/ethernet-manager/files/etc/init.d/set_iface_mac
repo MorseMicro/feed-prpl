@@ -1,0 +1,27 @@
+#!/bin/sh /etc/rc.common
+
+START=30
+
+. /lib/functions.sh
+board=$(board_name)
+
+set_if_mac() {
+    ip link set dev $1 down
+    ip link set dev $1 address $2
+    ip link set dev $1 up
+}
+
+boot() {
+    if [ $board != "mxl,lgm" ]; then
+        exit 0
+    fi
+
+    base_mac=$(awk 'BEGIN{RS=" ";FS="="} $1 == "ethaddr" {print $2}' /proc/cmdline)
+    set_if_mac eth0_1 $base_mac
+    set_if_mac eth0_2 $base_mac
+    set_if_mac eth0_3 $base_mac
+    set_if_mac eth0_4 $base_mac
+    set_if_mac eth0_5 $base_mac
+    set_if_mac br-lan $base_mac
+    set_if_mac eth1 $base_mac
+}

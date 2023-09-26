@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sed -i 's|Controller = "mod-dhcp-uci"|Controller = "mod-dhcp-dnsmasq"|' /etc/amx/dhcpv4-manager/server/dhcpv4-manager-server.odl
+
+exit 0

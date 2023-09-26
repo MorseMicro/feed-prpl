@@ -1,0 +1,14 @@
+%populate {
+    object 'DHCPv4Client.Client.wan' {
+        parameter 'Controller' = "mod-dhcpv4c";
+    }
+    object 'DHCPv4Client.Client.voip' {
+        parameter 'Controller' = "mod-dhcpv4c";
+    }
+    object 'DHCPv4Client.Client.iptv' {
+        parameter 'Controller' = "mod-dhcpv4c";
+    }
+    object 'DHCPv4Client.Client.mgmt' {
+        parameter 'Controller' = "mod-dhcpv4c";
+    }
+}

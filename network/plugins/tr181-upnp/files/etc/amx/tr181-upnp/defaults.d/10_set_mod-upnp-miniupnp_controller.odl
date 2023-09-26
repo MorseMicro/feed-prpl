@@ -1,0 +1,5 @@
+%populate {
+    object 'UPnP' {
+        parameter 'UPnPController' = "mod-upnp-miniupnp";
+    }
+}

@@ -17,7 +17,7 @@ config SAH_AMX_TR181_PCP_ORDER
 
 config SAH_AMX_TR181_PCP_CARES_RPATH
     bool "Enable linking and setting rpath to /opt/prplos"
-    default y
+    default n
 
 endmenu
 

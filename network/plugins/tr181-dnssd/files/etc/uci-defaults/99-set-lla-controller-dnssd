@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sed -i 's|Controller = "mod-umdns-uci"|Controller = "mod-umdns"|' /etc/amx/tr181-dnssd/tr181-dnssd_definition.odl
+
+exit 0

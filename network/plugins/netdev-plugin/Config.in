@@ -1,18 +1,22 @@
 config PACKAGE_netdev-plugin
     tristate
-    select SAH_SERVICES_NETDEV
+    select SAH_AMX_NETDEV
 
 if PACKAGE_netdev-plugin
 
 menu "Select netdev-plugin build options"
     depends on PACKAGE_netdev-plugin
 
-config SAH_SERVICES_NETDEV
+config SAH_AMX_NETDEV
     bool "Build NetDev"
     default y
 
-config 64_BITS_NETWORK_STATISTICS
+config SAH_AMX_NETDEV_64_BITS_NETWORK_STATISTICS
     bool "Use 64 bit network statistics instead of 32 bit"
+    default n
+
+config SAH_AMX_NETDEV_BROKEN_NETLINK
+    bool "Map the unknown operating state to up on all interfaces"
     default n
 
 endmenu
