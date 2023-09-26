@@ -41,7 +41,9 @@ generate:
       amxo-cg
       amxrt
       cthulhu
+      cthulhu-dhcpc
       cthulhu-lxc
+      cthulhu-networking
       debug-information
       deviceinfo-manager
       dhcpv4-manager
@@ -64,6 +66,7 @@ generate:
       libamxm
       libamxo
       libamxp
+      libamxrt
       libamxs
       libamxt
       libarchive
@@ -73,6 +76,7 @@ generate:
       libfwinterface
       libfwrules
       libgmap-client
+      libgmap-ext
       libimtp
       libipat
       libnetlink-utils
@@ -91,21 +95,26 @@ generate:
       libtr69-engine
       libwebsockets4
       lua-amx
+      miniupnpd-prpl
       moca-manager
       mod-amxb-ubus
       mod-autosensing
       mod-ba-cli
+      mod-dhcpv4c
       mod-dm-cli
       mod-dmext
       mod-dmproxy
       mod-dmstats
+      mod-dns-unbound
       mod-fw-amx
       mod-fw-host
       mod-httpaccess-lighttpd
+      mod-logical-api
       mod-lua-amx
       mod-netmodel
       mod-pcm-svc
       mod-qos-tc
+      mod-ra-radvd
       mod-sahtrace
       mod-sahtrace
       mod-vlan-ioctl
@@ -129,9 +138,11 @@ generate:
       netmodel-radio
       netmodel-ssid
       netmodel-vlan
+      netmodel-xpon
       odl-generator
       packet-interception
       pcm-manager
+      ppp-prpl
       prpl-webui
       pwhm
       rlyeh
@@ -154,15 +165,18 @@ generate:
       tr181-dynamicdns
       tr181-firewall
       tr181-httpaccess
+      tr181-ipdiagnostics
       tr181-logical
       tr181-neighbordiscovery
       tr181-pcp
       tr181-ppp
       tr181-qos
       tr181-routeradvertisement
+      tr181-security
       tr181-upnp
       tr181-usermanagement
       tr181-xpon
+      unbound-prpl
       uriparser
       wan-autosensing
       wan-manager
