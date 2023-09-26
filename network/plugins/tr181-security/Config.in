@@ -1,0 +1,20 @@
+config PACKAGE_tr181-security
+    tristate
+    select SAH_AMX_TR181_SECURITY
+
+if PACKAGE_tr181-security
+
+menu "Select tr181-security build options"
+    depends on PACKAGE_tr181-security
+
+config SAH_AMX_TR181_SECURITY
+    bool "Build a tr181 compatible security plugin"
+    default y
+
+config SAH_AMX_TR181_SECURITY_ORDER
+    int "Start up order for the tr181 SECURITY plugin"
+    default 61
+
+endmenu
+
+endif
