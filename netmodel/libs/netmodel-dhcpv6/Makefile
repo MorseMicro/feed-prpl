@@ -1,23 +1,24 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel-dhcpv6
-PKG_VERSION:=v1.0.1
+PKG_VERSION:=v1.2.0
 SHORT_DESCRIPTION:=Network Model DHCPv6client client
 
-PKG_SOURCE:=netmodel-dhcpv6-v1.0.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-dhcpv6/-/archive/v1.0.1
-PKG_HASH:=cfb1688b3ba50545aa40a16f17e73e9742263f6ddf0ae4f37875c9d00f7705e8
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-dhcpv6-v1.0.1
+PKG_SOURCE:=netmodel-dhcpv6-v1.2.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-dhcpv6/-/archive/v1.2.0
+PKG_HASH:=6574583d829a2ea53441864d46a90e6ac28a9db47cc3f42c1c2d627a7bd84f7d
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-dhcpv6-v1.2.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
+
 
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
+  CATEGORY:=amx
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-dhcpv6
@@ -38,7 +39,7 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
+	$(call Build/Compile/Default, STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
 endef
 
 define Build/Install
@@ -54,6 +55,9 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+	if [ -d ./files ]; then \
+		$(CP) ./files/* $(1)/; \
+	fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

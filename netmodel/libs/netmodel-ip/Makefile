@@ -1,23 +1,24 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=netmodel-ip
-PKG_VERSION:=v1.2.1
+PKG_VERSION:=v1.3.0
 SHORT_DESCRIPTION:=Network Model IP client
 
-PKG_SOURCE:=netmodel-ip-v1.2.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-ip/-/archive/v1.2.1
-PKG_HASH:=a1e5caa309bb899a046d78566c9cf97a2b331cc4f077ada18c8000c28e46fa1d
-PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-ip-v1.2.1
+PKG_SOURCE:=netmodel-ip-v1.3.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-ip/-/archive/v1.3.0
+PKG_HASH:=894635822adce0621cae5a3b2c664ee3ab56f41ef8c48298fedaf078a1948f4d
+PKG_BUILD_DIR:=$(BUILD_DIR)/netmodel-ip-v1.3.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
+
 
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
+  CATEGORY:=amx
   SUBMENU:=Libraries
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/netmodel/clients/netmodel-ip
