@@ -44,6 +44,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxo
   DEPENDS += +amxrt
   DEPENDS += +mod-netmodel
+  DEPENDS += +TARGET_ipq807x_generic_DEVICE_prpl_haze:mod-whm-haze
   MENU:=1
 endef
 
