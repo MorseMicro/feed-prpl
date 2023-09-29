@@ -16,7 +16,7 @@ generate full:
   variables:
     CI_SDK_TARGETS: |
       x86-64-prplos-next
-      ipq40xx-generic
+      ipq807x-generic-prplos-next
       mvebu-cortexa9-prplos-next
 
 generate:
@@ -256,10 +256,10 @@ build full:
     CI_SDK_BUILD_CONFIG: >
       +BUILD_LOG -AUTOREMOVE -ALL -ALL_NONSHARED -ALL_KMODS -SIGNED_PACKAGES +PACKAGE_wpad-basic +PACKAGE_kmod-mac80211-hwsim +USE_PRPLMESH_WHM +PACKAGE_pwhm +PACKAGE_prplmesh +PACKAGE_prplmesh-unit-tests
 
-build prplmesh with ipq40xx-generic SDK:
+build prplmesh with ipq807x-generic SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/prplos-next/sdk-ipq40xx-generic:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/prplos-next/sdk-ipq807x-generic:latest
 
 build prplmesh with mvebu-cortexa9 SDK:
   extends: .build prplmesh with SDK
