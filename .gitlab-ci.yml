@@ -1,5 +1,5 @@
 variables:
-  CI_DESIGNATED_BRANCH: prplos-next
+  CI_DESIGNATED_BRANCH: prplos
   CI_SDK_PIPELINE_SOURCE: parent_pipeline
 
 include:
