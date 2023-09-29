@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. /lib/functions.sh
+board=$(board_name)
+
+if [ $board != "mxl,lgm" ]; then
+    exit 0
+fi
+
+/etc/init.d/netdev_cfg.sh disable
+/etc/init.d/mxl-network-init disable
+
+exit 0
