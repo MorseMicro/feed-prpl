@@ -8,6 +8,12 @@ NAME=prplmesh
 # Helper functions for wlan ready
 #####################################
 
+get_uptime()
+{
+        local uptime=$(echo "$(cat /proc/uptime | awk '{print $1}')" | bc)
+        echo ${uptime%.*}
+}
+
 hostapd_ready()
 {
         hostapd_cli_s1g -i$1 stat &>/dev/null
@@ -54,13 +60,13 @@ wlan_ready_poll()
         config_load prplmesh
         ifaces="$(config_foreach get_hostap_iface wifi-device)"
 
-        start_time="$(date -u +%s)"
+        start_time="$(get_uptime)"
         while true ; do
                 if wlan_ready $ifaces; then
                         break
                 fi
 
-                end_time="$(date -u +%s)"
+                end_time="$(get_uptime)"
                 elapsed="$(($end_time-$start_time))"
                 if [ "$elapsed" -gt "$timeout" ]; then
                         return 1
@@ -222,4 +228,3 @@ EXTRA_HELP='''
 	repeater_mode             set repeater mode
 	gateway_mode              set gateway mode
 '''
-
