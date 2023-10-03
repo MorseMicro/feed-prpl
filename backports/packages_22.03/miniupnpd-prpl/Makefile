@@ -16,7 +16,7 @@ PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/mirrors/miniupnpd/-/archive/$
 PKG_HASH:=7707e2500f8c2044442229e0319c61fe5125863df090eb0a6795035aa63e9216
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
-UNPACK_CMD=tar -xf "$(DL_DIR)/$(PKG_SOURCE)" -C $(PKG_BUILD_DIR) --strip-components=2 $(shell tar -tzf "$(DL_DIR)/$(PKG_SOURCE)" --wildcards '*/' | head -n1)miniupnpd
+UNPACK_CMD=$(HOST_TAR) -xf "$(DL_DIR)/$(PKG_SOURCE)" -C $(PKG_BUILD_DIR) --strip-components=2 $(PKG_NAME)-$(PKG_VERSION)/miniupnpd
 
 PKG_MAINTAINER:=
 PKG_LICENSE:=BSD-3-Clause
