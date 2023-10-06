@@ -16,7 +16,7 @@ index b048ad5bd..f2fe2744f 100644
          }
  
 +        auto target_agent = m_database.get_agent_by_bssid(tlvf::mac_from_string(m_target_bssid));
-+        if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string)) {
++        if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string) == 0) {
 +            LOG(ERROR) << "Target Agent " << m_target_bssid << "not found, exiting steering task";
 +            finish();
 +            break;
@@ -30,7 +30,7 @@ index b048ad5bd..f2fe2744f 100644
      }
  
 +    auto target_agent = m_database.get_agent_by_bssid(tlvf::mac_from_string(m_target_bssid));
-+    if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string)) {
++    if (tlvf::mac_to_string(target_agent->al_mac).compare(zero_mac_string) == 0) {
 +        LOG(ERROR) << "Target Agent " << m_target_bssid << "not found, exiting steering task";
 +        return;
 +    }

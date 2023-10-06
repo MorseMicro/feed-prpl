@@ -1,0 +1,80 @@
+#Title: 013-Set-Agent-operational-status.patch
+#Issue: [APP-1922][prplmesh] Controller restart requires all EasyMesh Agents to restart
+#Description: In an EasyMesh topology with a Controller-Agent(CA) and an Agent(A1), if the CA reboots or
+#if the prplmesh service is disrupted the Agent moves into a non-operational state and the FSM State machine moves to
+#wait for WPS state and it never re-connects back even if the Controller is available and it requires a complete
+#re-configuration to onboard the Agent back to the CA via WPS. This is not a very field friendly scenario where Agents can be placed
+#at far distances from the CA. Hence the following changes have been made to indicate the Agent's status in the UCI configuration, which
+#will be monitored by a cron job service and prplmesh service will be restarted if the Agent state remains non-operational. The cron job service will
+#be scheduled to run every 5 minutes and hence the at most recovery interval for an Agent would be ~10 minutes and not later than that.
+
+
+diff --git a/agent/src/beerocks/slave/son_slave_thread.cpp b/agent/src/beerocks/slave/son_slave_thread.cpp
+index e9f0454bd..66a754e06 100644
+--- a/agent/src/beerocks/slave/son_slave_thread.cpp
++++ b/agent/src/beerocks/slave/son_slave_thread.cpp
+@@ -316,6 +316,14 @@ void slave_thread::agent_reset()
+     m_agent_resets_counter++;
+     LOG(DEBUG) << "agent_reset() #" << m_agent_resets_counter;
+
++#if defined(MORSE_MICRO)
++    //Set Agent IRE state to Non-Operational
++    if (!bpl::cfg_set_agent_operational_flag(false)) {
++        LOG(ERROR) << "Failed to set Agent IRE state to Non-Operational";
++    } else
++        LOG(TRACE) << "Agent IRE state is set to Non-Operational";
++#endif
++
+     m_radio_managers.do_on_each_radio_manager([&](const sManagedRadio &radio_manager,
+                                                   const std::string &fronthaul_iface) {
+         auto db = AgentDB::get();
+@@ -4404,6 +4412,14 @@ bool slave_thread::agent_fsm()
+     case STATE_OPERATIONAL: {
+         LOG(TRACE) << "Agent is in STATE_OPERATIONAL";
+
++#if defined(MORSE_MICRO)
++        //Set Agent IRE state to Operational
++        if (!bpl::cfg_set_agent_operational_flag(true)) {
++            LOG(ERROR) << "Failed to set Agent IRE state to OPERATIONAL";
++        } else
++            LOG(TRACE) << "Agent IRE state is set to OPERATIONAL";
++#endif
++
+         // In certification mode, if prplMesh is configured with local controller, do not enable the
+         // transport process until agent has connected to controller. This way we prevent the agent
+         // from connecting to another controller in the testbed, which might still be running from a
+diff --git a/framework/platform/bpl/cfg/uci/bpl_cfg.cpp b/framework/platform/bpl/cfg/uci/bpl_cfg.cpp
+index 37254ce6a..5dcde1006 100644
+--- a/framework/platform/bpl/cfg/uci/bpl_cfg.cpp
++++ b/framework/platform/bpl/cfg/uci/bpl_cfg.cpp
+@@ -951,5 +951,15 @@ bool cfg_get_clients_unicast_measurements(bool &client_unicast_measurements)
+     return true;
+ }
+
++#if defined(MORSE_MICRO)
++bool cfg_set_agent_operational_flag(bool is_operational)
++{
++    std::string option = "operational";
++    std::string value  = std::to_string(((int)is_operational));
++
++    return cfg_set_prplmesh_config(option, value);
++}
++#endif
++
+ } // namespace bpl
+ } // namespace beerocks
+diff --git a/framework/platform/bpl/include/bpl/bpl_cfg.h b/framework/platform/bpl/include/bpl/bpl_cfg.h
+index 9b01e7e55..f630925e5 100644
+--- a/framework/platform/bpl/include/bpl/bpl_cfg.h
++++ b/framework/platform/bpl/include/bpl/bpl_cfg.h
+@@ -1132,6 +1132,10 @@ bool get_controller_heartbeat_state_timeout_seconds(std::chrono::seconds &timeou
+
+ bool cfg_get_clients_unicast_measurements(bool &client_unicast_measurements);
+
++#if defined(MORSE_MICRO)
++bool cfg_set_agent_operational_flag(bool is_operational);
++#endif
++
+ } // namespace bpl
+ } // namespace beerocks
+
