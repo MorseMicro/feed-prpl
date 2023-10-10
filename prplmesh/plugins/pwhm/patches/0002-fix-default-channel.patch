@@ -1,0 +1,97 @@
+From ccd82dc5188579f453eeaffd648f03eb9c4b393b Mon Sep 17 00:00:00 2001
+From: Marouan MCHARFI <marouan.mcharfi_ext@softathome.com>
+Date: Tue, 10 Oct 2023 18:50:21 +0200
+Subject: [PATCH] fix default channel
+
+Signed-off-by: Marouan MCHARFI <marouan.mcharfi_ext@softathome.com>
+---
+ odl/wld_defaults/20_wld-defaults-rads.odl    | 2 --
+ odl/wld_defaults/20_wld-defaults-rads.odl.uc | 3 ---
+ odl/wld_radio.odl                            | 4 ++--
+ src/Plugin/wifiGen_rad.c                     | 7 +++++++
+ 4 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/odl/wld_defaults/20_wld-defaults-rads.odl b/odl/wld_defaults/20_wld-defaults-rads.odl
+index ac34975..bc86840 100644
+--- a/odl/wld_defaults/20_wld-defaults-rads.odl
++++ b/odl/wld_defaults/20_wld-defaults-rads.odl
+@@ -67,7 +67,6 @@
+                 parameter OperatingFrequencyBand = "2.4GHz";
+                 parameter Enable = 1;
+                 parameter AutoChannelEnable = 0;
+-                parameter Channel = 1;
+                 parameter RegulatoryDomain = "DE";
+                 parameter AP_Mode = 1;
+                 parameter AirtimeFairnessEnabled = 1;
+@@ -87,7 +86,6 @@
+                 parameter OperatingFrequencyBand = "5GHz";
+                 parameter Enable = 1;
+                 parameter AutoChannelEnable = 0;
+-                parameter Channel = 36;
+                 parameter IEEE80211hEnabled = true;
+                 parameter RegulatoryDomain = "DE";
+                 parameter AP_Mode = 1;
+diff --git a/odl/wld_defaults/20_wld-defaults-rads.odl.uc b/odl/wld_defaults/20_wld-defaults-rads.odl.uc
+index bfeea23..6fd0e36 100644
+--- a/odl/wld_defaults/20_wld-defaults-rads.odl.uc
++++ b/odl/wld_defaults/20_wld-defaults-rads.odl.uc
+@@ -7,7 +7,6 @@
+                 parameter OperatingFrequencyBand = "2.4GHz";
+                 parameter Enable = 1;
+                 parameter AutoChannelEnable = 0;
+-                parameter Channel = 1;
+                 parameter RegulatoryDomain = "DE";
+                 parameter AP_Mode = 1;
+                 parameter AirtimeFairnessEnabled = 1;
+@@ -28,7 +27,6 @@
+                 parameter OperatingFrequencyBand = "5GHz";
+                 parameter Enable = 1;
+                 parameter AutoChannelEnable = 0;
+-                parameter Channel = 36;
+                 parameter IEEE80211hEnabled = true;
+                 parameter RegulatoryDomain = "DE";
+                 parameter AP_Mode = 1;
+@@ -55,7 +53,6 @@
+                 parameter OperatingFrequencyBand = "6GHz";
+                 parameter Enable = 1;
+                 parameter AutoChannelEnable = 0;
+-                parameter Channel = 5;
+                 parameter IEEE80211hEnabled = true;
+                 parameter RegulatoryDomain = "DE";
+                 parameter AP_Mode = 1;
+diff --git a/odl/wld_radio.odl b/odl/wld_radio.odl
+index 91e8f8b..488a7c2 100644
+--- a/odl/wld_radio.odl
++++ b/odl/wld_radio.odl
+@@ -680,8 +680,8 @@ define probelist_t{
+ 			 specified.</p>
+ 			 # For Atomic write... set channel after autochannel!
+ 		*/
+-		%persistent uint32 Channel = 6 {
+-			on action validate call check_range { min = 1, max = 255 };
++		%persistent uint32 Channel {
++			on action validate call check_range { min = 0, max = 255 };
+ 			on action validate call wld_rad_validateChannel_pvf;
+ 			userflags %upc;
+ 		}
+diff --git a/src/Plugin/wifiGen_rad.c b/src/Plugin/wifiGen_rad.c
+index 21b3172..0cda5cc 100644
+--- a/src/Plugin/wifiGen_rad.c
++++ b/src/Plugin/wifiGen_rad.c
+@@ -235,6 +235,13 @@ static void s_initialiseCapabilities(T_Radio* pRad, wld_nl80211_wiphyInfo_t* pWi
+                 wld_rad_addSuppDrvCap(pRad, pBand->freqBand, "SCAN_DWELL");
+             }
+             SAH_TRACEZ_INFO(ME, "%s: Caps[%s]={%s}", pRad->Name, swl_freqBand_str[pBand->freqBand], wld_rad_getSuppDrvCaps(pRad, pBand->freqBand));
++            if((pRad->channel == 0) && (wld_rad_getFreqBand(pRad) == pBand->freqBand)) {
++                swl_chanspec_t chanSpec = SWL_CHANSPEC_EMPTY;
++                if(swl_chanspec_channelFromMHz(&chanSpec, pBand->chans[0].ctrlFreq) == SWL_RC_OK) {
++                    pRad->channel = chanSpec.channel;
++                    SAH_TRACEZ_INFO(ME, "%s: get first supported channel %u", pRad->Name, pRad->channel);
++                }
++            }
+         }
+     }
+     SAH_TRACEZ_OUT(ME);
+-- 
+2.25.1
+
