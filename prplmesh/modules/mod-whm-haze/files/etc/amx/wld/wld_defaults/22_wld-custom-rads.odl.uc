@@ -4,6 +4,7 @@
 {% for ( let Radio in BD.Radios ) : %}
 {% if (Radio.OperatingFrequency == "6GHz") : %}
             object '{{Radio.Alias}}' {
+                parameter Channel = 33;
                 parameter RegulatoryDomain = "US";
                 parameter BeaconPeriod=100;
                 parameter DTIMPeriod=3;
