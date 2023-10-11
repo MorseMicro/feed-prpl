@@ -18,7 +18,6 @@
                     parameter WEPKey = "123456789ABCD";
                     parameter PreSharedKey = "";
                     parameter OWETransitionInterface = "";
-                    parameter SAEPassphrase = "password";
                     parameter EncryptionMode = "Default";
                     parameter SHA256Enable = 0;
                     parameter RadiusServerIPAddr = "";
