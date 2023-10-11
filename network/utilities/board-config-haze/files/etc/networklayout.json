@@ -1,0 +1,135 @@
+{
+	"Interfaces": [
+		{
+			"Alias": "WAN",
+			"Name": "wan",
+			"Type": "ethernet",
+			"Upstream": "true"
+		},
+		{
+			"Alias": "LAN1",
+			"Name": "lan1",
+			"Type": "ethernet"
+		},
+		{
+			"Alias": "LAN2",
+			"Name": "lan2",
+			"Type": "ethernet"
+		},
+		{
+			"Alias": "LAN3",
+			"Name": "lan3",
+			"Type": "ethernet"
+		},
+		{
+			"Alias": "DEFAULT_RADIO0",
+			"Name": "wlan0",
+			"Type": "wireless",
+			"OperatingFrequency": "5GHz",
+			"SSID": "prplOS"
+		},
+		{
+			"Alias": "GUEST_RADIO0",
+			"Name": "wlan0-1",
+			"Type": "wireless",
+			"OperatingFrequency": "5GHz",
+			"SSID": "prplOS-guest"
+		},
+		{
+			"Alias": "DEFAULT_RADIO1",
+			"Name": "wlan1",
+			"Type": "wireless",
+			"OperatingFrequency": "2.4GHz",
+			"SSID": "prplOS"
+		},
+		{
+			"Alias": "GUEST_RADIO1",
+			"Name": "wlan1-1",
+			"Type": "wireless",
+			"OperatingFrequency": "2.4GHz",
+			"SSID": "prplOS-guest"
+		},
+		{
+			"Alias": "DEFAULT_RADIO2",
+			"Name": "wlan2",
+			"Type": "wireless",
+			"OperatingFrequency": "6GHz",
+			"SSID": "prplOS"
+		},
+		{
+			"Alias": "GUEST_RADIO2",
+			"Name": "wlan2-1",
+			"Type": "wireless",
+			"OperatingFrequency": "6GHz",
+			"SSID": "prplOS-guest"
+		}
+	],
+	"Bridges": {
+		"Lan": {
+			"Name": "br-lan",
+			"Ports": [
+				{
+					"Alias": "LAN1",
+					"Name": "lan1"
+				},
+				{
+					"Alias": "LAN2",
+					"Name": "lan2"
+				},
+				{
+					"Alias": "LAN3",
+					"Name": "lan3"
+				},
+				{
+					"Alias": "default_radio0",
+					"Name": "wlan0"
+				},
+				{
+					"Alias": "default_radio1",
+					"Name": "wlan1"
+				},
+				{
+					"Alias": "default_radio2",
+					"Name": "wlan2"
+				}
+			]
+		},
+		"Guest": {
+			"Name": "br-guest",
+			"Ports": [
+				{
+					"Alias": "guest_radio0",
+					"Name": "wlan0-1"
+				},
+				{
+					"Alias": "guest_radio1",
+					"Name": "wlan1-1"
+				},
+				{
+					"Alias": "guest_radio2",
+					"Name": "wlan2-1"
+				}
+			]
+		},
+		"Lcm": {
+			"Name": "br-lcm",
+			"Ports": [
+				
+			]
+		}
+	},
+	"Radios": [
+		{
+			"Alias": "radio0",
+			"OperatingFrequency": "5GHz"
+		},
+		{
+			"Alias": "radio1",
+			"OperatingFrequency": "2.4GHz"
+		},
+		{
+			"Alias": "radio2",
+			"OperatingFrequency": "6GHz"
+		}
+	]
+}
