@@ -61,31 +61,20 @@ if grep -q GRX /tmp/sysinfo/board_name; then
         uci commit prplmesh
 fi
 
-# Use the first interface of the LAN network as the default value
-BH_IFACE="$(uci -q get network.lan.ifname | cut -d" " -f1)"
-if [ -z "$BH_IFACE" ]; then
-	intf=$(uci -q get network.lan.device)
-	[ -z "$intf" ] && return
+. /usr/share/libubox/jshn.sh
 
-	. /lib/functions.sh
+# Parse /etc/board.json file and fetch first interface of the LAN network
+json_init
+json_load_file /etc/board.json
+json_select "network"
+json_select "lan"
 
-	add_network_device()
-	{
-		local name
-		local ports
-		local cfg="$1"
-
-		[ -n "$BH_IFACE" ] && return
-
-		config_get name "$cfg" name
-		config_get ports "$cfg" ports
-
-		[ "$intf" != "$name" ] && return
-		BH_IFACE="${ports%% *}"
-	}
-
-	config_load network
-	config_foreach add_network_device device
+if json_is_a ports array
+then
+  json_select ports
+  json_get_var port1 1
+  # Use the first interface of the LAN network as the default value
+  BH_IFACE="$port1"
 fi
 
 if [ -z "$BH_IFACE" ] ; then
