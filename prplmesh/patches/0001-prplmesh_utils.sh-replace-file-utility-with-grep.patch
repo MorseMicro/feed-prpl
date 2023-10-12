@@ -1,0 +1,32 @@
+From 92b3662fced0c71196b049c67d786ec347a09a35 Mon Sep 17 00:00:00 2001
+From: Andrey Erokhin <a.erokhin@inango-systems.com>
+Date: Thu, 12 Oct 2023 14:49:49 +0500
+Subject: [PATCH] prplmesh_utils.sh: replace file utility with grep
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The file utility is not always available
+
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
+Signed-off-by: Andrey Erokhin <a.erokhin@inango-systems.com>
+---
+ common/beerocks/scripts/prplmesh_utils.sh.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/beerocks/scripts/prplmesh_utils.sh.in b/common/beerocks/scripts/prplmesh_utils.sh.in
+index 2b1c85d55..c805abe13 100755
+--- a/common/beerocks/scripts/prplmesh_utils.sh.in
++++ b/common/beerocks/scripts/prplmesh_utils.sh.in
+@@ -342,7 +342,7 @@ status_function() {
+         # skip files that aren't symlinks (and skip the literal glob if there is no matching file):
+         [ -L "$main_agent_log" ] || return
+ 
+-        [ "$(file -Lb --mime-type "$main_agent_log")" = 'text/plain' ] || err "$main_agent_log is not a text file"
++        grep -q "[^[:print:]]" "$main_agent_log" && err "$main_agent_log contains non-printable characters!"
+         radios=$(grep -a 'fronthaul_iface=' "$main_agent_log"  | cut -d "=" -f2)
+         for radio in $radios ; do
+             report "$radio radio agent operational" radio_agent_operational "$LOGS_PATH" "$radio"
+-- 
+2.34.1
+
