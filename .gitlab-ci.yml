@@ -7,7 +7,7 @@ include:
 
 .expensive_job_rules:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DESIGNATED_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "prplos-22.03"
 
 generate full:
   rules:
@@ -23,7 +23,7 @@ generate:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != $CI_DESIGNATED_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != "prplos-22.03"
       when: manual
   extends: .generate
   variables:
@@ -229,7 +229,7 @@ generate:
 build:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != $CI_DESIGNATED_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != "prplos-22.03"
   extends: .execute SDK package build jobs
 
 build full:
@@ -260,12 +260,12 @@ build full:
 build prplmesh with ipq807x-generic SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-ipq807x-generic:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/prplos/sdk-ipq807x-generic:latest
 
 build prplmesh with mvebu-cortexa9 SDK:
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-mvebu-cortexa9:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/prplos/sdk-mvebu-cortexa9:latest
 
 build prplmesh with x86-64 SDK:
   rules:
@@ -273,4 +273,4 @@ build prplmesh with x86-64 SDK:
     - !reference [.expensive_job_rules, rules]
   extends: .build prplmesh with SDK
   variables:
-    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/$CI_DESIGNATED_BRANCH/sdk-x86-64:latest
+    CI_SDK_IMAGE: registry.gitlab.com/prpl-foundation/prplos/prplos/prplos/sdk-x86-64:latest
