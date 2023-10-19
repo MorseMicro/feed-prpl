@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prpl-webui
-PKG_VERSION:=0.2.6
+PKG_VERSION:=0.2.7
 PKG_RELEASE:=1
 PKG_LICENSE:=BSD-2-Clause-Patent
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/api/v4/projects/40213611/packages/generic/$(PKG_NAME)/$(PKG_VERSION)
-PKG_HASH:=aef129e937aefbe91c0eedf3e2b6610ac691e9c84ff319ac3660196b717d38c9
+PKG_HASH:=2f8fa77c90da4b0f4cd98f3dde160f0b1318453261b50e195748829e52bead5c
 
 PKG_UNPACK=$(HOST_TAR) -C $(PKG_BUILD_DIR) -xzf $(DL_DIR)/$(PKG_SOURCE)
 
