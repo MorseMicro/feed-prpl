@@ -14,9 +14,6 @@ PKG_LICENSE_FILES:=LICENSE
 
 
 PKG_RELEASE:=1
-PKG_BUILD_DEPENDS += bison/host
-PKG_BUILD_DEPENDS += flex/host
-
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)

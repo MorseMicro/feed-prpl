@@ -150,6 +150,13 @@ define Build/InstallDev
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/include/beerocks/bml $(1)/usr/include/
 endef
 
+# CMakeCache.txt has slipped into initial tarball release. Remove
+# here, to be fixed in another package release.
+define Build/Configure
+	rm $(PKG_BUILD_DIR)/CMakeCache.txt -rf
+	$(call Build/Configure/Default)
+endef
+
 define Package/prplmesh/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/etc/config

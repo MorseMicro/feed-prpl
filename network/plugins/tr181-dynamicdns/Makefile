@@ -52,8 +52,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +ca-certificates
   DEPENDS += +curl
   DEPENDS += +ca-bundle
-  DEPENDS += +libatomic1
-  DEPENDS += +libuv1
   DEPENDS += +openssl-util
   DEPENDS += +bind-libs
   DEPENDS += +bind-client
