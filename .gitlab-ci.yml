@@ -3,7 +3,13 @@ variables:
   CI_SDK_PIPELINE_SOURCE: parent_pipeline
 
 include:
+  - local: .gitlab/check.yml
   - remote: https://gitlab.com/prpl-foundation/prplOS/prplos/-/raw/prplos/.gitlab/sdk.yml
+
+stages:
+  - check
+  - generate
+  - build
 
 .expensive_job_rules:
   rules:

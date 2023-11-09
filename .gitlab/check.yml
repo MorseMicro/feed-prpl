@@ -1,0 +1,21 @@
+shellcheck:
+  stage: check
+  image: alpine
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+  script:
+    - apk add shellcheck
+    - shellcheck .gitlab/scripts/*
+
+
+package format check:
+  stage: check
+  extends: .build feed with x86-64 SDK
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    CI_SDK_INSTALL_FEEDS: base
+
+  script:
+    - bash $CI_PROJECT_DIR/.gitlab/scripts/check-package-format.sh
