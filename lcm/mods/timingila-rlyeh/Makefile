@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=timingila-rlyeh
 PKG_VERSION:=v0.1.4
-SHORT_DESCRIPTION:=The module timingila-rlyeh provides rlyeh support as a packager backend to timingila
+SHORT_DESCRIPTION:=provides rlyeh support as backend to timingila
 
 PKG_SOURCE:=timingila-rlyeh-v0.1.4.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh/-/archive/v0.1.4

@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-self
 PKG_VERSION:=v1.4.0
-SHORT_DESCRIPTION:=gmap module to fetch information about the hgw/repeater itself and the layer 2 'devices' on it
+SHORT_DESCRIPTION:=fetches information about the CPE itself
 
 PKG_SOURCE:=gmap-mod-self-v1.4.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-self/-/archive/v1.4.0

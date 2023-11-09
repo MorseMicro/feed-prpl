@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfiletransfer
 PKG_VERSION:=v1.1.3
-SHORT_DESCRIPTION:=Libfiletransfer is a library providing an upload/download API for HTTP(s)
+SHORT_DESCRIPTION:=library providing up and download API for HTTP(s)
 
 PKG_SOURCE:=libfiletransfer-v1.1.3.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfiletransfer/-/archive/v1.1.3

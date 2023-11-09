@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=timingila-cthulhu
 PKG_VERSION:=v0.6.0
-SHORT_DESCRIPTION:=The module timingila-cthulhu provides cthulhu support as a container backend to timingila
+SHORT_DESCRIPTION:=provides cthulhu support as a backend to timingila
 
 PKG_SOURCE:=timingila-cthulhu-v0.6.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-cthulhu/-/archive/v0.6.0

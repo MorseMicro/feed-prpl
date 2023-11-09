@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=debug-information
 PKG_VERSION:=v0.1.15
-SHORT_DESCRIPTION:=Scripts to provide debug Information for a running system
+SHORT_DESCRIPTION:=collects debug information from running system
 
 PKG_SOURCE:=debug-information-v0.1.15.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/utilities/debug-information/-/archive/v0.1.15

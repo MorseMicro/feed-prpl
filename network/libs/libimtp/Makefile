@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libimtp
 PKG_VERSION:=v1.6.0
-SHORT_DESCRIPTION:=libimtp is a library which provides functionality to set up a connection between two internal USP endpoints using a unix domain socket
+SHORT_DESCRIPTION:=connects two USP endpoints over Unix domain socket
 
 PKG_SOURCE:=libimtp-v1.6.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/soft.at.home/usp/libraries/libimtp/-/archive/v1.6.0

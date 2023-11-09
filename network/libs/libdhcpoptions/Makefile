@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libdhcpoptions
 PKG_VERSION:=v0.6.0
-SHORT_DESCRIPTION:=Library to parse and evaluate the binary data of DHCP options
+SHORT_DESCRIPTION:=DHCP options parsing and handling
 
 PKG_SOURCE:=libdhcpoptions-v0.6.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libdhcpoptions/-/archive/v0.6.0

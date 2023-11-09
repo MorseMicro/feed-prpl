@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-httpaccess-lighttpd
 PKG_VERSION:=v0.1.6
-SHORT_DESCRIPTION:=Module to manage HTTP accesses for lighttpd server
+SHORT_DESCRIPTION:=HTTP access management for lighttpd server
 
 PKG_SOURCE:=mod-httpaccess-lighttpd-v0.1.6.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-httpaccess-lighttpd/-/archive/v0.1.6

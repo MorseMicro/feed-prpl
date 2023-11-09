@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxc
 PKG_VERSION:=v1.8.11
-SHORT_DESCRIPTION:=Libamxc is a library containing data containers, implemented in ansi C (C99)
+SHORT_DESCRIPTION:=library providing generic reusable data containers
 
 PKG_SOURCE:=libamxc-v1.8.11.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxc/-/archive/v1.8.11

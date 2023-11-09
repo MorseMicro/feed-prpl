@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libqosmodule
 PKG_VERSION:=v1.0.0
-SHORT_DESCRIPTION:=A helper library to ease the implementation of QoS modules
+SHORT_DESCRIPTION:=makes implementation of QoS modules easier
 
 PKG_SOURCE:=libqosmodule-v1.0.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libqosmodule/-/archive/v1.0.0

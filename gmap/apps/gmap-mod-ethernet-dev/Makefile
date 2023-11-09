@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-ethernet-dev
 PKG_VERSION:=v1.12.0
-SHORT_DESCRIPTION:=gMap component that adds discovered devices to the gmap datamodel and links them to the correct interface
+SHORT_DESCRIPTION:=adds discovered devices to the gMap datamodel
 
 PKG_SOURCE:=gmap-mod-ethernet-dev-v1.12.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-ethernet-dev/-/archive/v1.12.0

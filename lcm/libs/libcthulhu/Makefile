@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libcthulhu
 PKG_VERSION:=v0.15.0
-SHORT_DESCRIPTION:=The module libcthulhu provides functions and datastructures that are shared between Cthulhu and its backends
+SHORT_DESCRIPTION:=library provides shared functions and datastructures
 
 PKG_SOURCE:=libcthulhu-v0.15.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/libcthulhu/-/archive/v0.15.0

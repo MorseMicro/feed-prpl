@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cthulhu-lxc
 PKG_VERSION:=v0.6.1
-SHORT_DESCRIPTION:=The module Cthulhu-LXC provides LXC support as a backend to Cthluhu
+SHORT_DESCRIPTION:=The module provides LXC support as a backend to Cthluhu
 
 PKG_SOURCE:=cthulhu-lxc-v0.6.1.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/cthulhu-lxc/-/archive/v0.6.1

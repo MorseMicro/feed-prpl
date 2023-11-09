@@ -14,7 +14,7 @@ PKG_UNPACK=$(HOST_TAR) -C $(PKG_BUILD_DIR) -xzf $(DL_DIR)/$(PKG_SOURCE)
 include $(INCLUDE_DIR)/package.mk
 
 define Package/prpl-webui
-  TITLE:=Reference web UI implementation for prplOS using the EmberJS framework.
+  TITLE:=Reference webUI for prplOS using the EmberJS framework
   CATEGORY:=prpl Foundation
   SUBMENU:=Utilities
   DEPENDS:=+tr181-rest-api +lighttpd-mod-rewrite

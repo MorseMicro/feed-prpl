@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=acl-manager
 PKG_VERSION:=v0.6.3
-SHORT_DESCRIPTION:=The ACL manager will monitor the ACL directory and merge ACL files together to create a single master ACL file per role
+SHORT_DESCRIPTION:=The ACL manager monitors ACL directory and merges ACL files
 
 PKG_SOURCE:=acl-manager-v0.6.3.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/acl-manager/-/archive/v0.6.3

@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libfwinterface
 PKG_VERSION:=v1.3.14
-SHORT_DESCRIPTION:=A library providing interfaces between lib_fwrules and netfilter
+SHORT_DESCRIPTION:=abstraction layer between libfwrules and system firewall
 
 PKG_SOURCE:=libfwinterface-v1.3.14.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libfwinterface/-/archive/v1.3.14

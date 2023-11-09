@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libamxm
 PKG_VERSION:=v0.0.58
-SHORT_DESCRIPTION:=modularity api, simplifies creation of add-ons (plug-ins, modules)
+SHORT_DESCRIPTION:=modularity API, simplifies creation of plug-ins
 
 PKG_SOURCE:=libamxm-v0.0.58.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/libraries/libamxm/-/archive/v0.0.58

@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=librlyeh
 PKG_VERSION:=v0.4.26
-SHORT_DESCRIPTION:=The module librlyeh provides functions and datastructures to interact with OCI registries
+SHORT_DESCRIPTION:=library for handling of OCI registries 
 
 PKG_SOURCE:=librlyeh-v0.4.26.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/libraries/librlyeh/-/archive/v0.4.26

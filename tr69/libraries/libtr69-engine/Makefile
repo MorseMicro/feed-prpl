@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libtr69-engine
 PKG_VERSION:=v0.8.0
-SHORT_DESCRIPTION:=libraries to define and implement the ACS RPCs methods and data parser
+SHORT_DESCRIPTION:=ACS RPCs methods and data parser
 
 PKG_SOURCE:=libtr69-engine-v0.8.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libtr69-engine/-/archive/v0.8.0

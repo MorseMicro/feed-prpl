@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libocispec
 PKG_VERSION:=2021-05-15
-SHORT_DESCRIPTION:=A library for easily parsing of OCI runtime and OCI image files from C
+SHORT_DESCRIPTION:=library for accessing OCI runtime and image spec files
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=46b870958a39547026c5dc9a044951e232ecbd9c

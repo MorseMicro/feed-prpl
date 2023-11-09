@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wan-manager
 PKG_VERSION:=v0.27.0
-SHORT_DESCRIPTION:=TR-181 compatible plugin for advanced WAN mode configuration
+SHORT_DESCRIPTION:=plugin for advanced WAN mode configuration
 
 PKG_SOURCE:=wan-manager-v0.27.0.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-manager/-/archive/v0.27.0
