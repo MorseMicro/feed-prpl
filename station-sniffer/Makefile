@@ -21,7 +21,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/station-sniffer
 	SECTION:=net
-	CATEGORY:=mesh
+	CATEGORY:=prpl Foundation
+	SUBMENU:=prplMesh
 	TITLE:=station-sniffer
 	DEPENDS:= \
 		+libpcap \

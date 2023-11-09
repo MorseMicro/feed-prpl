@@ -25,8 +25,8 @@ endef
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
-  SUBMENU:=Applications
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Ambiorix
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/ambiorix/applications/acl-manager
   DEPENDS += +libamxc

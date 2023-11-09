@@ -20,8 +20,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
   SECTION:=net
-  CATEGORY:=Network
-  SUBMENU:=PrplMesh
+  CATEGORY:=prpl Foundation
+  SUBMENU:=prplMesh
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/libraries/libswlc
   DEPENDS += +libsahtrace

@@ -9,8 +9,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/mod-whm-haze
   TITLE:=Haze board module for wireless hardware manager
-  CATEGORY:=amx
-  SUBMENU:=Modules
+  CATEGORY:=prpl Foundation
+  SUBMENU:=prplMesh
   DEPENDS:=@TARGET_ipq807x_generic_DEVICE_prpl_haze
 endef
 

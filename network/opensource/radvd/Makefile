@@ -21,7 +21,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/radvd/Default
   SECTION:=net
-  CATEGORY:=Network
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Utilities
   TITLE:=IPv6 Routing Advertisement
   URL:=http://v6web.litech.org/radvd/
   DEPENDS:=

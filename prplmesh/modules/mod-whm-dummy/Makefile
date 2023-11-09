@@ -17,8 +17,8 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=amx
-  SUBMENU:=Modules
+  CATEGORY:=prpl Foundation
+  SUBMENU:=prplMesh
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/modules/mod-whm-dummy
   DEPENDS += +libsahtrace

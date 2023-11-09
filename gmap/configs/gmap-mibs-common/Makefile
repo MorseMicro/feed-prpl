@@ -18,8 +18,8 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=gmap
-  SUBMENU:=Configurations
+  CATEGORY:=prpl Foundation
+  SUBMENU:=gMap
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/gmap/mibs/gmap-mibs-common
   DEPENDS += +gmap-server

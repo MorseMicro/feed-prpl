@@ -31,7 +31,7 @@ include $(INCLUDE_DIR)/version.mk
 
 define Package/miniupnpd-prpl
   SECTION:=net
-  CATEGORY:=Network
+  CATEGORY:=prpl Foundation
   DEPENDS:= \
 	+libcap-ng \
 	+libmnl \
@@ -50,7 +50,7 @@ define Package/miniupnpd-prpl
   PROVIDES:=miniupnpd-iptables
   CONFLICTS:=miniupnpd-iptables miniupnpd-nftables
   TITLE:=Lightweight UPnP IGD, NAT-PMP & PCP daemon
-  SUBMENU:=Firewall
+  SUBMENU:=Upstream Backports/Forks
   URL:=https://miniupnp.tuxfamily.org/
 endef
 

@@ -25,8 +25,8 @@ endef
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=amx
-  SUBMENU:=Plugins
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Netmodel
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/netmodel/applications/netmodel-clients
   DEPENDS += +libamxc

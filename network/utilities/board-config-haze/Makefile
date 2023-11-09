@@ -9,7 +9,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/board-config-haze
   TITLE:=Haze board configuration
-  CATEGORY:=Purple
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Utilities
   DEPENDS:=@TARGET_ipq807x_generic_DEVICE_prpl_haze
 endef
 

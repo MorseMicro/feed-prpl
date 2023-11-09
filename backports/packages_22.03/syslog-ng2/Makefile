@@ -33,7 +33,8 @@ endif
 
 define Package/syslog-ng2
   SECTION:=admin
-  CATEGORY:=Administration
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Upstream Backports/Forks
   TITLE:=A powerful syslog daemon
   URL:=https://www.syslog-ng.com/products/open-source-log-management/
   DEPENDS:=+libpcre +glib2 +libopenssl +libpthread +librt +zlib +libdbi +libjson-c +libcurl +libuuid +SYSLOGNG_LOGROTATE:logrotate

@@ -24,8 +24,8 @@ endef
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=ambiorix
-  SUBMENU:=Plugins
+  CATEGORY:=prpl Foundation
+  SUBMENU:=TR-181 Managers
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/components/core/plugins/wan-autosensing
   DEPENDS += +libamxc

@@ -27,7 +27,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/fcgi/Default
   SECTION:=libs
-  CATEGORY:=Libraries
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Libraries
   URL:=https://fastcgi-archives.github.io/
 endef
 

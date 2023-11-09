@@ -29,14 +29,14 @@ include $(INCLUDE_DIR)/version.mk
 
 define Package/miniupnpd2/Default
   SECTION:=net
-  CATEGORY:=Network
+  CATEGORY:=prpl Foundation
   DEPENDS:= \
 	+libcap-ng \
 	+libmnl \
 	+libuuid
   PROVIDES:=miniupnpd2
   TITLE:=Lightweight UPnP IGD, NAT-PMP & PCP daemon
-  SUBMENU:=Firewall
+  SUBMENU:=Upstream Backports/Forks
   URL:=https://miniupnp.tuxfamily.org/
 endef
 

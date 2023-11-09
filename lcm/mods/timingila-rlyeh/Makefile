@@ -18,8 +18,8 @@ PKG_BUILD_DEPENDS += librlyeh
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=SoftAtHome
-  SUBMENU:=Modules
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Life Cycle Management (LCM)
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh
   DEPENDS += +libamxc

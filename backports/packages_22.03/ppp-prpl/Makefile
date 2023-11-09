@@ -33,7 +33,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/ppp-prpl
   SECTION:=net
-  CATEGORY:=Network
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Upstream Backports/Forks
   URL:=https://ppp.samba.org/
   DEPENDS:=+kmod-ppp +kmod-pppoe +libopenssl
   TITLE:=PPP daemon

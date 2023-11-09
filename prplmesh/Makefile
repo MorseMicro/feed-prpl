@@ -27,8 +27,8 @@ include $(INCLUDE_DIR)/cmake.mk
 
 define Package/prplmesh/default
 	SECTION:=net
-	CATEGORY:=Network
-	SUBMENU:=PrplMesh
+	CATEGORY:=prpl Foundation
+	SUBMENU:=prplMesh
 	TITLE:=prplmesh
 	URL:=https://gitlab.com/prpl-foundation/prplmesh/prplMesh/-/blob/master/README.md
 	MAINTAINER:=prplfoundation

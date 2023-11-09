@@ -24,8 +24,8 @@ endef
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=SoftAtHome
-  SUBMENU:=Applications
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Life Cycle Management (LCM)
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/lcm/applications/rlyeh
   DEPENDS += +libamxc

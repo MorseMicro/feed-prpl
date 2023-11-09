@@ -47,7 +47,8 @@ CMAKE_OPTIONS += -DLWS_WITHOUT_TEST_CLIENT=ON
 
 define Package/libwebsockets4/Default
 	SECTION:=libs
-	CATEGORY:=Libraries
+	CATEGORY:=prpl Foundation
+	SUBMENU:=Upstream Backports/Forks
 	TITLE:=libwebsockets4
 	DEPENDS:=+zlib +libcap
 	URL:=https://libwebsockets.org

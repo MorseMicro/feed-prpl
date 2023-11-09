@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pwhm
 PKG_VERSION:=v4.18.4
-SHORT_DESCRIPTION:=PrplMesh WHM
+SHORT_DESCRIPTION:=prplMesh WHM
 
 PKG_SOURCE:=pwhm-v4.18.4.tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm/-/archive/v4.18.4
@@ -26,8 +26,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
   SECTION:=net
-  CATEGORY:=Network
-  SUBMENU:=PrplMesh
+  CATEGORY:=prpl Foundation
+  SUBMENU:=prplMesh
   TITLE:=$(SHORT_DESCRIPTION)
   URL:=https://gitlab.com/prpl-foundation/prplmesh/pwhm/plugins/pwhm
   DEPENDS += +libsahtrace
@@ -49,7 +49,7 @@ define Package/$(PKG_NAME)
 endef
 
 define Package/$(PKG_NAME)/description
-	PrplMesh WHM
+	prplMesh WHM
 endef
 
 define Build/Compile

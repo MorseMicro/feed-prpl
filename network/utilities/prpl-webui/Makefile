@@ -15,7 +15,8 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/prpl-webui
   TITLE:=Reference web UI implementation for prplOS using the EmberJS framework.
-  CATEGORY:=Purple
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Utilities
   DEPENDS:=+tr181-rest-api +lighttpd-mod-rewrite
 endef
 

@@ -19,7 +19,7 @@ PKG_FIXUP:=autoreconf
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-	CATEGORY:=SoftAtHome
+	CATEGORY:=prpl Foundation
 	SUBMENU:=Libraries
 	TITLE:=$(SHORT_DESCRIPTION)
 	URL:=https://github.com/containers/libocispec.git

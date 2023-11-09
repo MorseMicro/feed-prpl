@@ -21,7 +21,8 @@ CONFIGURE_ARGS += --disable-server --disable-app
 
 define Package/$(PKG_NAME)
   SECTION:=libs
-  CATEGORY:=Libraries
+  CATEGORY:=prpl Foundation
+  SUBMENU:=Libraries
   TITLE:=PCP client library implements client side of PCP
   URL:=https://github.com/libpcp/pcp
   DEPENDS:=
