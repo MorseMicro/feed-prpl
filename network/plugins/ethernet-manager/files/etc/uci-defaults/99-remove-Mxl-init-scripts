@@ -11,3 +11,4 @@ fi
 /etc/init.d/mxl-network-init disable
 
 exit 0
+

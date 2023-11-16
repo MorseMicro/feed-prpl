@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dmproxy
-PKG_VERSION:=v1.3.1
+PKG_VERSION:=v1.3.5
 SHORT_DESCRIPTION:=Data model object proxy
 
-PKG_SOURCE:=mod-dmproxy-v1.3.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmproxy/-/archive/v1.3.1
-PKG_HASH:=a186abc021832ddbe9c116e47de8cdeef1c1921194a9fcc1eb6e95cbd98c36e4
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmproxy-v1.3.1
+PKG_SOURCE:=mod-dmproxy-v1.3.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dmproxy/-/archive/v1.3.5
+PKG_HASH:=0aeffb1c85b7da6277f5ee2ed96500358c4274e170ed527904afa93b8111b9b7
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dmproxy-v1.3.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -27,6 +27,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxd
   DEPENDS += +libamxo
   DEPENDS += +libamxb
+  DEPENDS += +libsahtrace
   MENU:=1
 endef
 

@@ -15,6 +15,14 @@ config SAH_AMX_TR181_ETHERNET_ORDER
     int "Start up order for the tr181 ethernet plugin"
     default 21
 
+config SAH_AMX_TR181_ETHERNET_RUN_AS_USER
+    string "User will be used for the tr181-ethernet plugin"
+    default "tr181_app"
+
+config SAH_AMX_TR181_ETHERNET_RUN_AS_GROUP
+    string "Group will be used for the tr181-ethernet plugin"
+    default "tr181_app"
+
 endmenu
 
 endif

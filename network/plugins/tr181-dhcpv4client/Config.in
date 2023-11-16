@@ -1,0 +1,24 @@
+config PACKAGE_tr181-dhcpv4client
+    tristate
+    select SAH_AMX_TR181_DHCPV4CLIENT
+
+if PACKAGE_tr181-dhcpv4client
+
+menu "Select tr181-dhcpv4client build options"
+    depends on PACKAGE_tr181-dhcpv4client
+
+config SAH_AMX_TR181_DHCPV4CLIENT
+    bool "Build TR-181 compatible DHCPv4 client"
+    default y
+
+config SAH_AMX_TR181_DHCPV4CLIENT_RUN_AS_USER
+    string "User will be used for the TR-181 DHCPV4CLIENT plugin"
+    default "tr181_app"
+
+config SAH_AMX_TR181_DHCPV4CLIENT_RUN_AS_GROUP
+    string "Group will be used for the TR-181 DHCPV4CLIENT plugin"
+    default "tr181_app"
+
+endmenu
+
+endif

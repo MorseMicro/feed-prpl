@@ -1,0 +1,24 @@
+config PACKAGE_routing-manager
+    tristate
+    select SAH_AMX_TR181_ROUTING
+
+if PACKAGE_routing-manager
+
+menu "Select routing-manager build options"
+    depends on PACKAGE_routing-manager
+
+config SAH_AMX_TR181_ROUTING
+    bool "TR-181 Routing"
+    default y
+
+config SAH_AMX_TR181_ROUTING_RUN_AS_USER
+    string "User will be used for the ROUTING-MANAGER plugin"
+    default "tr181_app"
+
+config SAH_AMX_TR181_ROUTING_RUN_AS_GROUP
+    string "Group will be used for the ROUTING-MANAGER plugin"
+    default "tr181_app"
+
+endmenu
+
+endif

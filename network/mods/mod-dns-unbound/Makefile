@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dns-unbound
-PKG_VERSION:=v1.4.0
+PKG_VERSION:=v1.4.2
 SHORT_DESCRIPTION:=Ambiorix module to manage Unbound as DNS forwarder
 
-PKG_SOURCE:=mod-dns-unbound-v1.4.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dns-unbound/-/archive/v1.4.0
-PKG_HASH:=2cc7e85dd4d162041a3d7b6d7fb0b19366592ab938e2af8ccab5b4270c0c1e5c
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dns-unbound-v1.4.0
+PKG_SOURCE:=mod-dns-unbound-v1.4.2.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dns-unbound/-/archive/v1.4.2
+PKG_HASH:=bec813ae2885f57775f27293b5a10ccac38045b3d85aad14ffb48a9ec3da8f7b
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dns-unbound-v1.4.2
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -30,7 +30,8 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxp
   DEPENDS += +libamxm
   DEPENDS += +libsahtrace
-  DEPENDS += +unbound-daemon-prpl
+  DEPENDS += +DEFAULT_firewall4:unbound-daemon-prpl
+  DEPENDS += +!DEFAULT_firewall4:unbound-daemon
   DEPENDS += +libfstrm
   DEPENDS += +libprotobuf-c
   MENU:=1
@@ -46,9 +47,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 endef
 
 define Build/InstallDev
@@ -60,6 +58,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

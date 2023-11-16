@@ -1,0 +1,24 @@
+config PACKAGE_mod-sahtrace
+    tristate
+    select SAH_MOD_SAHTRACE
+
+if PACKAGE_mod-sahtrace
+
+menu "Select mod-sahtrace build options"
+    depends on PACKAGE_mod-sahtrace
+
+config SAH_MOD_SAHTRACE
+    bool "Build Ambiorix sahtrace module"
+    default y
+
+config SAH_MOD_SAHTRACE_DEFAULT_LOG_LEVEL
+    int "Default log level for mod sahtrace"
+    default 200
+
+config SAH_MOD_SAHTRACE_DEFAULT_TRACE_ZONE_LEVEL
+    int "Default log level for trace zones in mod sahtrace"
+    default 200
+
+endmenu
+
+endif

@@ -12,8 +12,16 @@ config SAH_AMX_TR181_NEIGHBORDISCOVERY
     default y
 
 config SAH_AMX_TR181_NEIGHBORDISCOVERY_ORDER
-    int "Start up order for the tr181 NEIGHBORDISCOVERY plugin"
-    default 23
+    int "Start up order for the tr181-NEIGHBORDISCOVERY plugin"
+    default 50
+
+config SAH_AMX_TR181_NEIGHBORDISCOVERY_RUN_AS_USER
+    string "User will be used for the TR181-NEIGHBORDISCOVERY plugin"
+    default "tr181_app"
+
+config SAH_AMX_TR181_NEIGHBORDISCOVERY_RUN_AS_GROUP
+    string "Group will be used for the TR181-NEIGHBORDISCOVERY plugin"
+    default "tr181_app"
 
 endmenu
 

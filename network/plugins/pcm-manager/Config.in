@@ -17,7 +17,15 @@ config SAH_AMX_PCM_ORDER
 
 config SAH_AMX_PCM_TARBALL
     bool "Configure the feature for generating a tarball file for the user's backup files"
-    default n
+    default y
+
+config SAH_AMX_PCM_RUN_AS_USER
+    string "User will be used for the PCM-MANAGER plugin"
+    default "tr181_app"
+
+config SAH_AMX_PCM_RUN_AS_GROUP
+    string "Group will be used for the PCM-MANAGER plugin"
+    default "tr181_app"
 
 endmenu
 

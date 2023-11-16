@@ -19,6 +19,12 @@ config SAH_AMX_TR181_XPON_MAX_ONUS
     int "Maximum number of ONUs"
     default 1
 
+config SAH_AMX_TR181_XPON_USE_NETDEV_COUNTERS
+    bool "Get counters from netdev"
+    default n
+	help
+	  If not enabled the vendor module is responsible for displaying the network statistics in the tr181-xpon datamodel
+
 endmenu
 
 endif

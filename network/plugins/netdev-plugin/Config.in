@@ -19,6 +19,14 @@ config SAH_AMX_NETDEV_BROKEN_NETLINK
     bool "Map the unknown operating state to up on all interfaces"
     default n
 
+config SAH_AMX_NETDEV_RUN_AS_USER
+    string "User will be used for the NETDEV plugin"
+    default "tr181_app"
+
+config SAH_AMX_NETDEV_RUN_AS_GROUP
+    string "Group will be used for the NETDEV plugin"
+    default "tr181_app"
+
 endmenu
 
 endif

@@ -1,5 +1,5 @@
 #!/bin/sh
 
-sed -i 's|failover-controller = ""|failover-controller = "mod-dns-failover"|' /etc/amx/tr181-dns/tr181-dns_amendment.odl
+sed -i 's|failover-controller = ""|failover-controller = "mod-dns-failover"|' /etc/amx/tr181-dns/tr181-dns_vars.odl
 
 exit 0

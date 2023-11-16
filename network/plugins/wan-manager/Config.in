@@ -15,6 +15,14 @@ config SAH_AMX_WAN_MANAGER_ORDER
     int "WAN manager plugin start up order"
     default 80
 
+config SAH_AMX_WAN_MANAGER_RUN_AS_USER
+    string "User will be used for the WAN-MANAGER plugin"
+    default "tr181_app"
+
+config SAH_AMX_WAN_MANAGER_RUN_AS_GROUP
+    string "Group will be used for the WAN-MANAGER plugin"
+    default "tr181_app"
+
 endmenu
 
 endif

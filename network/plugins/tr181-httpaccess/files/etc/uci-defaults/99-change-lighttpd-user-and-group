@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# fix amx-fcgi fcgi socket handling
-sed -i 's|server.username             = "http"|server.username             = "lighttpd"|' /etc/lighttpd/lighttpd.template
-sed -i 's|server.groupname            = "www-data"|server.groupname            = "lighttpd"|' /etc/lighttpd/lighttpd.template
-
-exit 0

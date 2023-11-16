@@ -39,6 +39,14 @@ config SAH_AMX_TR181_DEVICEINFO_SOFTWARE_VERSION
     string "Configure the software version"
     default "XX"
 
+config SAH_AMX_TR181_DEVICEINFO_RUN_AS_USER
+    string "User will be used for the TR181_DEVICEINFO plugin"
+    default "root"
+
+config SAH_AMX_TR181_DEVICEINFO_RUN_AS_GROUP
+    string "Group will be used for the TR181_DEVICEINFO plugin"
+    default "root"
+
 endmenu
 
 endif

@@ -1,0 +1,16 @@
+config PACKAGE_libimtp
+    tristate
+    select SAH_LIB_IMTP
+
+if PACKAGE_libimtp
+
+menu "Select libimtp build options"
+    depends on PACKAGE_libimtp
+
+config SAH_LIB_IMTP
+    bool "Build the imtp internal message transfer protocol library"
+    default y
+
+endmenu
+
+endif

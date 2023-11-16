@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-pcp
-PKG_VERSION:=v0.6.4
+PKG_VERSION:=v0.7.0
 SHORT_DESCRIPTION:=Port control protocol
 
-PKG_SOURCE:=tr181-pcp-v0.6.4.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcp/-/archive/v0.6.4
-PKG_HASH:=a10245ba439dda2587e4426870db88453de963107ad3ecb2c4d9fcdafd0a6802
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcp-v0.6.4
+PKG_SOURCE:=tr181-pcp-v0.7.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcp/-/archive/v0.7.0
+PKG_HASH:=fe3e576f80b8d13bcd0805d891849cb2a48f07d16b405d0257469e97ec302974
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcp-v0.7.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -53,9 +53,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_TR181_PCP_ORDER=$(CONFIG_SAH_AMX_TR181_PCP_ORDER) CONFIG_SAH_AMX_TR181_PCP_CARES_RPATH=$(CONFIG_SAH_AMX_TR181_PCP_CARES_RPATH))
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 
 	$(call SAHInit/Install)
 endef
@@ -69,6 +66,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 define Package/$(PKG_NAME)/config

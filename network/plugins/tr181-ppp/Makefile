@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tr181-ppp
-PKG_VERSION:=v0.13.0
+PKG_VERSION:=v0.13.3
 SHORT_DESCRIPTION:=TR-181 compatible PPP plugin
 
-PKG_SOURCE:=tr181-ppp-v0.13.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-ppp/-/archive/v0.13.0
-PKG_HASH:=e589f62527696be0c9216e6e434f50c8aad5614a05119ee107a585ce1f18a79b
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-ppp-v0.13.0
+PKG_SOURCE:=tr181-ppp-v0.13.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-ppp/-/archive/v0.13.3
+PKG_HASH:=dc5670d76aa95eedb26814501efe74894fcc5730f8af6881e543830519d45ae4
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-ppp-v0.13.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -65,9 +65,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 
 	$(call SAHInit/Install)
 	$(call SAHBackupRestore/Install)
@@ -82,6 +79,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
