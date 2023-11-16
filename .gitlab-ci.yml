@@ -78,6 +78,7 @@ generate:
       libarchive
       libcthulhu
       libdhcpoptions
+      libdiscoping
       libfiletransfer
       libfwinterface
       libfwrules
