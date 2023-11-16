@@ -1,0 +1,20 @@
+config PACKAGE_tr181-led
+    tristate
+    select SAH_AMX_TR181_LED
+
+if PACKAGE_tr181-led
+
+menu "Select tr181-led build options"
+    depends on PACKAGE_tr181-led
+
+config SAH_AMX_TR181_LED
+    bool "Build a tr181 compatible leds manager"
+    default y
+
+config SAH_AMX_TR181_LED_ORDER
+    int "Start up order"
+    default 15
+
+endmenu
+
+endif

@@ -175,6 +175,7 @@ generate:
       tr181-firewall
       tr181-httpaccess
       tr181-ipdiagnostics
+      tr181-led
       tr181-logical
       tr181-neighbordiscovery
       tr181-pcp
