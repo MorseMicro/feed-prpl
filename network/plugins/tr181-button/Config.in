@@ -1,0 +1,20 @@
+config PACKAGE_tr181-button
+    tristate
+    select SAH_AMX_TR181_BUTTON
+
+if PACKAGE_tr181-button
+
+menu "Select tr181-button build options"
+    depends on PACKAGE_tr181-button
+
+config SAH_AMX_TR181_BUTTON
+    bool "Build tr181-button itself"
+    default y
+
+config SAH_AMX_TR181_BUTTON_ORDER
+    int "Start up order for the tr181 button plugin"
+    default 42
+
+endmenu
+
+endif
