@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-self
-PKG_VERSION:=v1.4.0
+PKG_VERSION:=v1.4.1
 SHORT_DESCRIPTION:=fetches information about the CPE itself
 
-PKG_SOURCE:=gmap-mod-self-v1.4.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-self/-/archive/v1.4.0
-PKG_HASH:=22399b4093c38fd9a5c8c3f89ff8358fb32f32601940069c4dc0fbaedc63a32b
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v1.4.0
+PKG_SOURCE:=gmap-mod-self-v1.4.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-self/-/archive/v1.4.1
+PKG_HASH:=8a2f74b7689ef247ecaa91d36c51758ce8e34e91ddf2eb71d2e5836e053bdd3e
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-self-v1.4.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -44,14 +44,14 @@ define Build/Compile
 endef
 
 define Build/Install
-	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER=$(CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER))
+	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER=$(CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER))
 	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
 	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 endef
 
 define Build/InstallDev
-	$(call Build/Install/Default, install INSTALL=install D=$(STAGING_DIR) DEST=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER=$(CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER))
+	$(call Build/Install/Default, install INSTALL=install D=$(STAGING_DIR) DEST=$(STAGING_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER=$(CONFIG_SAH_SERVICES_GMAP_SELF_DEVTYPE_WIFIREPEATER))
 endef
 
 define Package/$(PKG_NAME)/install

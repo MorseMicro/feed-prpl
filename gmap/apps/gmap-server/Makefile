@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-server
-PKG_VERSION:=v2.2.5
+PKG_VERSION:=v2.2.16
 SHORT_DESCRIPTION:=Service implementing the gmap data model
 
-PKG_SOURCE:=gmap-server-v2.2.5.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-server/-/archive/v2.2.5
-PKG_HASH:=d5df29c0a44622f7dadcee1ecb8d4ad4e753dde25099553e1ad7e51e3d33f8e7
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-server-v2.2.5
+PKG_SOURCE:=gmap-server-v2.2.16.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-server/-/archive/v2.2.16
+PKG_HASH:=184215e854614512d2795481de35f3e39ef2d99ab02ca43d8081cc0bb165146a
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-server-v2.2.16
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -60,9 +60,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_AMX_GMAP_SERVER_ORDER=$(CONFIG_SAH_AMX_GMAP_SERVER_ORDER) CONFIG_AMX_GMAP_SERVER_NAME_ORDER=$(CONFIG_AMX_GMAP_SERVER_NAME_ORDER) CONFIG_AMX_GMAP_MAX_DEVICES=$(CONFIG_AMX_GMAP_MAX_DEVICES))
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 
 	$(call SAHInit/Install)
 	$(call SAHBackupRestore/Install)
@@ -77,6 +74,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 define Package/$(PKG_NAME)/config
