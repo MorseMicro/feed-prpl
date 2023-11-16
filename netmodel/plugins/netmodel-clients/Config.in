@@ -15,6 +15,14 @@ config SAH_AMX_NETMODEL_CLIENTS_ORDER
     int "Network Model clients plugin startup order"
     default 20
 
+config SAH_AMX_NETMODEL_CLIENTS_RUN_AS_USER
+    string "User will be used for the NETMODEL-CLIENTS plugin"
+    default "tr181_app"
+
+config SAH_AMX_NETMODEL_CLIENTS_RUN_AS_GROUP
+    string "Group will be used for the NETMODEL-CLIENTS plugin"
+    default "tr181_app"
+
 endmenu
 
 endif
