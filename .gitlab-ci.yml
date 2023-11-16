@@ -86,6 +86,7 @@ generate:
       libgmap-ext
       libimtp
       libipat
+      liblcm
       libnetlink-utils
       libnetmodel
       libocispec
