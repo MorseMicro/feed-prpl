@@ -11,6 +11,10 @@ config SAH_SERVICES_RLYEH
     bool "Build Rlyeh"
     default y
 
+config SAH_SERVICES_RLYEH_LCM_STORAGE_LOCATION
+    string "Prefix used to determine the location where the LCM data is stored."
+    default "/usr/share"
+
 config SAH_SERVICES_RLYEH_ORDER
     int "Rlyeh plugin start up order"
     default 90

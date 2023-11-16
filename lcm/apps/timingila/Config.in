@@ -11,9 +11,13 @@ config SAH_SERVICES_TIMINGILA
     bool "Build TIMINGILA"
     default y
 
-config SAH_SERVICES_TIMINGILA_INIT_ORDER
+config SAH_SERVICES_TIMINGILA_INIT_START
     int "TIMINGILA plugin start up order"
     default 91
+
+config SAH_SERVICES_TIMINGILA_INIT_STOP
+    int "TIMINGILA plugin stop order"
+    default 80
 
 config SAH_SERVICES_TIMINGILA_INIT_ADAPTERS
     bool "Init Timingila adapters"
