@@ -15,10 +15,6 @@ config SAH_AMX_PCM_ORDER
     int "Start order of the TR-181 persistent configuration manager"
     default 17
 
-config SAH_AMX_PCM_TARBALL
-    bool "Configure the feature for generating a tarball file for the user's backup files"
-    default y
-
 config SAH_AMX_PCM_RUN_AS_USER
     string "User will be used for the PCM-MANAGER plugin"
     default "tr181_app"

@@ -14,7 +14,7 @@ PKG_LICENSE_FILES:=LICENSE
 
 COMPONENT:=pcm-manager
 
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
@@ -41,7 +41,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +mod-dmext
   DEPENDS += +mod-pcm-svc
   DEPENDS += +libxml2
-  DEPENDS += +SAH_AMX_PCM_TARBALL:libtar
   DEPENDS += +libopenssl
   MENU:=1
 endef
