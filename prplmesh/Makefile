@@ -41,7 +41,6 @@ define Package/prplmesh
 		+libpthread \
 		+librt \
 		+libjson-c \
-		+libreadline \
 		+libopenssl \
 		+libnl \
 		+uci \
