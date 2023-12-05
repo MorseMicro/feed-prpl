@@ -27,7 +27,7 @@ register_service()
 	if [ -f "${CERT}" ]; then
 		procd_append_param command -t ${CERT}
 	fi
-	procd_append_param command -r ${RESET_FILE} -f ${SQL_DB_FILE} -i $(uci get dhcp.wan.interface)
+	procd_append_param command -r ${RESET_FILE} -f ${SQL_DB_FILE}
 	procd_set_param respawn \
 			"${respawn_threshold:-10}" \
 			"${respawn_timeout:-10}" "${respawn_retry:-5}"

@@ -1,0 +1,23 @@
+From: Sandesh Mahale <sandesh.mahale@commscope.com>
+Date: Tue, 5 Dec 2023
+Subject: [PATCH] obuspa: enable usage of linux routing tables to decide which network interface to use for USP connections
+
+Enable usage of linux routing tables to decide dynamically which network interface to use for USP connections.
+This will allow device to use the most suitable network interface dynamically and allowing to switch between interfaces
+if interface under usage goes down and an alternate interface has come up.
+
+Signed-off-by: Sandesh Mahale <sandesh.mahale@commscope.com>
+
+diff --git a/src/vendor/vendor_defs.h b/src/vendor/vendor_defs.h
+index 9f31049..9608871 100644
+--- a/src/vendor/vendor_defs.h
++++ b/src/vendor/vendor_defs.h
+@@ -140,7 +140,7 @@
+ // Comment out the following define if you want to let the Linux routing tables decide which network interface to use for USP connections
+ // Letting the Linux routing tables decide is better for devices that can connect to the STOMP server through either
+ // WiFi or ethernet, and either of these interfaces could be down at any one time
+-#define CONNECT_ONLY_OVER_WAN_INTERFACE
++//#define CONNECT_ONLY_OVER_WAN_INTERFACE
+ 
+ //-----------------------------------------------------------------------------------------
+ // OUI (Organization Unique Identifier) to use for this CPE. This code will be unique to the manufacturer
