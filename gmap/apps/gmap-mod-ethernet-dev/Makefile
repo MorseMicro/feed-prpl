@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gmap-mod-ethernet-dev
-PKG_VERSION:=v1.15.1
+PKG_VERSION:=v1.16.1
 SHORT_DESCRIPTION:=adds discovered devices to the gMap datamodel
 
-PKG_SOURCE:=gmap-mod-ethernet-dev-v1.15.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-ethernet-dev/-/archive/v1.15.1
-PKG_HASH:=2ac7f8b6d6bb3b5a789543e7fc610ee24e9ab78fa9c129f78cb99c5bc837491c
-PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v1.15.1
+PKG_SOURCE:=gmap-mod-ethernet-dev-v1.16.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/applications/gmap-mod-ethernet-dev/-/archive/v1.16.1
+PKG_HASH:=eb3fc700df1b58b54857dfe10b8bbe17cbfbfc47f0cb78c67ac5272d3ec0abbe
+PKG_BUILD_DIR:=$(BUILD_DIR)/gmap-mod-ethernet-dev-v1.16.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

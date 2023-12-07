@@ -17,7 +17,6 @@ config SAH_AMX_GMAP_CLIENT_ORDER
 
 config SAH_AMX_GMAP_CLIENT_ONE_PROCESS
     bool "All gMap client modules run in same process"
-    default y
 
 endmenu
 

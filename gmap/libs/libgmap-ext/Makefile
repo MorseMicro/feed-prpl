@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libgmap-ext
-PKG_VERSION:=v0.8.0
+PKG_VERSION:=v1.0.0
 SHORT_DESCRIPTION:=Functionality common for gmap clients (not server)
 
-PKG_SOURCE:=libgmap-ext-v0.8.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/libraries/libgmap-ext/-/archive/v0.8.0
-PKG_HASH:=f2b2c5e66595bac74c4436ac978354be56a6913e204a4e57cd51418ab1d8fc8b
-PKG_BUILD_DIR:=$(BUILD_DIR)/libgmap-ext-v0.8.0
+PKG_SOURCE:=libgmap-ext-v1.0.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/gmap/libraries/libgmap-ext/-/archive/v1.0.0
+PKG_HASH:=11e489b0c3554adcd10f9fe52b1fe2f0eb91f748a54a6589b27c8189ed6cfead
+PKG_BUILD_DIR:=$(BUILD_DIR)/libgmap-ext-v1.0.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -28,6 +28,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxd
   DEPENDS += +libamxo
   DEPENDS += +libsahtrace
+  DEPENDS += +libgmap-client
   MENU:=1
 endef
 
@@ -41,9 +42,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include)
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 endef
 
 define Build/InstallDev
@@ -55,6 +53,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
