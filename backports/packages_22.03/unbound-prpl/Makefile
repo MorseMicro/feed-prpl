@@ -7,15 +7,14 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=unbound
+PKG_NAME:=unbound-prpl
 PKG_RELEASE:=$(AUTORELEASE)
 
-PKG_VERSION:=v0.2.0
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_VERSION:=v0.4.0
+PKG_SOURCE:=unbound-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/mirrors/unbound/-/archive/$(PKG_VERSION)
-PKG_HASH:=4d259f96c4667215e3ce27b1e628cc04d4895c944d31abd5336db462ebf5beff
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-
+PKG_HASH:=f87d7ab49c0b0b21d09ca3df6e84ee337214a41e6cdb7a6f2825ab212755fbf6
+PKG_BUILD_DIR:=$(BUILD_DIR)/unbound-$(PKG_VERSION)
 
 PKG_MAINTAINER:=Eric Luehrsen <ericluehrsen@gmail.com>
 PKG_LICENSE:=BSD-3-Clause
@@ -45,7 +44,7 @@ define Package/unbound-prpl/Default
   TITLE:=Recursive DNS Server
   URL:=https://nlnetlabs.nl/projects/unbound/about
   DEPENDS:=+ca-bundle +libopenssl +@OPENSSL_WITH_EC +libexpat \
-  			+libamxb +libamxc +libamxd +libamxo +libamxp
+                        +libamxb +libamxc +libamxd +libamxo +libamxp
 endef
 
 define Package/unbound-daemon-prpl
