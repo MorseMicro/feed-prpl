@@ -1,0 +1,15 @@
+%populate {
+    object 'Cthulhu' {
+        object 'Config' {
+            parameter 'DefaultBackend' = "/usr/lib/cthulhu-lxc/cthulhu-lxc.so";
+            parameter 'ImageLocation' = "/usr/share/rlyeh/images";
+            parameter 'BlobLocation' = "/usr/share/rlyeh/blobs";
+            parameter 'BundleLocation' = "/usr/share/celephais/bundles";
+            parameter 'StorageLocation' = "/usr/share/cthulhu";
+            parameter 'PluginLocation' = "/usr/lib/amx/cthulhu/plugins";
+            parameter 'UseOverlayFS' = true;
+            parameter 'OnboardingFile' = "/usr/share/cthulhu/cthulhu_onboarded";
+            parameter 'OnboardingLocation' = "/etc/amx/cthulhu/onboard";
+        }
+    }
+}

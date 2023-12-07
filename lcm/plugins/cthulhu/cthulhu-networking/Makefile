@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cthulhu-networking
-PKG_VERSION:=v0.1.2
+PKG_VERSION:=v0.1.5
 SHORT_DESCRIPTION:=Add networking support to Cthulhu containers
 
-PKG_SOURCE:=cthulhu-networking-v0.1.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/plugins/cthulhu/cthulhu-networking/-/archive/v0.1.2
-PKG_HASH:=455ab457982d0331abe13ac8b0d5d7ce8dd615f40e74ce46c201005226ec5501
-PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-networking-v0.1.2
+PKG_SOURCE:=cthulhu-networking-v0.1.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/plugins/cthulhu/cthulhu-networking/-/archive/v0.1.5
+PKG_HASH:=002c718c7d55bc4fac241f533120df75127948ee989eedcf781d669715e852d1
+PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-networking-v0.1.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

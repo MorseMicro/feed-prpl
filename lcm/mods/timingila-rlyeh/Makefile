@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=timingila-rlyeh
-PKG_VERSION:=v1.0.3
+PKG_VERSION:=v1.0.5
 SHORT_DESCRIPTION:=provides rlyeh support as backend to timingila
 
-PKG_SOURCE:=timingila-rlyeh-v1.0.3.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh/-/archive/v1.0.3
-PKG_HASH:=830be33495013095ae941a612156dfffbf7b118bb39ad1b161b77b51a9199374
-PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-rlyeh-v1.0.3
+PKG_SOURCE:=timingila-rlyeh-v1.0.5.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/modules/timingila-rlyeh/-/archive/v1.0.5
+PKG_HASH:=176076ba65131da98c5a32637c27daed35832795a9de1ed23a52dbb1c2599970
+PKG_BUILD_DIR:=$(BUILD_DIR)/timingila-rlyeh-v1.0.5
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE

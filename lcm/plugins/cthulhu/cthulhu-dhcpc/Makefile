@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cthulhu-dhcpc
-PKG_VERSION:=v1.2.2
+PKG_VERSION:=v1.2.3
 SHORT_DESCRIPTION:=Add dhcp client support to Cthulhu sandboxes
 
-PKG_SOURCE:=cthulhu-dhcpc-v1.2.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/plugins/cthulhu/cthulhu-dhcpc/-/archive/v1.2.2
-PKG_HASH:=e5a89f23d4f4418e2f02cb5aa1bcd91de716551d9ae6e111c41211b5bc8889c1
-PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-dhcpc-v1.2.2
+PKG_SOURCE:=cthulhu-dhcpc-v1.2.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/lcm/plugins/cthulhu/cthulhu-dhcpc/-/archive/v1.2.3
+PKG_HASH:=c57f116bda1f82da9254670e1f7e3ff1a0160184bf6548820ce28dfb7e3c204c
+PKG_BUILD_DIR:=$(BUILD_DIR)/cthulhu-dhcpc-v1.2.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
