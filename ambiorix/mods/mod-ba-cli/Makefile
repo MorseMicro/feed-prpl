@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-ba-cli
-PKG_VERSION:=v0.8.19
+PKG_VERSION:=v0.9.0
 SHORT_DESCRIPTION:=Bus Agnostic Command Line Interface
 
-PKG_SOURCE:=mod-ba-cli-v0.8.19.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/modules/amx_cli/mod-ba-cli/-/archive/v0.8.19
-PKG_HASH:=644cba405c6e538b78b0c2ec99b694c67ec4a4f7e05c73b345ea25d4750d0c37
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-ba-cli-v0.8.19
+PKG_SOURCE:=mod-ba-cli-v0.9.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/ambiorix/modules/amx_cli/mod-ba-cli/-/archive/v0.9.0
+PKG_HASH:=ed8ae573a907c8f9fb66b460969e45be5f7dc7f4a3a54e74a10379917b7d5f18
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-ba-cli-v0.9.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -28,7 +28,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libamxp
   DEPENDS += +libamxd
   DEPENDS += +libamxb
-  DEPENDS += +libamxo
   DEPENDS += +libamxa
   DEPENDS += +amx-cli
   MENU:=1

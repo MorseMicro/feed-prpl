@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libsahtrace
-PKG_VERSION:=v1.13.1
+PKG_VERSION:=v1.14.0
 SHORT_DESCRIPTION:=Small and flexible library to enable tracing and logging
 
-PKG_SOURCE:=libsahtrace-v1.13.1.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libsahtrace/-/archive/v1.13.1
-PKG_HASH:=a854ab0570d18d9f49928f74c9d68b62740b5bfe3f1c5712c33191d38e3a44db
-PKG_BUILD_DIR:=$(BUILD_DIR)/libsahtrace-v1.13.1
+PKG_SOURCE:=libsahtrace-v1.14.0.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/libraries/libsahtrace/-/archive/v1.14.0
+PKG_HASH:=a12fad65d25ddd35a811c5335c422be5fb03d76bca1cf024353b6f920d5c6170
+PKG_BUILD_DIR:=$(BUILD_DIR)/libsahtrace-v1.14.0
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -35,9 +35,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_TRACES_ENABLED=$(CONFIG_SAH_TRACES_ENABLED) CONFIG_SAH_TRACES_LEVEL=$(CONFIG_SAH_TRACES_LEVEL) CONFIG_SAH_TRACES_SYSLOG_CONSOLE=$(CONFIG_SAH_TRACES_SYSLOG_CONSOLE) CONFIG_SAH_TRACE_NO_COLORS=$(CONFIG_SAH_TRACE_NO_COLORS))
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 endef
 
 define Build/InstallDev
@@ -49,6 +46,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 define Package/$(PKG_NAME)/config
