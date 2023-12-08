@@ -44,6 +44,7 @@ define Package/$(PKG_NAME)
   DEPENDS += +amxrt
   DEPENDS += +mod-netmodel
   DEPENDS += +TARGET_ipq807x_generic_DEVICE_prpl_haze:mod-whm-haze
+  DEPENDS += +TARGET_ipq95xx_generic_DEVICE_prpl_freedom:mod-whm-freedom
   MENU:=1
 endef
 
