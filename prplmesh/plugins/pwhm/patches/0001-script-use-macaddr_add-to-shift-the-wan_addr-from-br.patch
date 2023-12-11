@@ -20,11 +20,11 @@ index 87eeccf..b98594f 100644
  ulimit -c ${ULIMIT_CONFIGURATION:-0}
  
 @@ -26,7 +28,7 @@ get_base_wan_address()
-             return
          fi
+         [ -z "$WLAN_ADDR" ] || return
      fi
--    export WAN_ADDR=$(cat /sys/class/net/br-lan/address 2> /dev/null)
-+    export WAN_ADDR=$(macaddr_add $(cat /sys/class/net/br-lan/address) +1)
+-    export WLAN_ADDR=$(cat /sys/class/net/br-lan/address 2> /dev/null)
++    export WLAN_ADDR=$(macaddr_add $(cat /sys/class/net/br-lan/address) +1)
  }
  
  kill_process()
