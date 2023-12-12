@@ -1,13 +1,13 @@
 config PACKAGE_pwhm
     tristate
-    select SAH_LIB_WLD
+    select SAH_SERVICES_PWHM
 
 if PACKAGE_pwhm
 
 menu "Select pwhm build options"
     depends on PACKAGE_pwhm
 
-config SAH_LIB_WLD
+config SAH_SERVICES_PWHM
     bool "Build pwhm itself"
     default y
 
