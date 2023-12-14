@@ -1,0 +1,43 @@
+From 66f253705b1e2efe5fa4228a5ae245ed6ffdf43a Mon Sep 17 00:00:00 2001
+From: Bhavesh Bharadiya <bnbharadiya@maxlinear.com>
+Date: Tue, 21 Nov 2023 11:31:56 +0530
+Subject: [PATCH] PPM-2660 Call vendor radio update config map also when cold
+ applying hostapd.
+
+Call vendor radio update config map also when cold applying
+hostapd and increase characters in cmd.
+
+Signed-off-by: Bhavesh Bharadiya <bnbharadiya@maxlinear.com>
+---
+ src/nl80211/wld_hostapd_ap_api.c  | 2 +-
+ src/nl80211/wld_rad_hostapd_api.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/nl80211/wld_hostapd_ap_api.c b/src/nl80211/wld_hostapd_ap_api.c
+index a2eca33..49c905a 100644
+--- a/src/nl80211/wld_hostapd_ap_api.c
++++ b/src/nl80211/wld_hostapd_ap_api.c
+@@ -258,7 +258,7 @@ bool wld_ap_hostapd_setParamValue(T_AccessPoint* pAP, const char* field, const c
+     ASSERTS_NOT_NULL(pAP, false, ME, "NULL");
+     ASSERTS_STR(field, false, ME, "empty key");
+     ASSERTS_STR(value, false, ME, "empty value");
+-    char cmd[128];
++    char cmd[512];
+     snprintf(cmd, sizeof(cmd), "SET %s %s", field, value);
+     return s_sendHostapdCommand(pAP, cmd, reason);
+ }
+diff --git a/src/nl80211/wld_rad_hostapd_api.c b/src/nl80211/wld_rad_hostapd_api.c
+index a5aa8d8..00a376d 100644
+--- a/src/nl80211/wld_rad_hostapd_api.c
++++ b/src/nl80211/wld_rad_hostapd_api.c
+@@ -226,6 +226,7 @@ wld_secDmn_action_rc_ne wld_rad_hostapd_setChannel(T_Radio* pR) {
+     swl_mapChar_t radParams;
+     swl_mapChar_init(&radParams);
+     wld_hostapd_cfgFile_setRadioConfig(pR, &radParams);
++    pR->pFA->mfn_wrad_updateConfigMap(pR, &radParams);
+     const char* chanParams[] = {
+         "channel", "ht_capab",
+         "vht_capab", "vht_oper_centr_freq_seg0_idx", "vht_oper_chwidth",
+-- 
+2.17.1
+
