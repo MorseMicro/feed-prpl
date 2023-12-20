@@ -1,0 +1,13 @@
+diff --git a/scripts/ssh-server.sh b/scripts/ssh-server.sh
+index 03cce89..5332ad6 100644
+--- a/scripts/ssh-server.sh
++++ b/scripts/ssh-server.sh
+@@ -20,7 +20,7 @@ case $1 in
+         if [ ! -d /etc/config/ssh_server ]; then
+             mkdir -p /etc/config/ssh_server/odl
+         fi
+-        $(. /etc/init.d/dropbear && hk_generate_as_needed)
++        $(. /etc/init.d/dropbear 2>/dev/null && hk_generate_as_needed)
+         ssh_server -D /etc/amx/ssh_server/ssh_server.odl
+         ;;
+     stop|shutdown)
