@@ -1,0 +1,9 @@
+%config {
+    define-behavior.existing-parameter = "update";
+}
+
+%define {
+    select SSH.Server {
+        uint8 IPVersion = 4;
+    }
+}
