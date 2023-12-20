@@ -1,20 +1,20 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pcm-manager
-PKG_VERSION:=v0.16.0
+PKG_VERSION:=v0.16.1
 SHORT_DESCRIPTION:=Upgrade Persistent Configuration Manager
 
-PKG_SOURCE:=tr181-pcm-v0.16.0.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.16.0
-PKG_HASH:=b57269d7d37f48cfe1097d31ca439939a25ec3be9b4d3d083a3368f700a2561a
-PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.16.0
+PKG_SOURCE:=tr181-pcm-v0.16.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/plugins/tr181-pcm/-/archive/v0.16.1
+PKG_HASH:=d9a87b521bdc5033147394cd84c06da2d8225c3206e9dd401958c87f1aa5ba21
+PKG_BUILD_DIR:=$(BUILD_DIR)/tr181-pcm-v0.16.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
 COMPONENT:=pcm-manager
 
-PKG_RELEASE:=2
+PKG_RELEASE:=1
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/

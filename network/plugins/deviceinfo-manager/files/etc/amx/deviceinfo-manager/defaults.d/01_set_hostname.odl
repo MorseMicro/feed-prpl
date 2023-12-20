@@ -1,0 +1,5 @@
+%populate {
+    object "${prefix_}DeviceInfo" {
+        parameter HostName = "prplOS.lan";
+    }
+}

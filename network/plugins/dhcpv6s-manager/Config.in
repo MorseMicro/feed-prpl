@@ -1,0 +1,24 @@
+config PACKAGE_dhcpv6s-manager
+    tristate
+    select SAH_AMX_TR181_DHCPV6S
+
+if PACKAGE_dhcpv6s-manager
+
+menu "Select dhcpv6s-manager build options"
+    depends on PACKAGE_dhcpv6s-manager
+
+config SAH_AMX_TR181_DHCPV6S
+    bool "TR-181 Device.DHCPV6.Server. datamodel implementation"
+    default y
+
+config SAH_AMX_TR181_DHCPV6S_RUN_AS_USER
+    string "User will be used for the DHCPV6S-MANAGER plugin"
+    default "tr181_app"
+
+config SAH_AMX_TR181_DHCPV6S_RUN_AS_GROUP
+    string "Group will be used for the DHCPV6S-MANAGER plugin"
+    default "tr181_app"
+
+endmenu
+
+endif

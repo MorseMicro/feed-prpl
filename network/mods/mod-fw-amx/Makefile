@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-fw-amx
-PKG_VERSION:=v0.3.2
+PKG_VERSION:=v0.3.3
 SHORT_DESCRIPTION:=Ambiorix module to configure the tr181-firewall
 
-PKG_SOURCE:=mod-fw-amx-v0.3.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-fw-amx/-/archive/v0.3.2
-PKG_HASH:=d5cb4dad66eaa931cc32e329e0ac2ddb13d20aebc14dd26a18908817fa5e5375
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-fw-amx-v0.3.2
+PKG_SOURCE:=mod-fw-amx-v0.3.3.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-fw-amx/-/archive/v0.3.3
+PKG_HASH:=058123b86b036c8b3b6268feb27f99f7947a82fd30acc8545e2ab10ba586e6b4
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-fw-amx-v0.3.3
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
@@ -42,9 +42,6 @@ endef
 
 define Build/Install
 	$(call Build/Install/Default, install INSTALL=install D=$(PKG_INSTALL_DIR) DEST=$(PKG_INSTALL_DIR) STAGINGDIR=$(STAGING_DIR) CONFIGDIR=$(STAGING_DIR) PV=$(PKG_VERSION) PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig LIBDIR=/usr/lib INSTALL_LIB_DIR=/lib INSTALL_BIN_DIR=/bin RAW_VERSION=$(PKG_VERSION) HARDCO_HAL_DIR=$(STAGING_DIR)/usr/include CONFIG_SAH_MOD_FW-AMX_SOP=$(CONFIG_SAH_MOD_FW-AMX_SOP))
-	find $(PKG_INSTALL_DIR) -name *.a -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.h -exec rm {} +;
-	find $(PKG_INSTALL_DIR) -name *.pc -exec rm {} +;
 endef
 
 define Build/InstallDev
@@ -56,6 +53,9 @@ define Package/$(PKG_NAME)/install
 	if [ -d ./files ]; then \
 		$(CP) ./files/* $(1)/; \
 	fi
+	find $(1) -name *.a -exec rm {} +;
+	find $(1) -name *.h -exec rm {} +;
+	find $(1) -name *.pc -exec rm {} +;
 endef
 
 define Package/$(PKG_NAME)/config

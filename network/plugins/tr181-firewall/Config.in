@@ -23,6 +23,10 @@ config SAH_AMX_TR181_FIREWALL_RUN_AS_GROUP
     string "Group will be used for the tr181-firewall plugin"
     default "tr181_app"
 
+config SAH_AMX_TR181_FIREWALL_WITH_GMAP
+    bool "Compile tr181-firewall with gmap to support hostname translation."
+    default y
+
 endmenu
 
 endif

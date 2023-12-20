@@ -25,7 +25,7 @@ config SAH_AMX_ADD_SYSINIT_DONE_SCRIPT
 
 config SAH_AMX_ADD_DBREADY_SCRIPT
     bool "Add dbready script"
-    default n
+    default y
 
 config SAH_AMX_TR181_DEVICEINFO_DEVELOPMENT
     bool "Configure service for development, enable debug features"

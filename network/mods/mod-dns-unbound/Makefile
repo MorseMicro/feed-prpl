@@ -1,20 +1,19 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mod-dns-unbound
-PKG_VERSION:=v1.4.2
+PKG_VERSION:=v1.6.1
 SHORT_DESCRIPTION:=Ambiorix module to manage Unbound as DNS forwarder
 
-PKG_SOURCE:=mod-dns-unbound-v1.4.2.tar.gz
-PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dns-unbound/-/archive/v1.4.2
-PKG_HASH:=bec813ae2885f57775f27293b5a10ccac38045b3d85aad14ffb48a9ec3da8f7b
-PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dns-unbound-v1.4.2
+PKG_SOURCE:=mod-dns-unbound-v1.6.1.tar.gz
+PKG_SOURCE_URL:=https://gitlab.com/prpl-foundation/components/core/modules/mod-dns-unbound/-/archive/v1.6.1
+PKG_HASH:=b12bd19ce45f361ad1f884c170a8c3648653e462bdd1bd731118898590071512
+PKG_BUILD_DIR:=$(BUILD_DIR)/mod-dns-unbound-v1.6.1
 PKG_MAINTAINER:=Soft At Home <support.opensource@softathome.com>
 PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
 
 PKG_RELEASE:=1
-PKG_BUILD_DEPENDS += protobuf-c/host
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -32,8 +31,6 @@ define Package/$(PKG_NAME)
   DEPENDS += +libsahtrace
   DEPENDS += +DEFAULT_firewall4:unbound-daemon-prpl
   DEPENDS += +!DEFAULT_firewall4:unbound-daemon
-  DEPENDS += +libfstrm
-  DEPENDS += +libprotobuf-c
   MENU:=1
 endef
 
