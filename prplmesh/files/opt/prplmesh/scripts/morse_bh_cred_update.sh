@@ -2,7 +2,11 @@
 
 . /lib/functions.sh
 
-conf_file=/var/run/wpa_supplicant-wlan-prpl-1.conf
+conf_file=/var/run/wpa_supplicant-$1.conf
+if [ ! -e "$conf_file" ]; then
+        logger -t "prplmesh" -p daemon.crit "Config file $conf_file does not exist."
+        exit 1
+fi
 
 case $2 in
     CONNECTED)
