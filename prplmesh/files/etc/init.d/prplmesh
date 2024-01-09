@@ -120,13 +120,13 @@ start_function() {
                 if [ "$(uci get prplmesh.config.operating_mode)" = "Gateway" ]; then
                         logger -t "${NAME}" -p daemon.info "Start prplMesh controller & agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start
+                        if [ "$DEFAULT_CONTROLLER_ROOT_DM" != "$CONFIG_CONTROLLER_ROOT_DM" ]; then
+                            setup_proxy_binding $DEFAULT_CONTROLLER_ROOT_DM $CONFIG_CONTROLLER_ROOT_DM || \
+                            logger -t "${NAME}" -p daemon.warn "Can't create a proxy binding for $DEFAULT_CONTROLLER_ROOT_DM using $CONFIG_CONTROLLER_ROOT_DM."
+                        fi
                 else
                         logger -t "${NAME}" -p daemon.info "Start prplMesh agent"
                         /opt/prplmesh/scripts/prplmesh_utils.sh start -m A
-                fi
-                if [ "$DEFAULT_CONTROLLER_ROOT_DM" != "$CONFIG_CONTROLLER_ROOT_DM" ]; then
-                        setup_proxy_binding $DEFAULT_CONTROLLER_ROOT_DM $CONFIG_CONTROLLER_ROOT_DM || \
-                                logger -t "${NAME}" -p daemon.warn "Can't create a proxy binding for $DEFAULT_CONTROLLER_ROOT_DM using $CONFIG_CONTROLLER_ROOT_DM."
                 fi
         else
                 logger -t "${NAME}" -p daemon.warn "prplMesh is disabled (prplmesh.config.enable=0), skipping..."
