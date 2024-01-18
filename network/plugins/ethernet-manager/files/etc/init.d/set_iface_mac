@@ -22,6 +22,5 @@ boot() {
     set_if_mac eth0_3 $base_mac
     set_if_mac eth0_4 $base_mac
     set_if_mac eth0_5 $base_mac
-    set_if_mac br-lan $base_mac
     set_if_mac eth1 $base_mac
 }
