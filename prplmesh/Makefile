@@ -10,7 +10,14 @@ PKG_SOURCE_URL:=https://github.com/MorseMicro/prplmesh
 PKG_SOURCE_PROTO:=git
 PKG_MIRROR_HASH:=97f4b6843a60174a0bc4b81d977dc4d1b501c724e691ac2c69a34aeabb268deb
 
-PKG_BUILD_DEPENDS+=wpa_supplicant_s1g python-yaml/host python3/host
+PKG_BUILD_DEPENDS+=wpa_supplicant_s1g
+HOST_BUILD_DEPENDS:=python3/host
+include $(INCLUDE_DIR)/host-build.mk
+
+#Installing host-side Python package pyyaml required for prplmesh
+PYTHON3_PKG_BUILD:=0
+HOST_PYTHON3_PACKAGE_BUILD_DEPENDS:=./pyyaml.txt
+include $(TOPDIR)/feeds/packages/lang/python/pypi.mk
 
 # PKG_BUILD_PARALLEL:=1
 # PKG_CONFIG_DEPENDS:= \
@@ -21,6 +28,7 @@ CMAKE_BINARY_SUBDIR:=build
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
+include $(TOPDIR)/feeds/packages/lang/python/python3-package.mk
 
 define Package/prplmesh/default
 	SECTION:=net
@@ -99,10 +107,7 @@ CMAKE_OPTIONS += \
 	-DBEEROCKS_BRIDGE_IFACE="br-prpl" \
 	-DBWL_TYPE="NL80211"
 
-CMAKE_OPTIONS+=-DPython3_EXECUTABLE=$(STAGING_DIR_HOST)/bin/python3
-$(eval $(call TestHostCommand,python3-yaml, \
-	Please install the Python3 YAML module, \
-	$(STAGING_DIR_HOST)/bin/python3 -c 'import yaml'))
+CMAKE_OPTIONS+=-DPython3_EXECUTABLE=$(STAGING_DIR_HOSTPKG)/bin/python3
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
@@ -158,6 +163,7 @@ endef
 # here, to be fixed in another package release.
 define Build/Configure
 	rm $(PKG_BUILD_DIR)/CMakeCache.txt -rf
+	$(call Py3Build/InstallBuildDepends)
 	$(call Build/Configure/Default)
 endef
 
@@ -185,5 +191,6 @@ define Package/prplmesh-unit-tests/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/prplmesh/tests $(1)/opt/prplmesh/
 endef
 
+$(eval $(call HostBuild))
 $(eval $(call BuildPackage,prplmesh))
 $(eval $(call BuildPackage,prplmesh-unit-tests))
