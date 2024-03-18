@@ -1,0 +1,26 @@
+Index: tr181-xpon-v1.4.0/scripts/tr181-xpon.sh
+===================================================================
+--- tr181-xpon-v1.4.0.orig/scripts/tr181-xpon.sh
++++ tr181-xpon-v1.4.0/scripts/tr181-xpon.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ ulimit -c unlimited
+ name="tr181-xpon"
+ 
+@@ -17,12 +19,8 @@ case $1 in
+         ${name} -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
+-        ubus call ProxyManager unregister "{'proxy' : '$proxypath','real' : '$realpath'}"
++        process_stop_shutdown ${name} 5
++	ubus call ProxyManager unregister "{'proxy' : '$proxypath','real' : '$realpath'}"
+         ;;
+     debuginfo|d)
+         # ba-cli does not yet handle protected

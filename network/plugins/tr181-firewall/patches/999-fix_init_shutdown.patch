@@ -1,0 +1,23 @@
+--- a/scripts/tr181-firewall.sh
++++ b/scripts/tr181-firewall.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ FW_DEFAULTS=/etc/amx/tr181-firewall/iptables/firewall.defaults
+@@ -23,11 +25,8 @@ case $1 in
+         tr181-firewall -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
++        process_stop_shutdown ${name} 5
++
+         # give the plugin time to shutdown properly.
+         sleep 1
+ 

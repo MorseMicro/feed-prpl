@@ -1,0 +1,22 @@
+--- a/scripts/tr181-routeradvertisement.sh
++++ b/scripts/tr181-routeradvertisement.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="tr181-routeradvertisement"
+@@ -8,11 +10,7 @@ case $1 in
+         ${name} -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
++        process_stop_shutdown ${name} 5
+         ;;
+     debuginfo)
+         ubus-cli "RouterAdvertisement.?"

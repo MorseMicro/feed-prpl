@@ -1,0 +1,26 @@
+Index: netdev-v1.11.2/scripts/netdev-plugin.sh
+===================================================================
+--- netdev-v1.11.2.orig/scripts/netdev-plugin.sh
++++ netdev-v1.11.2/scripts/netdev-plugin.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="netdev-plugin"
+@@ -8,12 +10,8 @@ case $1 in
+         ${name} -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
+-        ;;
++        process_stop_shutdown ${name} 5
++	;;
+     debuginfo)
+         ubus-cli "NetDev.?"
+         ;;

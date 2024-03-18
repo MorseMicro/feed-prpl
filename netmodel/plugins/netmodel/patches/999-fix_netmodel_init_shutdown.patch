@@ -1,0 +1,26 @@
+Index: netmodel-v2.15.1/scripts/netmodel.sh
+===================================================================
+--- netmodel-v2.15.1.orig/scripts/netmodel.sh
++++ netmodel-v2.15.1/scripts/netmodel.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="netmodel"
+@@ -8,12 +10,8 @@ case $1 in
+         netmodel -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
+-        ;;
++        process_stop_shutdown ${name} 5
++	;;
+     debuginfo)
+         ubus-cli "NetModel.?"
+         ;;

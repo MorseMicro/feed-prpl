@@ -1,0 +1,22 @@
+--- a/scripts/packet-interception.sh
++++ b/scripts/packet-interception.sh
+@@ -1,5 +1,6 @@
+ #!/bin/sh
+ 
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ FW_DEFAULTS=/etc/amx/packet-interception/packet-interception.defaults
+ FW6_DEFAULTS=/etc/amx/packet-interception/packet-interception_ipv6.defaults
+ 
+@@ -10,11 +11,7 @@ case $1 in
+         ${name} -D /etc/amx/packet-interception/packet-interception.odl
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
++        process_stop_shutdown ${name} 5
+         ;;
+     restart)
+         $0 stop

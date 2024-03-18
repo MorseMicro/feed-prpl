@@ -1,0 +1,36 @@
+Index: rlyeh-v2.3.2/scripts/rlyeh.sh
+===================================================================
+--- rlyeh-v2.3.2.orig/scripts/rlyeh.sh
++++ rlyeh-v2.3.2/scripts/rlyeh.sh
+@@ -1,27 +1,18 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="rlyeh"
+ 
+-kill_pid()
+-{
+-    PIDFILE=${1}
+-    if [ -f "${PIDFILE}" ]; then
+-        kill `cat ${PIDFILE}`
+-    else
+-        echo "Can't find ${PIDFILE}. Killing all ${name} processes"
+-	killall ${name}
+-    fi
+-}
+-
+ case $1 in
+     start|boot)
+         echo "Starting ${name}"
+         env LD_LIBRARY_PATH="/opt/prplos/usr/lib/" $name -D
+         ;;
+     stop|shutdown)
+-        kill_pid /var/run/${name}.pid
+-        ;;
++        process_stop_shutdown ${name} 5
++	;;
+     debuginfo)
+ 	ubus-cli "Rlyeh.?"
+         ;;

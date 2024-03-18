@@ -1,0 +1,22 @@
+--- a/scripts/tr181-usermanagement.sh
++++ b/scripts/tr181-usermanagement.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="tr181-usermanagement"
+@@ -10,11 +12,7 @@ case $1 in
+         amx_wait_for Users.
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
++        process_stop_shutdown ${name} 5
+         ;;
+     debuginfo)
+         ubus-cli "Users.?"

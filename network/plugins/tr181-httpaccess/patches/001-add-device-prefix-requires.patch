@@ -1,16 +1,12 @@
-diff --git a/odl/tr181-httpaccess.odl b/odl/tr181-httpaccess.odl
-index fa0034e..00c1c3a 100644
 --- a/odl/tr181-httpaccess.odl
 +++ b/odl/tr181-httpaccess.odl
-@@ -45,8 +45,9 @@
+@@ -45,7 +45,8 @@
  
  }
     
 -requires "Firewall.";
--requires "Users.Role.";
 +requires "Device.";
 +requires "Firewall.Service.";
-+requires "Users.Role.";
+ requires "Users.Role.";
  
  include "tr181-httpaccess_target.odl";
- 

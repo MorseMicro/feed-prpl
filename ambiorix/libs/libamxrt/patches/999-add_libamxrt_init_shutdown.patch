@@ -1,0 +1,69 @@
+Index: libamxrt-v0.3.4/makefile
+===================================================================
+--- libamxrt-v0.3.4.orig/makefile
++++ libamxrt-v0.3.4/makefile
+@@ -30,6 +30,7 @@ install: all
+ 	$(INSTALL) -d -m 0755 $(DEST)/$(INCLUDEDIR)/amxrt
+ 	$(INSTALL) -D -p -m 0644 include/amxrt/*.h $(DEST)$(INCLUDEDIR)/amxrt/
+ 	$(INSTALL) -D -p -m 0644 output/$(MACHINE)/$(COMPONENT).so.$(VERSION) $(DEST)$(LIBDIR)/$(COMPONENT).so.$(VERSION)
++	$(INSTALL) -D -p -m 0755 scripts/amx_init_functions.sh $(DEST)/usr/lib/amx/scripts/amx_init_functions.sh
+ 	ln -sfr $(DEST)$(LIBDIR)/$(COMPONENT).so.$(VERSION) $(DEST)$(LIBDIR)/$(COMPONENT).so.$(VMAJOR)
+ 	ln -sfr $(DEST)$(LIBDIR)/$(COMPONENT).so.$(VERSION) $(DEST)$(LIBDIR)/$(COMPONENT).so
+ 
+@@ -37,6 +38,7 @@ package: all
+ 	$(INSTALL) -d -m 0755 $(PKGDIR)/$(INCLUDEDIR)/amxrt
+ 	$(INSTALL) -D -p -m 0644 include/amxrt/*.h $(PKGDIR)$(INCLUDEDIR)/amxrt/
+ 	$(INSTALL) -D -p -m 0644 output/$(MACHINE)/$(COMPONENT).so.$(VERSION) $(PKGDIR)$(LIBDIR)/$(COMPONENT).so.$(VERSION)
++	$(INSTALL) -D -p -m 0755 scripts/amx_init_functions.sh $(PKGDIR)/usr/lib/amx/scripts/amx_init_functions.sh
+ 	cd $(PKGDIR) && $(TAR) -czvf ../$(COMPONENT)-$(VERSION).tar.gz .
+ 	cp $(PKGDIR)../$(COMPONENT)-$(VERSION).tar.gz .
+ 	make -C packages
+@@ -52,4 +54,4 @@ test:
+ 	$(MAKE) -C test run
+ 	$(MAKE) -C test coverage
+ 
+-.PHONY: all clean changelog install package doc test
+\ No newline at end of file
++.PHONY: all clean changelog install package doc test
+Index: libamxrt-v0.3.4/scripts/amx_init_functions.sh
+===================================================================
+--- /dev/null
++++ libamxrt-v0.3.4/scripts/amx_init_functions.sh
+@@ -0,0 +1,37 @@
++#!/bin/sh
++
++process_stop_shutdown(){
++    local name="$1"
++    local timeout_sec="${2:-5}"
++    local wait=0
++    local pid
++
++    if [ -f "/var/run/${name}.pid" ]; then
++        pid=$(cat "/var/run/${name}.pid")
++    elif [ -f "/var/run/${name}/${name}.pid" ]; then
++        pid=$(cat "/var/run/${name}/${name}.pid")
++    fi
++
++    if [ -z "$pid" ]; then
++        logger "Process $name - $pid not found. Nothing to stop..."
++        return
++    fi
++
++    logger "Sending SIGTERM to process $name - $pid..."
++    kill "$pid"
++
++    # Wait for the process to terminate (with timeout)
++    while [ $wait -lt $timeout_sec ] && ps -p "$pid" > /dev/null; do
++        sleep 1
++        wait=$((wait+1))
++    done
++
++    # Check if the process is still running
++    if ps -p "$pid" > /dev/null; then
++        logger "Process $name - $pid did not terminate within $timeout_sec seconds. Sending SIGKILL..."
++        kill -9 "$pid"
++    else
++        logger "Process $name - $pid stopped."
++    fi  
++}
++

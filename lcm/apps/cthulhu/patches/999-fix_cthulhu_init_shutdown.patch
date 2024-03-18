@@ -1,0 +1,37 @@
+Index: cthulhu-v3.5.1/scripts/cthulhu.sh
+===================================================================
+--- cthulhu-v3.5.1.orig/scripts/cthulhu.sh
++++ cthulhu-v3.5.1/scripts/cthulhu.sh
+@@ -1,28 +1,19 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ [ -f /etc/environment ] && source /etc/environment
+ ulimit -c ${ULIMIT_CONFIGURATION:-0}
+ name="cthulhu"
+ dm_name="Cthulhu"
+ 
+-kill_pid()
+-{
+-    PIDFILE=${1}
+-    if [ -f "${PIDFILE}" ]; then
+-        kill `cat ${PIDFILE}`
+-    else
+-        echo "Can't find ${PIDFILE}. Killing all ${name} processes"
+-	killall ${name}
+-    fi
+-}
+-
+ case $1 in
+     start|boot)
+         echo 1 > /sys/fs/cgroup/memory/memory.use_hierarchy
+         $name -D
+         ;;
+     stop|shutdown)
+-        kill_pid /var/run/${name}.pid
+-        ;;
++        process_stop_shutdown ${name} 5
++	;;
+     debuginfo)
+         ubus-cli "Cthulhu.?"
+         ;;

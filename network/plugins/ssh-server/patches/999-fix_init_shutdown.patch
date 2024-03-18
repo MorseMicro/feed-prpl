@@ -1,0 +1,22 @@
+--- a/scripts/ssh-server.sh
++++ b/scripts/ssh-server.sh
+@@ -1,4 +1,6 @@
+ #!/bin/sh
++
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ name="ssh_server"
+ 
+ case $1 in
+@@ -24,11 +26,7 @@ case $1 in
+         ssh_server -D /etc/amx/ssh_server/ssh_server.odl
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-        fi
++        process_stop_shutdown ${name} 5
+         ;;
+     debuginfo)
+         echo "debuginfo for SSH server"

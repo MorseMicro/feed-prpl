@@ -1,8 +1,6 @@
-diff --git a/scripts/ssh-server.sh b/scripts/ssh-server.sh
-index 03cce89..5332ad6 100644
 --- a/scripts/ssh-server.sh
 +++ b/scripts/ssh-server.sh
-@@ -20,7 +20,7 @@ case $1 in
+@@ -22,7 +22,7 @@ case $1 in
          if [ ! -d /etc/config/ssh_server ]; then
              mkdir -p /etc/config/ssh_server/odl
          fi

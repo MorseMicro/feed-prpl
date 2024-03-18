@@ -1,0 +1,22 @@
+--- a/scripts/multisettings.sh
++++ b/scripts/multisettings.sh
+@@ -1,5 +1,6 @@
+ #!/bin/sh
+ 
++source /usr/lib/amx/scripts/amx_init_functions.sh
+ source /etc/environment
+ 
+ name="multisettings"
+@@ -9,11 +10,7 @@ case $1 in
+ 	${name} -D
+         ;;
+     stop|shutdown)
+-        if [ -f /var/run/${name}.pid ]; then
+-            kill `cat /var/run/${name}.pid`
+-        else
+-            killall ${name}
+-	fi
++        process_stop_shutdown ${name} 5
+         ;;
+     debuginfo)
+         ubus-cli "MultiSettings.?"
