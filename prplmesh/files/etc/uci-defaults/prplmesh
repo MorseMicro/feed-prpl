@@ -27,7 +27,51 @@ set prplmesh.config.mem_only_psk='0'
 set prplmesh.config.backhaul_band='auto'
 set prplmesh.config.certification_mode='0'
 set prplmesh.config.stop_on_failure_attempts='1'
+EOF
 
+# We ship HaLow devices without prplmesh enabled by default,
+# which means we can setup the radios as part of the process of
+# enabling prplmesh (i.e. the prplmesh wizard).
+# Therefore we only want to set the standard prplmesh config.
+#
+# We put this here rather than mutating the above config
+# to make it easier to pull changes from feed-prpl.
+#
+# Override default feed-prpl config.
+uci batch <<'EOF'
+set prplmesh.config.enable='0'
+set prplmesh.config.band_steering='1'
+set prplmesh.config.client_roaming='1'
+set prplmesh.config.onboarding='1'
+set prplmesh.config.operational='1'
+set prplmesh.config.wired_backhaul='0'
+EOF
+
+# Custom morse config.
+uci batch <<'EOF'
+set prplmesh.config.best_channel_rank_th='0'
+set prplmesh.config.clients_measurement_mode='1'
+set prplmesh.config.clients_persistent_db_max_size='256'
+set prplmesh.config.commit_changes_interval='10'
+set prplmesh.config.link_metrics_request_interval_sec='60'
+set prplmesh.config.max_timelife_delay_minutes='525600'
+set prplmesh.config.persistent_db='0'
+set prplmesh.config.persistent_db_aging_interval_sec='3600'
+set prplmesh.config.roaming_hysteresis_percent_bonus='10'
+set prplmesh.config.ssid='EasyMesh'
+set prplmesh.config.steer_history_db_max_size='24'
+set prplmesh.config.steering_disassoc_timer_msec='200'
+set prplmesh.config.unfriendly_device_max_timelife_delay_minutes='1440'
+set prplmesh.config.unsuccessful_assoc_max_reporting_rate='30'
+set prplmesh.config.unsuccessful_assoc_report_policy='0'
+set prplmesh.config.zwdfs_enable='0'
+
+commit prplmesh
+EOF
+
+exit 0
+
+uci batch <<'EOF'
 set prplmesh.radio0='wifi-device'
 set prplmesh.radio0.hostap_iface='wlan0'
 set prplmesh.radio0.hostap_iface_steer_vaps='wlan0.0'
