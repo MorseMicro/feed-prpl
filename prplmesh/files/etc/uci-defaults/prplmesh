@@ -48,7 +48,11 @@ set prplmesh.config.wired_backhaul='0'
 EOF
 
 # Custom morse config.
+# 'backhaul_wire_iface' is a mandatory config for prplMesh. 
+# However, Morsemicro currently doesn't support wired backhaul
+# and only supports HaLow backhaul. Therefore, this is just a placeholder config.
 uci batch <<'EOF'
+set prplmesh.config.backhaul_wire_iface='eth0'
 set prplmesh.config.best_channel_rank_th='0'
 set prplmesh.config.clients_measurement_mode='1'
 set prplmesh.config.clients_persistent_db_max_size='256'
@@ -57,6 +61,7 @@ set prplmesh.config.link_metrics_request_interval_sec='60'
 set prplmesh.config.max_timelife_delay_minutes='525600'
 set prplmesh.config.persistent_db='0'
 set prplmesh.config.persistent_db_aging_interval_sec='3600'
+set prplmesh.config.radio_stats_enable='0'
 set prplmesh.config.roaming_hysteresis_percent_bonus='10'
 set prplmesh.config.ssid='EasyMesh'
 set prplmesh.config.steer_history_db_max_size='24'
