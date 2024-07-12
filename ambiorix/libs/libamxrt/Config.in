@@ -13,7 +13,7 @@ config SAH_LIB_AMXRT
 
 config SAH_AMXRT_RWDATAPATH
     string "Persistent storage location"
-    default "/etc/config"
+    default "/opt/prplmesh"
 
 endmenu
 
