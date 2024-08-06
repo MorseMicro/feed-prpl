@@ -55,8 +55,9 @@ start_service() {
 
 reload_service() {
         stop
-        sleep 5
-        start
+        # Prplmesh doesn't like coming back up straight away
+        # if the network configuration is changing under it.
+        ( sleep 5; start ) &
 }
 
 
