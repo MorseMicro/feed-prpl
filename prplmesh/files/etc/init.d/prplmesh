@@ -15,9 +15,7 @@ stop_agent_monitor() {
         if [ $if_exists -ne 0 ]; then
             # If it exists, remove it
             (crontab -l | grep -v "$cron_job_script") | crontab -
-            logger "Prplmesh Cron job removed successfully"
-        else
-            logger "Prplmesh Cron job does not exist"
+            logger "prplMesh Cron job removed successfully"
         fi
 }
 
@@ -33,9 +31,9 @@ start_agent_monitor() {
         if [ $if_exists -eq 0 ]; then
             # If it doesn't exist, add it
             (crontab -l ; echo "$cron_job_command") | crontab -
-            logger "Prplmesh Cron job added successfully"
+            logger "prplMesh Cron job added successfully"
         else
-            logger "Prplmesh Cron job already exists"
+            logger "prplMesh Cron job already exists"
         fi
 
 }
@@ -48,14 +46,12 @@ start_service() {
                 procd_set_param stdout 1
                 procd_set_param stderr 1
                 procd_close_instance
-        else
-                logger "Prplmesh is disabled"
         fi
 }
 
 reload_service() {
         stop
-        # Prplmesh doesn't like coming back up straight away
+        # prplMesh doesn't like coming back up straight away
         # if the network configuration is changing under it.
         ( sleep 5; start ) &
 }
