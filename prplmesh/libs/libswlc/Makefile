@@ -13,8 +13,10 @@ PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
 PKG_RELEASE:=1
-PKG_BUILD_DEPENDS += doxygen/host
-PKG_BUILD_DEPENDS += openssl/host
+# Packages don't exist. Disabling to avoid constant feed errors
+# on every build, even though we don't use libswlc.
+#PKG_BUILD_DEPENDS += doxygen/host
+#PKG_BUILD_DEPENDS += openssl/host
 
 include $(INCLUDE_DIR)/package.mk
 

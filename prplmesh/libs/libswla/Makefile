@@ -13,7 +13,9 @@ PKG_LICENSE:=BSD-2-Clause-Patent
 PKG_LICENSE_FILES:=LICENSE
 
 PKG_RELEASE:=1
-PKG_BUILD_DEPENDS += doxygen/host
+# Package doesn't exist. Disabling to avoid constant feed errors
+# on every build, even though we don't use libswla.
+#PKG_BUILD_DEPENDS += doxygen/host
 
 include $(INCLUDE_DIR)/package.mk
 

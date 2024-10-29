@@ -14,7 +14,9 @@ PKG_LICENSE_FILES:=LICENSE
 COMPONENT:=pwhm
 
 PKG_RELEASE:=1
-PKG_BUILD_DEPENDS += openssl/host
+# Package doesn't exist. Disabling to avoid constant feed errors
+# on every build, even though we don't use libswla.
+#PKG_BUILD_DEPENDS += openssl/host
 
 define SAHInit/Install
 	install -d ${PKG_INSTALL_DIR}/etc/rc.d/
