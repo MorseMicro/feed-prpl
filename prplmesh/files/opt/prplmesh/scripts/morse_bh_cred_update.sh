@@ -19,21 +19,22 @@ case $2 in
                 psk*)
                     psk=`echo "$line" | cut -d'"' -f 2`
                 ;;
-                #List of acceptable key management protocols; one or more of:
-                #WPA-PSK (WPA pre-shared key)
-                #WPA-EAP (WPA using EAP authentication),
-                #IEEE8021X (IEEE 802.1x using EAP authentication and, optionally, dynamically generated WEP keys),
-                #NONE (plaintext or static WEP keys).
-                #If not set this defaults to "WPA-PSK WPA-EAP".
 
-                #Currently MorseMicro supports only WPA-PSK authentication for Backhaul connection by default and it is not configurable
+                # WPS only supports WPA2/WPA-Personal and WPA2/WPA-Enterprise security modes.
+
+                # If a Multi-AP Agent backhaul STA supports SAE and the configured credentials
+                # comprise a WPA2-Personal passphrase and the Multi-AP Agent discovers an AP
+                # that is advertising the backhaul SSID and an SAE AKM, the Multi-AP Agent shall
+                # attempt SAE authentication with the AP (instead of WPA2-Personal) using the
+                # configured passphrase.
+                # In this case the key-mgmt is set as "WPA-PSK SAE"
 
                 key_mgmt*)
                     encryption=`echo "$line" | cut -d'=' -f 2`
-                    if [ "$encryption" = "WPA-PSK" ]; then
+                    if [ "$encryption" = "WPA-PSK SAE" ]; then
+                            encryption="sae-mixed"
+                    elif [ "$encryption" = "WPA-PSK" ]; then
                             encryption="psk"
-                    elif [ "$encryption" = "NONE" ]; then
-                            encryption="none"
                     else
                             encryption="wpa2"
                     fi
