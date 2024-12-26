@@ -14,11 +14,6 @@ get_uptime()
         echo ${uptime%.*}
 }
 
-hostapd_ready()
-{
-        hostapd_cli_s1g -i$1 stat &>/dev/null
-}
-
 wlan_reset()
 {
         wifi down
@@ -35,11 +30,62 @@ wlan_reset()
         wifi up
 }
 
+get_radio_name()
+{
+        local iface="$1"
+        local section
+
+        # Get the uci wifi section for the iface
+        section=$(uci show wireless | grep ".ifname='$iface'" | cut -d'.' -f2)
+        if [ -z "$section" ]; then
+                logger -t "${NAME}" -p daemon.warn "$0: wlan $iface not configured in UCI."
+                return 1
+        fi
+
+        # Get the radio name from uci
+        radio_name=$(uci get wireless."$section".device 2>/dev/null)
+        if [ -z "$radio_name" ]; then
+                logger -t "${NAME}" -p daemon.warn "$0: Failed to get radio name for wlan $iface."
+                return 1
+        fi
+}
+
+
 wlan_ready()
 {
-        for iface; do
-                if ! hostapd_ready "$iface"; then
-                        logger -t "${NAME}" -p daemon.warn "$0: wlan $iface not ready"
+        local iface
+        local wlan_status
+        local radio_name
+        local ifname
+        local radio_status
+
+        # Check if ubus command succeeds
+        wlan_status=$(ubus call network.wireless status 2>/dev/null)
+        if [ $? -ne 0 ]; then
+                logger -t "${NAME}" -p daemon.warn "$0: ubus command execution failed.!"
+                return 1
+        fi
+
+        # Loop through the interfaces and check readiness
+        for iface in "$@"; do
+
+                # Get the radio name
+                if ! get_radio_name "$iface"; then
+                        logger -t "${NAME}" -p daemon.warn "$0: Failed to get radio name for $iface."
+                        return 1
+                fi
+
+                # Check if radio is up
+                radio_status=$(echo "$wlan_status" | jsonfilter -e "@.$radio_name.up" 2>/dev/null)
+                if [ "$radio_status" != "true" ]; then
+                        logger -t "${NAME}" -p daemon.warn "$0: radio $radio_name is not up"
+                        return 1
+                fi
+
+                # Check if iface matches in interfaces list
+                ifname=$(echo "$wlan_status" | jsonfilter -e "@.$radio_name.interfaces[@.ifname=\"$iface\"].config.ifname" 2>/dev/null)
+                if [ -z "$ifname" ] || [ "$ifname" != "$iface" ]; then
+                        logger -t "${NAME}" -p daemon.warn "$0: wlan $iface is not up"
                         return 1
                 fi
         done
