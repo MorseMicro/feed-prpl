@@ -31,7 +31,7 @@ case $2 in
 
                 key_mgmt*)
                     encryption=`echo "$line" | cut -d'=' -f 2`
-                    if [ "$encryption" = "WPA-PSK SAE" ]; then
+                    if [[ "$encryption" == *"WPA-PSK"* && "$encryption" == *"SAE"* ]]; then
                             encryption="sae-mixed"
                     elif [ "$encryption" = "WPA-PSK" ]; then
                             encryption="psk"
@@ -55,6 +55,9 @@ case $2 in
                 uci set wireless.$section.ssid=$ssid
                 uci set wireless.$section.key=$psk
                 uci set wireless.$section.encryption=$encryption
+                if [ "$encryption" == "sae-mixed" ]; then
+                        uci set wireless.$section.sae_pwe=1
+                fi
                 uci commit
             fi
         }
