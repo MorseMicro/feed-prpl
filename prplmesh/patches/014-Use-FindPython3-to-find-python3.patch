@@ -11,30 +11,12 @@ Signed-off-by: Frederik Van Bogaert <frederik.vanbogaert@mind.be>
  framework/tlvf/CMakeLists.txt       | 8 ++------
  3 files changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a1f3505afdca..957efacc64e6 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -1,5 +1,5 @@
--cmake_minimum_required(VERSION 3.1)
--cmake_policy(VERSION 3.1)
-+cmake_minimum_required(VERSION 3.12)
-+cmake_policy(VERSION 3.12)
- include(cmake/multiap-helpers.cmake)
- project(prplmesh
-         LANGUAGES C CXX
-diff --git a/common/beerocks/tlvf/CMakeLists.txt b/common/beerocks/tlvf/CMakeLists.txt
-index 71fb637ab638..439f743058d3 100644
 --- a/common/beerocks/tlvf/CMakeLists.txt
 +++ b/common/beerocks/tlvf/CMakeLists.txt
-@@ -1,17 +1,13 @@
+@@ -1,13 +1,13 @@
  project(btlvf VERSION ${prplmesh_VERSION})
  
--if ((TARGET_PLATFORM_TYPE STREQUAL "ugw") OR (TARGET_PLATFORM STREQUAL "rdkb"))
--    find_package(PythonInterp REQUIRED)
--else()
--    set(PYTHON_EXECUTABLE python3)
--endif()
+-find_package(PythonInterp REQUIRED)
 +find_package(Python3 REQUIRED COMPONENTS Interpreter)
  
  get_property(PythonTlvf TARGET tlvf PROPERTY PythonTlvf)
@@ -47,18 +29,12 @@ index 71fb637ab638..439f743058d3 100644
  
  message("-- Running ${TLVF_COMMAND} --print-dependencies...")
  execute_process(
-diff --git a/framework/tlvf/CMakeLists.txt b/framework/tlvf/CMakeLists.txt
-index 41859fe15d7a..a347e2832b88 100644
 --- a/framework/tlvf/CMakeLists.txt
 +++ b/framework/tlvf/CMakeLists.txt
-@@ -1,15 +1,11 @@
+@@ -1,11 +1,11 @@
  project(tlvf VERSION ${prplmesh_VERSION})
  
--if ((TARGET_PLATFORM_TYPE STREQUAL "ugw") OR (TARGET_PLATFORM STREQUAL "rdkb"))
--    find_package(PythonInterp REQUIRED)
--else()
--    set(PYTHON_EXECUTABLE python3)
--endif()
+-find_package(PythonInterp REQUIRED)
 +find_package(Python3 REQUIRED COMPONENTS Interpreter)
  
  set(TLVF_DIR ${CMAKE_CURRENT_SOURCE_DIR})
