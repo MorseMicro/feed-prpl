@@ -99,6 +99,10 @@ CMAKE_OPTIONS += \
 	-DBEEROCKS_BRIDGE_IFACE="br-prpl" \
 	-DBWL_TYPE="NL80211"
 
+CMAKE_OPTIONS+=-DPython3_EXECUTABLE=$(STAGING_DIR_HOST)/bin/python3
+$(eval $(call TestHostCommand,python3-yaml, \
+	Please install the Python3 YAML module, \
+	$(STAGING_DIR_HOST)/bin/python3 -c 'import yaml'))
 
 ifeq ($(wildcard $(PKG_BUILD_DIR)/.source_dir),)
 	CMAKE_OPTIONS += -DPRPLMESH_REVISION=$(PKG_REV)
