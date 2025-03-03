@@ -7,8 +7,8 @@ USE_PROCD=1
 
 SERVICE=prplmesh
 
-cron_job_command="*/5 * * * * /usr/sbin/morse-check-prplmesh.sh"
-cron_job_script="/usr/sbin/morse-check-prplmesh.sh"
+cron_job_command="*/5 * * * * /usr/sbin/prplmesh_monitor.uc"
+cron_job_script="/usr/sbin/prplmesh_monitor.uc"
 
 stop_agent_monitor() {
         if_exists=$(crontab -l | grep "$cron_job_script" | wc -l)
@@ -35,7 +35,6 @@ start_agent_monitor() {
         else
             logger "prplMesh Cron job already exists"
         fi
-
 }
 
 start_service() {
