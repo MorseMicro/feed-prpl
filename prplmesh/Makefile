@@ -61,7 +61,8 @@ define Package/prplmesh
 		+@BUSYBOX_CONFIG_FEATURE_GETOPT_LONG \
 		+libwpa_client_s1g \
 		+@MORSE_WPA_SUPPLICANT_S1G_MESH_NETWORKING \
-		+@MORSE_WPA_SUPPLICANT_S1G_EAP
+		+@MORSE_WPA_SUPPLICANT_S1G_EAP \
+		+prpl-mgr
 
 		# prplmesh has more dependency on hostapd_s1g and wpa_supplicant_s1g configs,
 		# but since we already had them enabled by default in the make file and we don't

@@ -1,0 +1,66 @@
+commit ac0bb8592e0627625ee0e68f240ef727235cc2b0
+Author: Prabha Murugesan <prabha.murugesan@morsemicro.com>
+Date:   Wed Jun 4 11:34:04 2025 +1000
+
+    [APP-4839][PR #39] Added changes to update/apply Wireless Config for OpenWrt
+
+diff --git a/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp b/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
+index 6b108445f..19c470d12 100644
+--- a/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
++++ b/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
+@@ -1152,50 +1152,18 @@ bool ap_wlan_hal_nl80211::update_vap_credentials(
+             LOG(ERROR) << "Autoconfiguration: cannot save hostapd config!";
+             return false;
+         }
+-
+-#if defined(MORSE_MICRO)
+-        /* When the S1G hostapd and OpenWrt hostapd (hostapd with OpenWrt patches) are unified,
+-            a unified per-radio reload mechanism can be implemented. For now we have to live with
+-            UPDATE command for S1G radio.
+-         */
+-        if(conf.get_head_value("ieee80211ah") == "1") {
+-            LOG(DEBUG) << " Using hostapd wpa ctrl interface UPDATE command to reload";
+-#endif
++#if defined(MORSE_OPENWRT)
++        std::string command = "ubus call prpl_mgr reload '{\"radio_config\": {\"" + m_radio_info.iface_name + "\": {}}}'";
++        beerocks::SYSTEM_CALL(command, false);
++#else
+         const std::string cmd("UPDATE ");
+         if (!wpa_ctrl_send_msg(cmd)) {
+             LOG(ERROR) << "Autoconfiguration: \"" << cmd << "\" command to hostapd has failed";
+             return false;
+         }
+-
+-#if defined(MORSE_MICRO)
+-        }
+-#endif
+-
+-#if defined(MORSE_OPENWRT)
+-        else {
+-            /*  The UPDATE command is no longer supported in OpenWrt's hostapd. The new approach
+-                for per-radio reload in OpenWrt is via the hostapd RPC config_set which replaces
+-                hostapd wpa ctrl iface UPDATE command.
+-             */
+-            auto get_phy_name = [&conf]() -> std::string {
+-                const auto& conf_file = conf.get_config_file_name();
+-                size_t pos = conf_file.find("phy");
+-                return (pos != std::string::npos) ? conf_file.substr(pos, strlen("phyX")) : "";
+-            };
+-
+-            std::string phy_name = get_phy_name();
+-            if(!phy_name.empty()) {
+-                std::string command = "ubus call hostapd config_set '{\"phy\": \"" + phy_name +
+-                                        "\", \"config\": \"" + conf.get_config_file_name() + "\"}'";
+-
+-                LOG(DEBUG) << " Using "<< command << " to reload";
+-                beerocks::SYSTEM_CALL(command, false);
+-            } else {
+-                LOG(ERROR) << "Autoconfiguration failed: Unable to get Phy name";
+-            }
+-        }
+ #endif
+     }
++
+     LOG(DEBUG) << "Autoconfiguration: done:\n" << conf;
+     return true;
+ }

@@ -1,0 +1,27 @@
+#!/usr/bin/ucode -RS
+
+import { connect } from  "ubus";
+
+function wireless_reload() {
+	system("wifi reload");
+}
+
+function radio_update(req) {
+	let ret = {"status" : "success"};
+	try {
+		wireless_reload();
+	} catch (e) {
+		ret["status"] = "failed";
+		ret["error"] = e.message;
+	}
+	return ret;
+}
+
+return { prpl_mgr: {
+	radio_update: {
+		call: radio_update,
+		args: {
+			config:{},
+		}
+	},
+}};
