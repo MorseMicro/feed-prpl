@@ -6,7 +6,7 @@ function wireless_reload() {
 	system("wifi reload");
 }
 
-function radio_update(req) {
+function reload(req) {
 	let ret = {"status" : "success"};
 	try {
 		wireless_reload();
@@ -18,10 +18,10 @@ function radio_update(req) {
 }
 
 return { prpl_mgr: {
-	radio_update: {
-		call: radio_update,
+	reload: {
+		call: reload,
 		args: {
-			config:{},
+			radio_config:{},
 		}
 	},
 }};
