@@ -15,7 +15,7 @@
 -    stop|shutdown)
 -        if [ -f /var/run/${name}.pid ]; then
 -            kill `cat /var/run/${name}.pid`
-+START=99
++START=17
 +STOP=10
 +USE_PROCD=1
 +
