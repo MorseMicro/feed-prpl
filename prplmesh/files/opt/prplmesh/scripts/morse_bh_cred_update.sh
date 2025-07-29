@@ -14,10 +14,10 @@ case $2 in
         do
             case "$line" in
                 ssid*)
-                    ssid=`echo "$line" | cut -d'"' -f 2`
+                    ssid=$(echo "$line" | awk -F= '{print $2}' | tr -d '"')
                 ;;
                 psk*)
-                    psk=`echo "$line" | cut -d'"' -f 2`
+                    psk=$(echo "$line" | awk -F= '{print $2}' | tr -d '"')
                 ;;
 
                 # WPS only supports WPA2/WPA-Personal and WPA2/WPA-Enterprise security modes.
