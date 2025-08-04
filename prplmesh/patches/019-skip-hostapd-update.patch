@@ -1,0 +1,51 @@
+commit caa2497ab904c9381eabf40a7b43d7a4e934a34f
+Author: Prabha Murugesan <prabha.murugesan@morsemicro.com>
+Date:   Fri Aug 1 11:40:26 2025 +1000
+
+    [APP-5285] Skip hostapd update by prplmesh in OpenWrt
+
+diff --git a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+index e1235876b..ff5e1a716 100644
+--- a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
++++ b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+@@ -1879,7 +1879,7 @@ void ApManager::handle_cmdu(ieee1905_1::CmduMessageRx &cmdu_rx)
+ #if defined(MORSE_OPENWRT)
+             /* When MBSS support added this would need refactor to
+                                         select the right bss interface name */
+-           for (const auto &bss_it : bss_info_conf_list) {
++            for (const auto &bss_it : bss_info_conf_list) {
+ 
+                 if(bss_it.teardown) {
+                     if(!beerocks::bpl::bpl_cfg_teardown_bss(m_iface)) {
+@@ -1891,11 +1891,15 @@ void ApManager::handle_cmdu(ieee1905_1::CmduMessageRx &cmdu_rx)
+                 if(!beerocks::bpl::bpl_cfg_set_wifi_credentials(m_iface, bss_it)) {
+                     LOG(ERROR) << "Could not set wireless credentials in UCI";
+                 }
+-           }
+-#endif
++            }
++
++            std::string command = "ubus call prpl_mgr reload '{\"radio_config\": {\"" + m_iface + "\": {}}}'";
++            beerocks::SYSTEM_CALL(command, false);
++
++#else
+             ap_wlan_hal->update_vap_credentials(bss_info_conf_list, backhaul_wps_ssid,
+                                                 backhaul_wps_passphrase, bridge_name);
+-
++#endif
+             // hostapd is enabled and started radio beaconing after autoconfiguration
+             // then radio tx power is updated, so to keep agent DB updated send CSA notification
+             // like it is handled in cACTION_APMANAGER_ENABLE_APS_REQUEST.
+diff --git a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+index 227273f8b..da3f62093 100644
+--- a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
++++ b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+@@ -50,7 +50,7 @@ static bool bpl_cfg_get_bss_configuration(const std::string &section_name,
+         } else if (starts_with("psk2", encryption)) {
+             return WSC::eWscAuth::WSC_AUTH_WPA2PSK;
+         } else if ("sae" == encryption) {
+-#if defined(MORSE_WPS_PBC_WORKAROUND)
++#if defined(MORSE_WPS_PBC_WORKAROUND) && !defined(MORSE_OPENWRT)
+             return WSC::eWscAuth(WSC::eWscAuth::WSC_AUTH_SAE | WSC::eWscAuth::WSC_AUTH_WPA2PSK);
+ #else
+             return WSC::eWscAuth::WSC_AUTH_SAE;

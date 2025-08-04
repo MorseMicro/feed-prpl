@@ -171,6 +171,7 @@ start_function() {
 }
 
 stop_function() {
+        logger -t "${NAME}" -p daemon.info "Stopping all prplMesh services"
         /opt/prplmesh/scripts/prplmesh_utils.sh stop
         # The network service stop happens after prplmesh service stop. 
         # So, we don't need to restart wlan here when prplmesh is disabled. 

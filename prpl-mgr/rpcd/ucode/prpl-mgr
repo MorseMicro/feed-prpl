@@ -1,18 +1,82 @@
 #!/usr/bin/ucode -RS
 
 import { connect } from  "ubus";
+import { cursor } from "uci";
 
-function wireless_reload() {
-	system("wifi reload");
+function find_iface(w , ifname) {
+	return filter(keys(w),
+		s => w[s][".type"] === "wifi-iface" && w[s]["ifname"] === ifname)[0];
+}
+
+function find_bsta_iface(w , device) {
+	return filter(keys(w),
+		s => w[s][".type"] === "wifi-iface" && w[s]["mode"] === "sta" &&  w[s]["device"] === device)[0];
+}
+
+function find_bsta_iface(w, device) {
+	return filter(keys(w), s =>
+		w[s][".type"] === "wifi-iface" && w[s]["mode"] === "sta" && w[s]["device"] === device)[0];
+}
+
+function sync_backhaul_creds(uci, ifname) {
+	const w = uci.get_all("wireless");
+
+	const iface_section = find_iface(w, ifname);
+	if (!iface_section)
+		return;
+
+	const device = w[iface_section].device;
+	if(!device)
+		return;
+
+	const is_backhaul = int(w[iface_section].multi_ap) & 1;
+	const bsta_section = find_bsta_iface(w, device);
+	if (bsta_section && is_backhaul) {
+		uci.set("wireless", bsta_section, "ssid",  w[iface_section].ssid);
+		uci.set("wireless", bsta_section, "key", w[iface_section].key);
+		uci.set("wireless", bsta_section, "encryption", w[iface_section].encryption);
+	}
+}
+
+function apply_iface_config(uci, ifname, config) {
+	return sync_backhaul_creds(uci, ifname);
+}
+
+function commit_config(ubus, uci) {
+	const config_files = keys(uci.changes());
+
+	if (length(keys(config_files)) === 0) {
+		return;
+	}
+
+	assert(uci.commit(), "Failed to commit changed config");
+
+	// Tell procd about the changes, as /bin/reload_config does.
+	for (let cf in config_files) {
+		if (!ubus.call("service", "event", { type: "config.change", data: { package: cf } })) {
+			warn(ubus.error(), "\n");
+		}
+	}
 }
 
 function reload(req) {
+	const uci = cursor();
+	const ubus = connect();
 	let ret = {"status" : "success"};
 	try {
-		wireless_reload();
+		const radio_config = req.args.radio_config;
+		assert(radio_config, "No radio config found.");
+		assert(length(radio_config), "No interface config found");
+
+		for (let ifname in radio_config) {
+			apply_iface_config(uci, ifname, radio_config[ifname]);
+		}
+
+		commit_config(ubus, uci);
+
 	} catch (e) {
 		ret["status"] = "failed";
-		ret["error"] = e.message;
+		ret["error"] = e;
 	}
 	return ret;
 }
