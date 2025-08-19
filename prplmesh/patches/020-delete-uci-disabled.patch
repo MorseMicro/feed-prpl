@@ -1,0 +1,155 @@
+commit 02021efd829b36ff4b1f02a4c7035f5fccc2d551
+Author: Prabha Murugesan <prabha.murugesan@morsemicro.com>
+Date:   Tue Aug 19 04:37:09 2025 +0000
+
+    [APP-5328] Disabled should be deleted when AP is being enabled
+    
+    Approved-by: Sophronia Koilpillai
+    Approved-by: Pradeep Reddy
+
+diff --git a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+index 227273f8b..2e3916810 100644
+--- a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
++++ b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+@@ -438,7 +438,7 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
+     return true;
+ }
+ 
+-#define WPA3_TRASITION (WSC::eWscAuth::WSC_AUTH_WPA2PSK | WSC::eWscAuth::WSC_AUTH_SAE)
++#define WPA3_TRANSITION (WSC::eWscAuth::WSC_AUTH_WPA2PSK | WSC::eWscAuth::WSC_AUTH_SAE)
+ 
+ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+                                   const son::wireless_utils::sBssInfoConf &configuration)
+@@ -447,6 +447,8 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+     const std::string package_name = "wireless";
+     const std::string section_type = "wifi-iface";
+     const std::string option_name  = "ifname";
++    const std::string option_disabled = "disabled";
++
+     std::string section_name;
+     if (!uci_find_section_by_option(package_name, section_type, option_name, iface, section_name)) {
+         LOG(ERROR) << "Failed to find configuration section for interface " << iface;
+@@ -458,9 +460,10 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+         return false;
+     }
+ 
++    uci_delete_option(package_name, section_type, section_name, option_disabled, false);
++
+     // Overwrite UCI configuration with wireless credentials for the given interface
+     OptionsUnorderedMap options;
+-    options["disabled"] = "0";
+     options["ssid"] = configuration.ssid;
+ 
+     auto get_encryption = [](WSC::eWscAuth authentication_type, WSC::eWscEncr encryption_type) {
+@@ -476,7 +479,7 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+             encryption = "sae";
+         }
+ #if defined(MORSE_OPENWRT)
+-        else if (authentication_type == WSC::eWscAuth(WPA3_TRASITION)) {
++        else if (authentication_type == WSC::eWscAuth(WPA3_TRANSITION)) {
+             encryption = "sae-mixed";
+         }
+ #endif
+diff --git a/framework/platform/bpl/common/uci/bpl_uci.cpp b/framework/platform/bpl/common/uci/bpl_uci.cpp
+index 40cc08ea6..65afb62df 100644
+--- a/framework/platform/bpl/common/uci/bpl_uci.cpp
++++ b/framework/platform/bpl/common/uci/bpl_uci.cpp
+@@ -400,6 +400,73 @@ bool uci_get_option(const std::string &package_name, const std::string &section_
+     return true;
+ }
+ 
++/**
++ * Delete a single option from a named section.
++ *
++ * @param package_name   UCI package (e.g. "wireless")
++ * @param section_type   Expected section type (e.g. "wifi-iface"); used to validate existence
++ * @param section_name   Named section within the package
++ * @param option_name    Option key to delete
++ * @param commit_changes If true, commits after deletion; otherwise leaves in delta
++ *
++ * @return true on success, false on error (including when the section/option does not exist)
++ */
++bool uci_delete_option(const std::string &package_name, const std::string &section_type,
++                       const std::string &section_name, const std::string &option_name,
++                       bool commit_changes)
++{
++    // package_name.(section_type)section_name.option_name
++    LOG(TRACE) << "uci_delete_option() " << package_name << ".(" << section_type << ")"
++               << section_name << "." << option_name;
++
++    // Verify requested section exists (and matches expected type)
++    if (!uci_section_exists(package_name, section_type, section_name)) {
++        LOG(ERROR) << "section " << section_name << " of type " << section_type
++                   << " was not found!";
++        return false;
++    }
++
++    auto ctx = alloc_context();
++    if (!ctx) {
++        return false;
++    }
++
++    char opt_path[MAX_UCI_BUF_LEN] = {0};
++    // Build path to the option we wish to delete: "<package>.<section>.<option>"
++    if (snprintf(opt_path, MAX_UCI_BUF_LEN, option_path, package_name.c_str(),
++                 section_name.c_str(), option_name.c_str()) <= 0) {
++        LOG(ERROR) << "Failed to compose path";
++        return false;
++    }
++
++    uci_ptr opt_ptr;
++    // Lookup & validate option existence
++    if (uci_lookup_ptr(ctx.get(), &opt_ptr, opt_path, true) != UCI_OK || !opt_ptr.o) {
++        LOG(INFO) << "UCI option does not exist: " << opt_path << std::endl
++                   << uci_get_error(ctx.get());
++        return true;
++    }
++
++    // Delete the option
++    if (uci_delete(ctx.get(), &opt_ptr) != UCI_OK) {
++        LOG(ERROR) << "UCI failed to delete option at path: " << opt_path << std::endl
++                   << uci_get_error(ctx.get());
++        return false;
++    }
++
++    // Save delta (does not persist to file yet)
++    if (uci_save(ctx.get(), opt_ptr.p) != UCI_OK) {
++        LOG(ERROR) << "Failed to save changes!" << std::endl << uci_get_error(ctx.get());
++        return false;
++    }
++
++    if (commit_changes) {
++        return uci_commit_changes(package_name);
++    }
++
++    return true;
++}
++
+ bool uci_delete_section(const std::string &package_name, const std::string &section_type,
+                         const std::string &section_name, bool commit_changes)
+ {
+diff --git a/framework/platform/bpl/common/uci/bpl_uci.h b/framework/platform/bpl/common/uci/bpl_uci.h
+index f8946f575..ee281d507 100644
+--- a/framework/platform/bpl/common/uci/bpl_uci.h
++++ b/framework/platform/bpl/common/uci/bpl_uci.h
+@@ -123,6 +123,20 @@ bool uci_get_section_type(const std::string &package_name, const std::string &se
+ bool uci_get_option(const std::string &package_name, const std::string &section_type,
+                     const std::string &section_name, const std::string &option_name,
+                     std::string &option_value);
++/**
++ * Delete a single option from a named section.
++ *
++ * @param[in] package_name name of the requested configuration file.
++ * @param[in] section_type type of the requested section.
++ * @param[in] section_name name of the requested section.
++ * @param[in] option_name name of the requested option.
++ * @param[in] commit_changes to show immediate intention to commit.
++ *
++ * @return true on success, false on error (including when the section/option does not exist)
++ */
++bool uci_delete_option(const std::string &package_name, const std::string &section_type,
++                       const std::string &section_name, const std::string &option_name,
++                       bool commit_changes);
+ 
+ /**
+  * @brief Delete existing section.
