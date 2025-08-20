@@ -11,7 +11,7 @@ PKG_SOURCE_URL:=https://github.com/MorseMicro/prplmesh
 PKG_SOURCE_PROTO:=git
 PKG_HASH:=e25fd2e4516350c2cc19cd3674c086f04bc148ff74524675188305fe2924f3c6
 
-PKG_BUILD_DEPENDS+=wpa_supplicant_s1g
+PKG_BUILD_DEPENDS+=hostapd_s1g
 HOST_BUILD_DEPENDS:=python3/host
 include $(INCLUDE_DIR)/host-build.mk
 
