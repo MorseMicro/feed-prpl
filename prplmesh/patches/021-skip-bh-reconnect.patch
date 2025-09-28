@@ -1,0 +1,64 @@
+commit 11a253a4dc8dfc009d8eab326d8bf380281063ef
+Author: Prabha Murugesan <prabha.murugesan@morsemicro.com>
+Date:   Wed Sep 17 01:32:22 2025 +1000
+
+    (APP-5373, PR #44) Skip backhaul manager reconnect in OpenWrt
+
+diff --git a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+index 566f9e3a5..f279564f7 100644
+--- a/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
++++ b/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+@@ -1017,7 +1017,23 @@ bool BackhaulManager::backhaul_fsm_wireless(bool &skip_select)
+                                 radio_info->sta_wlan_hal->process_int_events();
+                                 return true;
+                             },
++                        .on_write = nullptr,
++                        .on_disconnect =
++                            [radio_info](int fd, EventLoop &loop) {
++                                LOG(ERROR) << "sta_hal_int_events disconnected! on fd " << fd;
++                                radio_info->sta_hal_int_events =
++                                    beerocks::net::FileDescriptor::invalid_descriptor;
++                                return false;
++                            },
++                        .on_error =
++                            [radio_info](int fd, EventLoop &loop) {
++                                LOG(ERROR) << "sta_hal_int_events error! on fd " << fd;
++                                radio_info->sta_hal_int_events =
++                                    beerocks::net::FileDescriptor::invalid_descriptor;
++                                return false;
++                            },
+                     };
++
+                     if (!m_event_loop->register_handlers(int_events_fd, int_events_handlers)) {
+                         LOG(ERROR) << "Unable to register handlers for internal events queue!";
+                         return false;
+diff --git a/agent/src/beerocks/slave/tasks/controller_connectivity_task.cpp b/agent/src/beerocks/slave/tasks/controller_connectivity_task.cpp
+index 869b376f8..216ba0c09 100644
+--- a/agent/src/beerocks/slave/tasks/controller_connectivity_task.cpp
++++ b/agent/src/beerocks/slave/tasks/controller_connectivity_task.cpp
+@@ -120,6 +120,8 @@ void ControllerConnectivityTask::work()
+         break;
+     }
+     case eState::CONNECTION_TIMEOUT: {
++
++#ifndef MORSE_OPENWRT
+         auto db = AgentDB::get();
+ 
+         auto it =
+@@ -127,6 +129,7 @@ void ControllerConnectivityTask::work()
+                     [&](const AgentDB::sBackhaul::sBackhaulLink &c) {
+                         return c.connection_type == AgentDB::sBackhaul::eConnectionType::Wireless;
+                     });
++
+         // Try to reconnect to the wireless using the existing credentials
+         if (it != db->backhaul.backhaul_links.end()) {
+ 
+@@ -159,7 +162,7 @@ void ControllerConnectivityTask::work()
+             FSM_MOVE_STATE(RECONNECTION);
+             break;
+         }
+-
++#endif
+         send_disconnect_to_backhaul_manager();
+         break;
+     }
