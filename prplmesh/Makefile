@@ -108,6 +108,7 @@ CMAKE_OPTIONS += \
 	-DTARGET_PLATFORM_TYPE="EHK01" \
 	-DBEEROCKS_BRIDGE_IFACE="br-prpl" \
 	-DBWL_TYPE="NL80211" \
+	-DCMAKE_CXX_FLAGS="-Wno-overloaded-virtual -Wno-pessimizing-move -Wno-deprecated-declarations -Wno-unused-value" \
 	-DMORSE_BUILD_ENV="morse-openwrt"
 
 CMAKE_OPTIONS+=-DPython3_EXECUTABLE=$(STAGING_DIR_HOSTPKG)/bin/python3

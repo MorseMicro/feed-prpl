@@ -1,0 +1,23 @@
+diff --git a/common/beerocks/bcl/include/bcl/network/netlink_event_listener.h b/common/beerocks/bcl/include/bcl/network/netlink_event_listener.h
+index f8174e4..e9306a8 100644
+--- a/common/beerocks/bcl/include/bcl/network/netlink_event_listener.h
++++ b/common/beerocks/bcl/include/bcl/network/netlink_event_listener.h
+@@ -13,6 +13,7 @@
+
+ #include <functional>
+ #include <unordered_map>
++#include <cstdint>
+
+ namespace beerocks {
+ namespace net {
+diff --git a/common/beerocks/bwl/include/bwl/key_value_parser.h b/common/beerocks/bwl/include/bwl/key_value_parser.h
+index 5042b00..0223131 100644
+--- a/common/beerocks/bwl/include/bwl/key_value_parser.h
++++ b/common/beerocks/bwl/include/bwl/key_value_parser.h
+@@ -12,6 +12,7 @@
+ #include <list>
+ #include <string>
+ #include <unordered_map>
++#include <cstdint>
+
+ namespace bwl {
