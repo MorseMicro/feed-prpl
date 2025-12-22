@@ -1,0 +1,304 @@
+#!/usr/bin/ucode -RS
+import * as uloop from "uloop";
+import { connect } from  "ubus";
+import { open } from "fs";
+import { cursor } from 'uci';
+import {
+	ulog_open, ulog_threshold,
+	ULOG_SYSLOG, ulog,
+	LOG_DAEMON, LOG_INFO, LOG_DEBUG,
+	INFO, ERR
+} from "log";
+
+const ubus = connect();
+let agent_state = {"state": "INIT"};
+
+/* open syslog with ident and facility */
+const LOG_TAG = "prpl-mgr";
+ulog_open(ULOG_SYSLOG, LOG_DAEMON, LOG_TAG);
+
+/* choose verbosity */
+const EN_DEBUG = false;
+ulog_threshold(EN_DEBUG ? LOG_DEBUG : LOG_INFO);
+
+let radio_reload_timer = null;
+let topology_timer = null;
+
+
+const WAIT_TO_RELOAD_TIME_MS = 5000; // Every 5 sec
+const TOPOLOGY_TIMER_MS = 60000; // Every 60 sec
+const TOPO_QUERY_CMD = "/opt/prplmesh/bin/beerocks_cli -c \"bml_trigger_topology_discovery ";
+const PRPL_MESH_AGENT_CONF = "/opt/prplmesh/config/beerocks_agent.conf";
+
+// Not defined in ulog module.
+function DEBUG(fmt, ...args) {
+	ulog(LOG_DEBUG, fmt, ...args);
+}
+// Reference taken from prplmesh-topology.js in morse-feed repo.
+function unpackKey(d, k, v) {
+	let parts = split(k, ".");
+	let firstKey = parts[0];
+	let remainingKey = "";
+
+	if (length(k) > length(firstKey)) {
+		remainingKey = substr(k, length(firstKey) + 1);
+	}
+
+	let isNumber = (match(firstKey, "^[0-9]+$") != null);
+	if (isNumber) {
+		firstKey = int(firstKey) - 1;
+	}
+
+	if (isNumber != (type(d) == "array")) {
+		ERR("Unexpected data when parsing key: %s value: %J", k, v);
+		return;
+	}
+
+	if (remainingKey == "") {
+		if (type(v) == "string") {
+			if (exists(d, firstKey) ) {
+				ERR("Overwriting - invalid structure " + firstKey + " for key " + k);
+			}
+			d[firstKey] = v;
+		} else {
+			if (!exists(d, firstKey) ) {
+				d[firstKey] = {};
+			}
+			for (let prop in v) {
+				d[firstKey][prop] = v[prop];
+			}
+		}
+	} else {
+		if ( !exists(d, firstKey)) {
+			// If the remaining key begins with digits and a dot, use an array; otherwise, an object.
+			if (match(remainingKey, "^[0-9]+\\.") != null) {
+				d[firstKey] = [];
+			} else {
+				d[firstKey] = {};
+			}
+		}
+		unpackKey(d[firstKey], remainingKey, v);
+	}
+};
+
+// Reference taken from prplmesh-topology.js in morse-feed repo.
+function unpackDataModel(data) {
+	let outputData = {};
+	let inputData = [];
+
+	for (let key in data) {
+		push(inputData, [key, data[key]]);
+	}
+
+	sort(inputData, (a, b) => length(b[0]) - length(a[0]) );
+
+	//print(inputData);
+	for (let entry in inputData) {
+		if (entry[1]) {
+			unpackKey(outputData, entry[0], entry[1]);
+		}
+	}
+	return outputData;
+};
+
+function get_wifi_data_elements() {
+	const json_output = ubus.call("Device", "_get", { depth: "7" });
+	if (!json_output) {
+		ERR(`Unable to get to data element tree: ${ubus.error()}\n`);
+		return null;
+	}
+
+	return unpackDataModel(json_output);
+}
+
+function trigger_topology_query(device_id) {
+	let cmd = TOPO_QUERY_CMD + device_id + "\" &";
+
+	const ret = system(cmd);
+	if (ret != 0) {
+		ERR("Error triggering topology query to " + device_id + "\n");
+	}
+}
+
+function is_backhaul_info_missing(device) {
+	// return true when Dm is available but the BackhaulMACAddress is not populated
+	if (device && device.MultiAPDevice && device.MultiAPDevice.Backhaul) {
+		let bh_mac = device.MultiAPDevice.Backhaul.BackhaulMACAddress;
+		if (bh_mac == null || bh_mac == "" || bh_mac == "00:00:00:00:00")
+			return true;
+	}
+	return false;
+}
+
+function is_local_agent(bridge_mac, device_id) {
+	if (bridge_mac === device_id) {
+		return true;
+	}
+	return false;
+}
+
+function get_prplmesh_bridge_mac() {
+	let conf = open(PRPL_MESH_AGENT_CONF, "r");
+	if (!conf) {
+		ERR("Unable to open " + PRPL_MESH_AGENT_CONF);
+		return null;
+	}
+
+	let br_name = null;
+	let line;
+	while ((line = rtrim(conf.read("line"), "\n")) != null) {
+		let val = split(line, "=", 2);
+		if (!val[0]) {
+			continue;
+		}
+
+		if (val[0] == "bridge_iface") {
+			if (val[1]) {
+				br_name = val[1];
+			}
+			break;
+		}
+	}
+	conf.close();
+
+	if (br_name) {
+		let br_data = ubus.call("network.device", "status" , {name : br_name});
+		if (br_data && br_data.macaddr)
+			return br_data.macaddr;
+	}
+	return null;
+}
+
+function refresh_easymesh_topology(data) {
+	if (data == null)
+		return;
+
+	let local_agent_mac = get_prplmesh_bridge_mac();
+
+	const devices = data?.Device?.WiFi?.DataElements?.Network?.Device;
+	if (!devices)
+		return;
+
+	for (let id in devices) {
+		let device = devices[id];
+
+		if (device && device.ID && is_local_agent(local_agent_mac, device.ID)) {
+			continue;
+		}
+
+		if (is_backhaul_info_missing(device)) {
+			INFO("Missing backhaul info for Device : %s", device.ID);
+			trigger_topology_query(device.ID);
+		}
+	}
+}
+
+function reload_radios() {
+	const msg = {
+		type: "config.change",
+		data: { package: "wireless" }
+	};
+
+	ubus.call("service", "event", msg);
+
+	radio_reload_timer.cancel();
+	radio_reload_timer = null;
+}
+
+function update_radio_config_cb(req) {
+	let ret = { status: "success" };
+	let radio_config = req.args.radio_config;
+
+	if (!radio_config) { ERR("No radio config found"); return ret; }
+	if (!length(radio_config)) { ERR("No interface config found"); return ret; }
+
+	for (let ifname in radio_config)
+		INFO("Received Radio %s reload request", ifname);
+
+	if (radio_reload_timer) {
+		// Reload already scheduled; wait for consolidated reload
+		DEBUG("Reload already pending, executing in %d ms", radio_reload_timer.remaining());
+		return ret;
+	}
+
+	DEBUG("Defer reload_config for %d ms", WAIT_TO_RELOAD_TIME_MS);
+
+	// Delay wireless reload so other radios/BSS can retrieve credentials
+	radio_reload_timer = uloop.timer(WAIT_TO_RELOAD_TIME_MS, () => {
+		INFO("Reloading wireless modules");
+		reload_radios();
+	});
+
+	if (!radio_reload_timer) {
+		ret.status = "failed";
+		ret.error = "Failed to create reload timer";
+		ERR("Failed to create wireless reload timer: %s", uloop.error());
+	}
+
+	return ret;
+}
+
+function get_agent_state_cb(req) {
+	return agent_state;
+}
+
+function init_ubus_listeners() {
+	ubus.listener("prpl-mgr.*", function (type, data) {
+		INFO("Received Agent state : %s" , data["state"]);
+		agent_state = data;
+	});
+}
+
+function init_ubus_objects() {
+	const ubus_methods = {
+		update_radio_config: {
+			call: update_radio_config_cb,
+			args: {
+				radio_config:{},
+			}
+		},
+		get_agent_state: {
+			call: get_agent_state_cb,
+			args: {
+				ubus_rpc_session: "",
+			},
+		},
+		get_dm: {
+			call: get_wifi_data_elements,
+			args: {
+				ubus_rpc_session: "",
+			},
+		}
+	};
+	ubus.publish("prpl-mgr", ubus_methods);
+}
+
+// APP-3936 : There are cases (during onboarding), where the backhaul info of extenders
+// are missing in prplmesh data elements. This fix will trigger topology query
+// to exetenders for which we need topology info.
+function init_register_timers() {
+
+	// Run the timer only on controller node
+	let uci_ctx = cursor();
+	let management_mode = uci_ctx.get('prplmesh', 'config', 'management_mode');
+
+	if (management_mode != "Multi-AP-Controller-and-Agent")
+		return;
+
+	topology_timer = uloop.timer(TOPOLOGY_TIMER_MS, () => {
+
+		// Refresh topology only when the agent is in OPERATIONAL state
+		if (match(agent_state.state, /OPERATIONAL/)) {
+			DEBUG("Refreshing EasyMesh Topology");
+			refresh_easymesh_topology(get_wifi_data_elements());
+		}
+
+		topology_timer.set(TOPOLOGY_TIMER_MS);
+	});
+}
+
+uloop.init();
+init_ubus_objects();
+init_ubus_listeners();
+init_register_timers();
+uloop.run();
