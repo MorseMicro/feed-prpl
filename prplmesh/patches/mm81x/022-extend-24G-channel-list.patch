@@ -1,0 +1,13 @@
+diff --git a/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h b/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
+index b6e125a1c..1e7225c2d 100644
+--- a/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
++++ b/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
+@@ -272,7 +272,7 @@ static const struct s1g_ht_chan_pair s1g_ht_chan_pairs_jp[] = {
+ 
+ //Based on https://en.wikipedia.org/wiki/List_of_WLAN_channels
+ #define BAND_24G_MIN_FREQ 2401
+-#define BAND_24G_MAX_FREQ 2473
++#define BAND_24G_MAX_FREQ 2485
+ #define BAND_5G_MIN_FREQ 5150
+ #define BAND_5G_MAX_FREQ 5895
+ #define BAND_6G_MIN_FREQ 5945

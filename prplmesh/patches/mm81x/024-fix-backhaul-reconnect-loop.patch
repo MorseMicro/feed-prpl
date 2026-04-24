@@ -1,0 +1,36 @@
+Index: prplmesh/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+===================================================================
+--- prplmesh.orig/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
++++ prplmesh/agent/src/beerocks/slave/backhaul_manager/backhaul_manager.cpp
+@@ -1378,6 +1378,7 @@ bool BackhaulManager::backhaul_fsm_wirel
+             active_hal->disconnect();
+             active_hal->set_4addr_mode(true);
+         }
++
+         FSM_MOVE_STATE(WIRELESS_ASSOCIATE_4ADDR);
+         skip_select = true;
+         break;
+@@ -1499,6 +1500,15 @@ bool BackhaulManager::backhaul_fsm_wirel
+         break;
+     }
+     case EState::WIRELESS_WAIT_FOR_RECONNECT: {
++/* Transitioning to INITIATE_SCAN only makes sense once the
++   STA-side WLAN HAL is fully implemented. With the current
++   partial implementation, the FSM gets stuck in an intermediate
++   state and never recovers, even after the station reconnects
++   to the AP. We should wait for wpa_supplicant to complete its
++   own BSS selection instead. This avoids the issue described in
++   APP-1922.
++*/
++#ifndef MORSE_OPENWRT
+         auto now = std::chrono::steady_clock::now();
+         if (now > state_time_stamp_timeout) {
+             LOG(DEBUG) << "reconnect wait timed out";
+@@ -1515,6 +1525,7 @@ bool BackhaulManager::backhaul_fsm_wirel
+ 
+             FSM_MOVE_STATE(INITIATE_SCAN);
+         }
++#endif
+         break;
+     }
+     default: {

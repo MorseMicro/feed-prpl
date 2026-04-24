@@ -17,3 +17,4 @@ config PRPL_CONTROLLER_ROOT_PATH
         Set the root datamodel to be used, by default will be set to Device.WiFi.DataElements, unless if any project changes 
         it to something else.
         This may be helpful when several third-party packages have something in Device.WiFi.
+

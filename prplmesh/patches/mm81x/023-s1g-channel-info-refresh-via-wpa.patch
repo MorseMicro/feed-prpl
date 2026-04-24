@@ -1,0 +1,160 @@
+diff --git a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+index e1235876b..965041680 100644
+--- a/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
++++ b/agent/src/beerocks/fronthaul_manager/ap_manager/ap_manager.cpp
+@@ -1204,22 +1204,28 @@ void ApManager::handle_cmdu(ieee1905_1::CmduMessageRx &cmdu_rx)
+             LOG(DEBUG) << "ap disable() failed!, the interface might be already disabled or down";
+         }
+ 
+-        // If it is not the radio of the BH, then channel, bandwidth and center channel paramenters
+-        // will be all set to 0.
+-        LOG(DEBUG) << "Setting AP channel: "
+-                   << ", channel=" << int(notification->channel())
+-                   << ", bandwidth=" << notification->bandwidth()
+-                   << ", center_channel=" << int(notification->center_channel());
+-
+-        // Set original channel or BH channel
+-        if (!ap_wlan_hal->set_channel(notification->channel(), notification->bandwidth(),
+-                                      notification->center_channel())) {
+-            LOG(ERROR) << "Failed setting set_channel";
+-            response->success() = false;
+-            send_cmdu(cmdu_tx);
+-            break;
++#if defined(MORSE_MICRO) && defined(MORSE_OPENWRT)
++        // For the moment channel set/switch managed through lower layers in OpenWRT. Skip for s1g
++        if (ap_wlan_hal->get_radio_info().frequency_band != beerocks::eFreqType::FREQ_S1G) {
++#endif
++            // If it is not the radio of the BH, then channel, bandwidth and center channel paramenters
++            // will be all set to 0.
++            LOG(DEBUG) << "Setting AP channel: "
++                    << ", channel=" << int(notification->channel())
++                    << ", bandwidth=" << notification->bandwidth()
++                    << ", center_channel=" << int(notification->center_channel());
++
++            // Set original channel or BH channel
++            if (!ap_wlan_hal->set_channel(notification->channel(), notification->bandwidth(),
++                                        notification->center_channel())) {
++                LOG(ERROR) << "Failed setting set_channel";
++                response->success() = false;
++                send_cmdu(cmdu_tx);
++                break;
++            }
++#if defined(MORSE_MICRO) && defined(MORSE_OPENWRT)
+         }
+-
++#endif
+         // Enable the radio interface to apply the new configuration.
+         if (!ap_wlan_hal->enable()) {
+             LOG(ERROR) << "Failed enable";
+diff --git a/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h b/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
+index b6e125a1c..c0564efb0 100644
+--- a/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
++++ b/common/beerocks/bcl/include/bcl/son/son_wireless_utils.h
+@@ -395,6 +395,8 @@ public:
+     static int s1g_chan_to_freq(int channel);
+     static struct s1g_ht_chan_pair convert_ht_chan_to_s1g_chan(int ht_chan);
+     static void set_s1g_ht_chan_pairs(std::string &cc, int op_class);
++    static int morse_ht_chan_to_ht_chan_center(int ht_chan, int vht_oper_chwidth,
++                                        int s1g_prim_1mhz_chan_index, int secondary_channel);
+ #endif
+     /**
+      * @brief Get the center frequency of a channel.
+diff --git a/common/beerocks/bcl/source/son/son_wireless_utils.cpp b/common/beerocks/bcl/source/son/son_wireless_utils.cpp
+index 0d834b062..6a5da890e 100644
+--- a/common/beerocks/bcl/source/son/son_wireless_utils.cpp
++++ b/common/beerocks/bcl/source/son/son_wireless_utils.cpp
+@@ -1035,6 +1035,49 @@ int wireless_utils::s1g_chan_to_freq(int channel)
+     }
+     return ht_chan;
+ }
++
++/* VHT operation information - channel widths */
++#define CHANWIDTH_USE_HT    0 // 1,2 MHz bandwidth
++#define CHANWIDTH_80MHZ     1 // 4 MHz bandwidth
++#define CHANWIDTH_160MHZ    2 // 8 MHz bandwidth
++#define CHANWIDTH_80P80MHZ  3 
++
++static const int ht_40_pri_1mhz_offset[] = {
++    -2, 2,
++};
++
++static const int vht_80_pri_1mhz_offset[] = {
++    -6, -2, 2, 6
++};
++
++static const int vht_160_pri_1mhz_offset[] = {
++    -14, -10, -6, -2, 2, 6, 10, 14
++};
++
++static const int s1g_pri_1mhz_offset_default[] = {
++    -1, 1
++};
++
++int wireless_utils::morse_ht_chan_to_ht_chan_center(int ht_chan, int vht_oper_chwidth,
++                                     int s1g_prim_1mhz_chan_index,
++                                     int secondary_channel)
++{
++    /* VHT80 */
++    if (vht_oper_chwidth == CHANWIDTH_80MHZ) {
++        return (ht_chan - vht_80_pri_1mhz_offset[s1g_prim_1mhz_chan_index]);
++    }
++    /* VHT160 */
++    if (vht_oper_chwidth == CHANWIDTH_160MHZ) {
++        return (ht_chan - vht_160_pri_1mhz_offset[s1g_prim_1mhz_chan_index]);
++    }
++    /* HT40 */
++    if (secondary_channel) {
++        return (ht_chan - ht_40_pri_1mhz_offset[s1g_prim_1mhz_chan_index]);
++    }
++    /* HT20 */
++    return ht_chan;
++}
++
+ #endif
+ 
+ int wireless_utils::channel_to_vht_center_freq(int channel, beerocks::eWiFiBandwidth bandwidth,
+diff --git a/common/beerocks/bwl/nl80211/base_wlan_hal_nl80211.cpp b/common/beerocks/bwl/nl80211/base_wlan_hal_nl80211.cpp
+index e0125847d..a1b65c770 100644
+--- a/common/beerocks/bwl/nl80211/base_wlan_hal_nl80211.cpp
++++ b/common/beerocks/bwl/nl80211/base_wlan_hal_nl80211.cpp
+@@ -754,8 +754,38 @@ bool base_wlan_hal_nl80211::refresh_radio_info()
+         m_radio_info.radio_state = radio_state_from_string(state);
+ 
+ #if defined(MORSE_MICRO)
+-        /* s1g radio channel already updated in delivered class. */
+-        if (!m_radio_info.is_s1g)
++
++        /* Update the current s1g channel info from wpa client */
++        if (m_radio_info.is_s1g) {
++            int ht_chan = beerocks::string_utils::stoi(reply["channel"]);
++            int s1g_prim_1mhz_chan_index =
++                beerocks::string_utils::stoi(reply["s1g_prim_1mhz_chan_index"]);
++            int sec_chan = beerocks::string_utils::stoi(reply["secondary_channel"]);
++
++            LOG(DEBUG) << "S1G: Input HT channel = " << ht_chan;
++            LOG(DEBUG) << "S1G: Primary 1MHz channel index = " << s1g_prim_1mhz_chan_index;
++            LOG(DEBUG) << "S1G: Secondary channel = " << sec_chan;
++            LOG(DEBUG) << "S1G: VHT operating channel width = " << vht_oper_chwidth;
++
++            int ht_center = son::wireless_utils::morse_ht_chan_to_ht_chan_center(
++                ht_chan, vht_oper_chwidth, s1g_prim_1mhz_chan_index, sec_chan);
++
++            LOG(DEBUG) << "S1G: Computed HT center channel = " << ht_center;
++
++            m_radio_info.channel =
++                son::wireless_utils::convert_ht_chan_to_s1g_chan(ht_center).s1g_channel;
++
++            LOG(DEBUG) << "S1G: Final S1G channel = " << m_radio_info.channel;
++
++            m_radio_info.s1g_op_class =
++                son::wireless_utils::get_s1g_operating_class_by_channel(
++                    m_radio_info.channel,
++                    beerocks::utils::convert_bandwidth_to_enum(m_radio_info.bandwidth),
++                    beerocks::FREQ_S1G);
++
++            LOG(DEBUG) << "S1G: Final S1G operating class = " << m_radio_info.s1g_op_class;
++        }
++        else
+ #endif
+             m_radio_info.channel = beerocks::string_utils::stoi(reply["channel"]);
+ 

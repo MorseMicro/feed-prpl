@@ -1,0 +1,316 @@
+diff --git a/agent/src/beerocks/slave/son_slave_thread.cpp b/agent/src/beerocks/slave/son_slave_thread.cpp
+index 2179ef8a6..8b1823aea 100644
+--- a/agent/src/beerocks/slave/son_slave_thread.cpp
++++ b/agent/src/beerocks/slave/son_slave_thread.cpp
+@@ -26,6 +26,7 @@
+ #include <bcl/beerocks_timer_factory_impl.h>
+ #include <bcl/beerocks_timer_manager_impl.h>
+ #include <bcl/beerocks_utils.h>
++#include <bcl/beerocks_os_utils.h>
+ #include <bcl/beerocks_wifi_channel.h>
+ #include <bcl/network/network_utils.h>
+ #include <btl/broker_client_factory_factory.h>
+@@ -144,7 +145,10 @@ auto slave_thread::sSlaveState::operator=(eSlaveState state) -> eSlaveState
+     };
+ 
+     AgentDB::get()->dm_set_agent_state(to_string(cur), to_string(max));
+-
++#if defined(MORSE_OPENWRT)
++    std::string cmd = "ubus send prpl-mgr.agent_state '{\"state\":\"" + to_string(cur) + "\"}'";
++    beerocks::SYSTEM_CALL(cmd, false);
++#endif
+     return state;
+ }
+ #undef EACH_SLAVESTATE
+diff --git a/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp b/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
+index 3430478a0..ea2210d0d 100644
+--- a/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
++++ b/common/beerocks/bwl/nl80211/ap_wlan_hal_nl80211.cpp
+@@ -992,6 +992,7 @@ bool ap_wlan_hal_nl80211::update_vap_credentials(
+     const std::string &backhaul_wps_ssid, const std::string &backhaul_wps_passphrase,
+     const std::string &bridge_ifname)
+ {
++#ifndef MORSE_OPENWRT
+     // Load hostapd config for the radio
+     prplmesh::hostapd::Configuration conf = load_hostapd_config(m_radio_info.iface_name);
+     if (!conf) {
+@@ -1154,19 +1155,16 @@ bool ap_wlan_hal_nl80211::update_vap_credentials(
+             LOG(ERROR) << "Autoconfiguration: cannot save hostapd config!";
+             return false;
+         }
+-#if defined(MORSE_OPENWRT)
+-        std::string command = "ubus call prpl_mgr reload '{\"radio_config\": {\"" + m_radio_info.iface_name + "\": {}}}'";
+-        beerocks::SYSTEM_CALL(command, false);
+-#else
++
+         const std::string cmd("UPDATE ");
+         if (!wpa_ctrl_send_msg(cmd)) {
+             LOG(ERROR) << "Autoconfiguration: \"" << cmd << "\" command to hostapd has failed";
+             return false;
+         }
+-#endif
+     }
+ 
+     LOG(DEBUG) << "Autoconfiguration: done:\n" << conf;
++#endif
+     return true;
+ }
+ 
+diff --git a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+index 2e3916810..a3a1858e8 100644
+--- a/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
++++ b/framework/platform/bpl/cfg/uci/bpl_cfg_wifi.cpp
+@@ -16,6 +16,7 @@
+ #include "bpl_cfg_uci.h"
+ 
+ #include <bcl/beerocks_string_utils.h>
++#include <bcl/beerocks_os_utils.h>
+ #include <mapf/common/logger.h>
+ #include <mapf/common/utils.h>
+ 
+@@ -50,7 +51,7 @@ static bool bpl_cfg_get_bss_configuration(const std::string &section_name,
+         } else if (starts_with("psk2", encryption)) {
+             return WSC::eWscAuth::WSC_AUTH_WPA2PSK;
+         } else if ("sae" == encryption) {
+-#if defined(MORSE_WPS_PBC_WORKAROUND)
++#if defined(MORSE_WPS_PBC_WORKAROUND) && !defined(MORSE_OPENWRT)
+             return WSC::eWscAuth(WSC::eWscAuth::WSC_AUTH_SAE | WSC::eWscAuth::WSC_AUTH_WPA2PSK);
+ #else
+             return WSC::eWscAuth::WSC_AUTH_SAE;
+@@ -412,6 +413,7 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
+     const std::string package_name = "wireless";
+     const std::string section_type = "wifi-iface";
+     const std::string option_name  = "ifname";
++    const std::string option_disabled  = "disabled";
+     std::string section_name;
+ 
+     if (!uci_find_section_by_option(package_name, section_type, option_name, iface, section_name)) {
+@@ -426,6 +428,14 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
+ 
+     // Overwrite UCI configuration with wireless credentials for the given interface
+     OptionsUnorderedMap options;
++    if (uci_get_section("wireless", "wifi-iface", section_name, options)) {
++        if (options.find(option_disabled) != options.end() &&
++            options[option_disabled] == "1") {
++                LOG(INFO) << "BSS already turned off" << section_name;
++                return true;
++        }
++    }
++
+     options["disabled"] = "1";
+ 
+     // Write UCI options in the "wireless.wifi-iface" section for the given interface.
+@@ -440,14 +450,110 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
+ 
+ #define WPA3_TRANSITION (WSC::eWscAuth::WSC_AUTH_WPA2PSK | WSC::eWscAuth::WSC_AUTH_SAE)
+ 
++static inline std::string get_encryption(WSC::eWscAuth authentication_type,
++                                         WSC::eWscEncr encryption_type)
++{
++    std::string encryption = "none";
++
++    if (authentication_type == WSC::eWscAuth::WSC_AUTH_WPA2PSK) {
++        encryption = "psk2";
++        if (encryption_type == WSC::eWscEncr::WSC_ENCR_TKIP) {
++            encryption += "+tkip";
++        } else if (encryption_type == WSC::eWscEncr::WSC_ENCR_AES) {
++            encryption += "+aes";
++        }
++    } else if (authentication_type == WSC::eWscAuth::WSC_AUTH_SAE) {
++        encryption = "sae";
++    }
++    else if (authentication_type == WSC::eWscAuth(WPA3_TRANSITION)) {
++        encryption = "sae-mixed";
++    }
++    return encryption;
++}
++
++static inline std::string get_multiap(bool fh, bool bh)
++{
++    if (fh && bh)
++        return std::to_string(beerocks::BSS_TYPE_BACK_FRONTHAUL);
++    if (fh)
++        return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
++    if (bh)
++        return std::to_string(beerocks::BSS_TYPE_BACKHAUL);
++
++    LOG(WARNING) << "Multi-AP BSS type unknown. Defaulting to FRONTHAUL.";
++    return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
++}
++
++static bool set_backhaul_sta_creds(const std::string &device,
++                                    const son::wireless_utils::sBssInfoConf &configuration)
++{
++    // Get all "wireless.wifi-iface" section names in UCI configuration
++    const std::string package_name = "wireless";
++    const std::string section_type = "wifi-iface";
++    const std::string option_ssid      = "ssid";
++    const std::string option_encryption = "encryption";
++    const std::string option_key       = "key";
++    bool reload = false;
++
++    std::vector<std::string> sections;
++    if (!uci_get_all_sections(package_name, section_type, sections)) {
++        LOG(ERROR) << "Failed to get section names";
++        return reload;
++    }
++
++
++    // Read SSID and WiFi credentials from each "wireless.wifi-iface" section found.
++    OptionsUnorderedMap options;
++    for (const auto &section_name : sections) {
++
++        if (uci_get_section(package_name, section_type, section_name, options)) {
++            if (options["mode"] != "sta" || options["device"] != device) {
++                options.clear();
++                continue;
++            }
++
++            std::string encryption = get_encryption(configuration.authentication_type,
++                                                    configuration.encryption_type);
++
++            if (options[option_ssid] != configuration.ssid ||
++                options[option_encryption] != encryption ||
++                options[option_key] != configuration.network_key) {
++
++                // Cred store needs update.
++                options[option_ssid]      = configuration.ssid;
++                options[option_encryption]= encryption;
++                options[option_key]       = configuration.network_key;
++
++                if (!uci_set_section(package_name, section_type, section_name, options, true)) {
++                    LOG(INFO) << " Failed to update backhaul station creds section : " << section_name;
++                    return reload;
++                }
++
++                // Return true when touched
++                reload = true;
++            }
++
++            return reload;
++
++        }
++    }
++    return false;
++}
++
+ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+                                   const son::wireless_utils::sBssInfoConf &configuration)
+ {
+     // Find the "wireless.wifi-iface" section in UCI configuration for the given interface
+-    const std::string package_name = "wireless";
+-    const std::string section_type = "wifi-iface";
+-    const std::string option_name  = "ifname";
+-    const std::string option_disabled = "disabled";
++    const std::string package_name     = "wireless";
++    const std::string section_type     = "wifi-iface";
++    const std::string option_name      = "ifname";
++    const std::string option_disabled  = "disabled";
++    const std::string option_ssid      = "ssid";
++    const std::string option_encryption = "encryption";
++    const std::string option_key       = "key";
++    const std::string option_multi_ap  = "multi_ap";
++    OptionsUnorderedMap options;
++    bool reload = 0;
+ 
+     std::string section_name;
+     if (!uci_find_section_by_option(package_name, section_type, option_name, iface, section_name)) {
+@@ -460,60 +566,54 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+         return false;
+     }
+ 
+-    uci_delete_option(package_name, section_type, section_name, option_disabled, false);
++    if (! uci_get_section("wireless", "wifi-iface", section_name, options)) {
++        LOG(ERROR) << "Configuration for uci section " << section_name << " not found";
++        return false;
++    }
+ 
+-    // Overwrite UCI configuration with wireless credentials for the given interface
+-    OptionsUnorderedMap options;
+-    options["ssid"] = configuration.ssid;
+-
+-    auto get_encryption = [](WSC::eWscAuth authentication_type, WSC::eWscEncr encryption_type) {
+-        std::string encryption = "none";
+-        if (authentication_type == WSC::eWscAuth::WSC_AUTH_WPA2PSK) {
+-            encryption = "psk2";
+-            if (encryption_type == WSC::eWscEncr::WSC_ENCR_TKIP) {
+-                encryption += "+tkip";
+-            } else if (encryption_type == WSC::eWscEncr::WSC_ENCR_AES) {
+-                encryption += "+aes";
+-            }
+-        } else if (authentication_type == WSC::eWscAuth::WSC_AUTH_SAE) {
+-            encryption = "sae";
+-        }
+-#if defined(MORSE_OPENWRT)
+-        else if (authentication_type == WSC::eWscAuth(WPA3_TRANSITION)) {
+-            encryption = "sae-mixed";
+-        }
+-#endif
+-        return encryption;
+-    };
+-    options["encryption"] =
+-        get_encryption(configuration.authentication_type, configuration.encryption_type);
+ 
+-    options["key"] = configuration.network_key;
++    std::string encryption = get_encryption(configuration.authentication_type,
++                                            configuration.encryption_type);
++    std::string bss_type   = get_multiap(configuration.fronthaul,
++                                        configuration.backhaul);
+ 
+-    auto get_multiap = [](bool fh, bool bh) {
+-        if (fh && bh)   return std::to_string(beerocks::BSS_TYPE_BACK_FRONTHAUL);
+-        if (fh)         return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
+-        if (bh)         return std::to_string(beerocks::BSS_TYPE_BACKHAUL);
++    // Update the backhaul station credentials
++    reload = set_backhaul_sta_creds(options["device"], configuration);
+ 
+-        LOG(WARNING) << "Multi-AP BSS type unknown. Defaulting to FRONTHAUL.";
+-        return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
+-    };
++    if (options[option_ssid] != configuration.ssid ||
++        options[option_encryption] != encryption ||
++        options[option_key] != configuration.network_key ||
++        options[option_multi_ap] != bss_type ||
++        options.find(option_disabled) != options.end()) {
+ 
+-    options["multi_ap"] = get_multiap(configuration.fronthaul, configuration.backhaul);
++        // Update the new crentials
++        options[option_ssid]      = configuration.ssid;
++        options[option_encryption]= encryption;
++        options[option_key]       = configuration.network_key;
++        options[option_multi_ap]  = bss_type;
++        options.erase(option_disabled);
+ 
+-    // Write UCI options in the "wireless.wifi-iface" section for the given interface.
+-    if (!uci_set_section(package_name, section_type, section_name, options, true)) {
+-        LOG(ERROR) << "Failed to set wireless configuration for interface " << iface
+-                   << " at section " << section_name;
+-        return false;
++        // Write UCI options in the "wireless.wifi-iface" section for the given interface.
++        if (!uci_set_section(package_name, section_type, section_name, options, true)) {
++            LOG(ERROR) << "Failed to set wireless configuration for interface " << iface
++                    << " at section " << section_name;
++            return false;
++        }
++        reload = true;
++    }
++
++    if(reload) {
++        // Delegate the reload to the platform, which has broader context on
++        // how and when to apply the configuration to the driver.
++        std::string cmd = "ubus call prpl-mgr reload '{\"radio_config\": {\"" + iface + "\": {}}}'";
++        beerocks::SYSTEM_CALL(cmd, false);
++        LOG(DEBUG) << "Autoconfiguration save successfull to UCI for " << iface;
+     }
+ 
+-    LOG(DEBUG) << "Autoconfiguration save successfull to UCI for " << iface;
+     LOG(DEBUG) << "     SSID         : " << configuration.ssid;
+-    LOG(DEBUG) << "     Key          : " << configuration.network_key;
+     LOG(DEBUG) << "     Auth         : " << eWscAuth_str(configuration.authentication_type);
+-    LOG(DEBUG) << "     Encr         : " << options["encryption"];
+-    LOG(DEBUG) << "     Multiap      : " << options["multi_ap"];
++    LOG(DEBUG) << "     Encr         : " << options[option_encryption];
++    LOG(DEBUG) << "     Multiap      : " << options[option_multi_ap];
+ 
+     return true;
+ }
