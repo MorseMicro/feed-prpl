@@ -130,6 +130,12 @@ function is_backhaul_info_missing(device) {
 	return false;
 }
 
+function is_valid_mac(mac) {
+	if (type(mac) != "string")
+		return false;
+	return match(mac, /^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$/) != null;
+}
+
 function is_local_agent(bridge_mac, device_id) {
 	if (bridge_mac === device_id) {
 		return true;
@@ -182,8 +188,10 @@ function refresh_easymesh_topology(data) {
 	for (let id in devices) {
 		let device = devices[id];
 
-		if (device && device.ID && is_local_agent(local_agent_mac, device.ID)) {
-			continue;
+		if (device && device.ID) {
+			if (!is_valid_mac(device.ID) || is_local_agent(local_agent_mac, device.ID)) {
+				continue;
+			}
 		}
 
 		if (is_backhaul_info_missing(device)) {
