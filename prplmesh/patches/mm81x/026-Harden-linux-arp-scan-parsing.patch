@@ -1,0 +1,133 @@
+#Title:026-Harden-linux-arp-scan-parsing.patch
+#Issue: [APP-1809]Prplmesh ValueError: conn map does not have all devices
+#Description: linux_arp_scan() reads ip_mac[1] without checking that the vector has two entries.
+# Any arp-scan output without a tab in it - a usage message, or "sh: arp-scan: not found" picked up
+# because stderr is merged into the result - makes that read go past the end of the vector and the
+# process dies with SIGSEGV. RD14 ships arp-scan 1.9.7, which does not know the '-M' option the
+# command is built with (it arrived in 1.10.0), so every scan on RD14 takes this path and kills
+# beerocks_controller during the monitor's first RSSI measurement. See 012-Add-ARP-scan-to-monitor-task.patch
+# for the call site this runs from.
+# This parses one line at a time and matches the station MAC across all of them, skips lines that
+# do not hold an "<ip>\t<mac>" pair, and stops merging stderr into the parsed output.
+# Note it does not make the scan succeed where it was failing: '-T' only sets the ethernet
+# destination and '-M 1' stops at the first responder, so on a mesh a neighbour on a lower address
+# usually answers first. That now reports "not found" instead of crashing.
+#Upstream: submitted to the prplmesh team; drop this patch once it lands in a release tarball.
+
+diff --git a/common/beerocks/bcl/source/network/network_utils.cpp b/common/beerocks/bcl/source/network/network_utils.cpp
+index 9e80af4f2..00518b5dd 100644
+--- a/common/beerocks/bcl/source/network/network_utils.cpp
++++ b/common/beerocks/bcl/source/network/network_utils.cpp
+@@ -29,6 +29,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <strings.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+@@ -628,49 +629,68 @@ bool network_utils::linux_add_iface_to_bridge(const std::string &bridge, const s
+ }
+ 
+ #if defined(MORSE_MICRO)
+-std::string network_utils::linux_arp_scan(const std::string &bridge, const std::string sta_mac, std::string ip)
++/**
++ * @brief Find the IPv4 address of a station by ARP-scanning the subnet it is expected to be on.
++ *
++ * 'arp-scan -x' prints one responder per line as "<ip>\t<mac>\t<vendor>", and nothing guarantees
++ * that the station we asked about is among them, let alone first:
++ *  - '-T' only sets the ethernet destination address. Every other host that owns one of the
++ *    scanned addresses still sees the request over the bridge and still answers.
++ *  - '-M 1' stops the scan at the first responder, whichever address that happens to be.
++ *  - '-M' only exists in arp-scan 1.10.0 and later. Older builds reject it and print a usage
++ *    message instead of any result at all.
++ * The output can also be cut off mid-line, because the caller reads it into a fixed-size buffer.
++ *
++ * So each line is parsed on its own and matched against sta_mac, and any line that does not hold
++ * at least an address pair is skipped. An unusable output yields an empty string, never a read
++ * past the end of the parsed fields.
++ *
++ * @param bridge Interface to scan on.
++ * @param sta_mac MAC address of the station to look for.
++ * @param ip An IPv4 address on the subnet to scan, typically the address of 'bridge' itself.
++ * @return The station's IPv4 address, or an empty string if it did not answer.
++ */
++std::string network_utils::linux_arp_scan(const std::string &bridge, const std::string sta_mac,
++                                          std::string ip)
+ {
+-    std::string cmd;
+-    std::string temp;
+-    std::vector <std::string> ip_mac;
+-
+-    cmd.append("arp-scan -q -x -M 1 -r 1 -i 15 -I ");
+-    cmd.append(bridge);
+-    cmd.append(" -T ");
+-    cmd.append(sta_mac);
+-    cmd.append(" ");
+-    std::istringstream ip_ss(ip);
+-    int i = 0;
+-    std::string final_ip;
+-
+-    while (getline(ip_ss, temp, '.')) {
+-        if (i == 3) {
+-            final_ip += "0/24";
+-            break;
+-        }
+-        final_ip += temp;
+-        i++;
+-        final_ip += ".";
+-    }
+-    cmd.append(final_ip);
+-
+-    std::string arp_scan_output = os_utils::system_call_with_output(cmd, true);
+-    if (arp_scan_output.empty()) {
++    // Derive the /24 to scan from an address on it, e.g. "192.168.37.2" -> "192.168.37.0/24".
++    auto last_dot = ip.rfind('.');
++    if (last_dot == std::string::npos) {
++        LOG(ERROR) << "Cannot arp-scan for " << sta_mac << ", '" << ip
++                   << "' is not an IPv4 address";
+         return "";
+     }
++    std::string subnet = ip.substr(0, last_dot + 1) + "0/24";
+ 
+-    std::istringstream ss(arp_scan_output);
+-    temp = "";
+-    while(getline(ss, temp, '\t')) {
+-        ip_mac.push_back(temp);
+-    }
++    std::string cmd = "arp-scan -q -x -M 1 -r 1 -i 15 -I " + bridge + " -T " + sta_mac + " " +
++                      subnet;
+ 
+-    if (ip_mac[1].compare(0, 17, sta_mac) != 0) {
+-        LOG(ERROR) << sta_mac << " not same as " << ip_mac[1];
+-        return "";
++    // stderr is deliberately left out of the output: a usage message from an arp-scan that does
++    // not know an option, or a "not found" from the shell, must not be parsed as a scan result.
++    std::string arp_scan_output = os_utils::system_call_with_output(cmd, false);
++
++    std::istringstream lines(arp_scan_output);
++    std::string line;
++    while (getline(lines, line)) {
++        std::istringstream fields(line);
++        std::string scanned_ip;
++        std::string scanned_mac;
++
++        if (!getline(fields, scanned_ip, '\t') || !getline(fields, scanned_mac, '\t')) {
++            continue;
++        }
++        if (scanned_ip.empty() || scanned_mac.size() != sta_mac.size() ||
++            strcasecmp(scanned_mac.c_str(), sta_mac.c_str()) != 0) {
++            LOG(DEBUG) << "arp-scan: " << scanned_ip << " is " << scanned_mac << ", not "
++                       << sta_mac;
++            continue;
++        }
++
++        return scanned_ip;
+     }
+ 
+-    return ip_mac[0];
++    LOG(DEBUG) << "arp-scan on " << bridge << " did not find " << sta_mac << " in " << subnet;
++    return "";
+ }
+ #endif
+ 

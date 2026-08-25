@@ -55,6 +55,7 @@ define Package/prplmesh
 		+ubus \
 		+ubox \
 		+ebtables \
+		+arp-scan \
 		+wpa_supplicant_s1g \
 		+hostapd_s1g \
 		+@MORSE_HOSTAPD_S1G_EAP \
@@ -71,6 +72,9 @@ define Package/prplmesh
 		+ucode-mod-fs \
 		+ucode-mod-log \
 		+ucode-mod-uloop
+
+		# network_utils::linux_arp_scan() shells out to arp-scan, so it has to be installed.
+		# It also passes '-M', which only exists in arp-scan 1.10.0 and later.
 
 		# prplmesh has more dependency on hostapd_s1g and wpa_supplicant_s1g configs,
 		# but since we already had them enabled by default in the make file and we don't
