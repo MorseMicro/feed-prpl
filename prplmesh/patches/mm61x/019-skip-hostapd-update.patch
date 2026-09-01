@@ -298,7 +298,7 @@ index 2e3916810..a3a1858e8 100644
 +    if(reload) {
 +        // Delegate the reload to the platform, which has broader context on
 +        // how and when to apply the configuration to the driver.
-+        std::string cmd = "ubus call prpl-mgr reload '{\"radio_config\": {\"" + iface + "\": {}}}'";
++        std::string cmd = "ubus call prpl-mgr update_radio_config '{\"radio_config\": {\"" + iface + "\": {}}}'";
 +        beerocks::SYSTEM_CALL(cmd, false);
 +        LOG(DEBUG) << "Autoconfiguration save successfull to UCI for " << iface;
      }
