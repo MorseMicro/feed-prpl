@@ -100,7 +100,7 @@ index 2e3916810..a3a1858e8 100644
      options["disabled"] = "1";
  
      // Write UCI options in the "wireless.wifi-iface" section for the given interface.
-@@ -440,14 +450,110 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
+@@ -440,14 +450,54 @@ bool bpl_cfg_teardown_bss(const std::string &iface) {
  
  #define WPA3_TRANSITION (WSC::eWscAuth::WSC_AUTH_WPA2PSK | WSC::eWscAuth::WSC_AUTH_SAE)
  
@@ -138,62 +138,6 @@ index 2e3916810..a3a1858e8 100644
 +    return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
 +}
 +
-+static bool set_backhaul_sta_creds(const std::string &device,
-+                                    const son::wireless_utils::sBssInfoConf &configuration)
-+{
-+    // Get all "wireless.wifi-iface" section names in UCI configuration
-+    const std::string package_name = "wireless";
-+    const std::string section_type = "wifi-iface";
-+    const std::string option_ssid      = "ssid";
-+    const std::string option_encryption = "encryption";
-+    const std::string option_key       = "key";
-+    bool reload = false;
-+
-+    std::vector<std::string> sections;
-+    if (!uci_get_all_sections(package_name, section_type, sections)) {
-+        LOG(ERROR) << "Failed to get section names";
-+        return reload;
-+    }
-+
-+
-+    // Read SSID and WiFi credentials from each "wireless.wifi-iface" section found.
-+    OptionsUnorderedMap options;
-+    for (const auto &section_name : sections) {
-+
-+        if (uci_get_section(package_name, section_type, section_name, options)) {
-+            if (options["mode"] != "sta" || options["device"] != device) {
-+                options.clear();
-+                continue;
-+            }
-+
-+            std::string encryption = get_encryption(configuration.authentication_type,
-+                                                    configuration.encryption_type);
-+
-+            if (options[option_ssid] != configuration.ssid ||
-+                options[option_encryption] != encryption ||
-+                options[option_key] != configuration.network_key) {
-+
-+                // Cred store needs update.
-+                options[option_ssid]      = configuration.ssid;
-+                options[option_encryption]= encryption;
-+                options[option_key]       = configuration.network_key;
-+
-+                if (!uci_set_section(package_name, section_type, section_name, options, true)) {
-+                    LOG(INFO) << " Failed to update backhaul station creds section : " << section_name;
-+                    return reload;
-+                }
-+
-+                // Return true when touched
-+                reload = true;
-+            }
-+
-+            return reload;
-+
-+        }
-+    }
-+    return false;
-+}
-+
  bool bpl_cfg_set_wifi_credentials(const std::string &iface,
                                    const son::wireless_utils::sBssInfoConf &configuration)
  {
@@ -215,7 +159,7 @@ index 2e3916810..a3a1858e8 100644
  
      std::string section_name;
      if (!uci_find_section_by_option(package_name, section_type, option_name, iface, section_name)) {
-@@ -460,60 +566,54 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
+@@ -460,60 +510,51 @@ bool bpl_cfg_set_wifi_credentials(const std::string &iface,
          return false;
      }
  
@@ -261,19 +205,15 @@ index 2e3916810..a3a1858e8 100644
 -        if (fh && bh)   return std::to_string(beerocks::BSS_TYPE_BACK_FRONTHAUL);
 -        if (fh)         return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
 -        if (bh)         return std::to_string(beerocks::BSS_TYPE_BACKHAUL);
-+    // Update the backhaul station credentials
-+    reload = set_backhaul_sta_creds(options["device"], configuration);
- 
--        LOG(WARNING) << "Multi-AP BSS type unknown. Defaulting to FRONTHAUL.";
--        return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
--    };
 +    if (options[option_ssid] != configuration.ssid ||
 +        options[option_encryption] != encryption ||
 +        options[option_key] != configuration.network_key ||
 +        options[option_multi_ap] != bss_type ||
 +        options.find(option_disabled) != options.end()) {
  
--    options["multi_ap"] = get_multiap(configuration.fronthaul, configuration.backhaul);
+-        LOG(WARNING) << "Multi-AP BSS type unknown. Defaulting to FRONTHAUL.";
+-        return std::to_string(beerocks::BSS_TYPE_FRONTHAUL);
+-    };
 +        // Update the new crentials
 +        options[option_ssid]      = configuration.ssid;
 +        options[option_encryption]= encryption;
@@ -281,11 +221,7 @@ index 2e3916810..a3a1858e8 100644
 +        options[option_multi_ap]  = bss_type;
 +        options.erase(option_disabled);
  
--    // Write UCI options in the "wireless.wifi-iface" section for the given interface.
--    if (!uci_set_section(package_name, section_type, section_name, options, true)) {
--        LOG(ERROR) << "Failed to set wireless configuration for interface " << iface
--                   << " at section " << section_name;
--        return false;
+-    options["multi_ap"] = get_multiap(configuration.fronthaul, configuration.backhaul);
 +        // Write UCI options in the "wireless.wifi-iface" section for the given interface.
 +        if (!uci_set_section(package_name, section_type, section_name, options, true)) {
 +            LOG(ERROR) << "Failed to set wireless configuration for interface " << iface
@@ -294,7 +230,12 @@ index 2e3916810..a3a1858e8 100644
 +        }
 +        reload = true;
 +    }
-+
+ 
+-    // Write UCI options in the "wireless.wifi-iface" section for the given interface.
+-    if (!uci_set_section(package_name, section_type, section_name, options, true)) {
+-        LOG(ERROR) << "Failed to set wireless configuration for interface " << iface
+-                   << " at section " << section_name;
+-        return false;
 +    if(reload) {
 +        // Delegate the reload to the platform, which has broader context on
 +        // how and when to apply the configuration to the driver.
