@@ -219,7 +219,7 @@ index 2e3916810..a3a1858e8 100644
 +        options[option_encryption]= encryption;
 +        options[option_key]       = configuration.network_key;
 +        options[option_multi_ap]  = bss_type;
-+        options.erase(option_disabled);
++        options[option_disabled] = "";
  
 -    options["multi_ap"] = get_multiap(configuration.fronthaul, configuration.backhaul);
 +        // Write UCI options in the "wireless.wifi-iface" section for the given interface.
